@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Beechcraft King Air 350 - aircraft menu -->
+<PropertyList>
+  <default>
+    <menu n="10">
+      <label>King Air 350</label>
+      <enabled type="bool">true</enabled>
+
+      <item>
+        <label>Automatic start-up</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.autostart();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Shut down engines (condition levers cut-off)</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.shutdown();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Toggle beta / reverse range (Delete)</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.toggle_reverse();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Toggle autofeather arm</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.toggle_autofeather();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Toggle yaw damper (Ctrl-Y)</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.toggle_yaw_damper();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Toggle rudder boost</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.toggle_rudder_boost();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Toggle nose wheel steering</label>
+        <binding>
+          <command>property-toggle</command>
+          <property>controls/gear/nosegear-steering-enabled</property>
+        </binding>
+      </item>
+      <item>
+        <label>Airstair door</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.passenger_door.toggle();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Crew door</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.crew_door.toggle();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Baggage doors</label>
+        <binding>
+          <command>nasal</command>
+          <script>kingair350.left_bag_door.toggle(); kingair350.right_bag_door.toggle();</script>
+        </binding>
+      </item>
+      <item>
+        <label>G1000: PFD pop-up window</label>
+        <binding>
+          <command>nasal</command>
+          <script>fg1000ka.gui_pfd();</script>
+        </binding>
+      </item>
+      <item>
+        <label>G1000: MFD pop-up window</label>
+        <binding>
+          <command>nasal</command>
+          <script>fg1000ka.gui_mfd();</script>
+        </binding>
+      </item>
+      <item>
+        <label>Yokes visible</label>
+        <binding>
+          <command>property-toggle</command>
+          <property>sim/model/yokes-visible</property>
+        </binding>
+      </item>
+      <item>
+        <label>Select livery</label>
+        <binding>
+          <command>nasal</command>
+          <script>aircraft.livery.dialog.toggle()</script>
+        </binding>
+      </item>
+      <item>
+        <label>Lights</label>
+        <binding>
+          <command>nasal</command>
+          <script>
+            var lights = gui.Dialog.new("sim/gui/dialogs/lights/dialog", "Aircraft/KingAir-350/Systems/lights-dlg.xml");
+            lights.open();
+          </script>
+        </binding>
+      </item>
+      <item>
+        <label>System failures</label>
+        <binding>
+          <command>nasal</command>
+          <script>
+            var failures = gui.Dialog.new("sim/gui/dialogs/failures/dialog", "Aircraft/KingAir-350/Systems/failures-dlg.xml");
+            failures.open();
+          </script>
+        </binding>
+      </item>
+    </menu>
+  </default>
+</PropertyList>

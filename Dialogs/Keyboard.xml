@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Beechcraft King Air 350 - aircraft specific key bindings -->
+<PropertyList>
+
+  <key n="127">
+    <name>Delete</name>
+    <desc>Toggle beta / reverse range</desc>
+    <binding>
+      <command>nasal</command>
+      <script>kingair350.toggle_reverse();</script>
+    </binding>
+  </key>
+
+  <key n="68">
+    <name>D</name>
+    <desc>Airstair door</desc>
+    <binding>
+      <command>nasal</command>
+      <script>kingair350.passenger_door.toggle();</script>
+    </binding>
+  </key>
+
+  <key n="6">
+    <name>Ctrl-F</name>
+    <desc>Toggle autopilot (FGC panel)</desc>
+    <binding>
+      <command>nasal</command>
+      <script>FCS.toggle_ap();</script>
+    </binding>
+  </key>
+
+  <key n="25">
+    <name>Ctrl-Y</name>
+    <desc>Toggle yaw damper</desc>
+    <binding>
+      <command>nasal</command>
+      <script>kingair350.toggle_yaw_damper();</script>
+    </binding>
+  </key>
+
+  <key n="70">
+    <name>F</name>
+    <desc>Condition levers: next detent (cut-off / low idle / high idle)</desc>
+    <binding>
+      <command>nasal</command>
+      <script>kingair350.condition_step(1);</script>
+    </binding>
+  </key>
+
+  <key n="67">
+    <name>C</name>
+    <desc>Condition levers: previous detent</desc>
+    <binding>
+      <command>nasal</command>
+      <script>kingair350.condition_step(-1);</script>
+    </binding>
+  </key>
+
+
+</PropertyList>

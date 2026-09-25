@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  King Air 350ER "G1000" variant (KingAir-350ER-G1000-set.xml): the standard model plus two Garmin GDU 1044B displays (FG1000 from FGData,
+  $FG_ROOT/Aircraft/Instruments-3d/FG1000) surface-mounted on the instrument panel.
+
+  Panel face (model frame, x aft +, y right +, z up +): x = -4.647 m, instruments between z 0.04 and 0.34.
+  PFD centred on the pilot's EFIS column (y -0.425), MFD over the COM1/NAV1 radio stack (y +0.01).
+  The offsets can be nudged live with the properties sim/model/g1000/pfd/dx-m|dy-m|dz-m and
+  sim/model/g1000/mfd/dx-m|dy-m|dz-m (property browser), then written back here.
+-->
+<PropertyList>
+
+  <model>
+    <name>KingAir</name>
+    <path>Aircraft/KingAir-350/Models/KingAir.xml</path>
+  </model>
+
+  <model>
+    <name>G1000-PFD</name>
+    <path>Aircraft/Instruments-3d/FG1000/GDU104X/GDU-1044B.1.xml</path>
+    <offsets>
+      <x-m>-4.610</x-m>
+      <y-m>-0.425</y-m>
+      <z-m> 0.165</z-m>
+    </offsets>
+  </model>
+
+  <model>
+    <name>G1000-MFD</name>
+    <path>Aircraft/Instruments-3d/FG1000/GDU104X/GDU-1044B.2.xml</path>
+    <offsets>
+      <x-m>-4.610</x-m>
+      <y-m> 0.010</y-m>
+      <z-m> 0.165</z-m>
+    </offsets>
+  </model>
+
+  <!-- fine positioning from the property browser -->
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-PFD</object-name>
+    <property>sim/model/g1000/pfd/dx-m</property>
+    <axis><x>1</x><y>0</y><z>0</z></axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-PFD</object-name>
+    <property>sim/model/g1000/pfd/dy-m</property>
+    <axis><x>0</x><y>1</y><z>0</z></axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-PFD</object-name>
+    <property>sim/model/g1000/pfd/dz-m</property>
+    <axis><x>0</x><y>0</y><z>1</z></axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-MFD</object-name>
+    <property>sim/model/g1000/mfd/dx-m</property>
+    <axis><x>1</x><y>0</y><z>0</z></axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-MFD</object-name>
+    <property>sim/model/g1000/mfd/dy-m</property>
+    <axis><x>0</x><y>1</y><z>0</z></axis>
+  </animation>
+  <animation>
+    <type>translate</type>
+    <object-name>G1000-MFD</object-name>
+    <property>sim/model/g1000/mfd/dz-m</property>
+    <axis><x>0</x><y>0</y><z>1</z></axis>
+  </animation>
+
+</PropertyList>
