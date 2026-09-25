@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <name>failures</name>
+  <layout>vbox</layout>
+  <text><label>King Air 350 - Systems</label></text>
+  <hrule/>
+  <group>
+    <layout>table</layout>
+    <text><row>0</row><col>0</col><halign>right</halign><label>Engine 1:</label></text>
+    <button><row>0</row><col>1</col><legend>Cut fuel (simulate failure)</legend><binding><command>property-assign</command><property>controls/engines/engine[0]/condition</property><value>0</value></binding></button>
+    <text><row>1</row><col>0</col><halign>right</halign><label>Engine 2:</label></text>
+    <button><row>1</row><col>1</col><legend>Cut fuel (simulate failure)</legend><binding><command>property-assign</command><property>controls/engines/engine[1]/condition</property><value>0</value></binding></button>
+    <checkbox><row>2</row><col>0</col><halign>left</halign><label>Autofeather armed</label><property>controls/engines/autofeather</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>2</row><col>1</col><halign>left</halign><label>Yaw damper</label><property>controls/flight/yaw-damper</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>3</row><col>0</col><halign>left</halign><label>Rudder boost</label><property>controls/flight/rudder-boost</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>3</row><col>1</col><halign>left</halign><label>Nose wheel steering</label><property>controls/gear/nosegear-steering-enabled</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>4</row><col>0</col><halign>left</halign><label>Generator 1</label><property>controls/electric/engine[0]/bus-tie</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>4</row><col>1</col><halign>left</halign><label>Generator 2</label><property>controls/electric/engine[1]/bus-tie</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>5</row><col>0</col><halign>left</halign><label>Battery</label><property>controls/electric/battery-switch</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>5</row><col>1</col><halign>left</halign><label>Avionics master</label><property>controls/electric/avionics-switch</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>6</row><col>0</col><halign>left</halign><label>External power (ground)</label><property>controls/electric/external-power</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>6</row><col>1</col><halign>left</halign><label>Inverter</label><property>controls/electric/inverter-switch</property><binding><command>dialog-apply</command></binding></checkbox>
+  </group>
+  <hrule/>
+  <group>
+    <layout>hbox</layout>
+    <text><label>Fuel crossfeed:</label></text>
+    <combo><name>xfeed</name><property>controls/fuel/transfer</property><value>left</value><value>off</value><value>right</value><binding><command>dialog-apply</command></binding></combo>
+    <text><label>Left aux transfer:</label></text>
+    <combo><name>laux</name><property>controls/fuel/Laux-switch</property><value>auto</value><value>off</value><binding><command>dialog-apply</command></binding></combo>
+    <text><label>Right aux transfer:</label></text>
+    <combo><name>raux</name><property>controls/fuel/Raux-switch</property><value>auto</value><value>off</value><binding><command>dialog-apply</command></binding></combo>
+  </group>
+  <hrule/>
+  <button><legend>Close</legend><default>true</default><binding><command>dialog-close</command></binding></button>
+</PropertyList>

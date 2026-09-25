@@ -1,0 +1,284 @@
+<?xml version="1.0"?>
+<!--
+  King Air 350 autopilot / flight director (JSBSim system, namespace ap/).
+  All external inputs are plain numbers so that the same controller runs in stand-alone JSBSim and in
+  FlightGear (Nasal/autopilot.nas feeds them from the standard autopilot dialog and the FGC panel).
+
+  ap/engaged           0/1
+  ap/roll-mode         0 = roll hold (wings level), 1 = heading (ap/target-heading-true-deg), 2 = NAV/LOC track,
+                       3 = back course
+  ap/pitch-mode        0 = pitch hold (ap/target-pitch-deg), 1 = altitude hold (ap/target-altitude-ft),
+                       2 = vertical speed (ap/target-vs-fpm), 3 = IAS hold (ap/target-ias-kt), 4 = glideslope
+  ap/nav-deflection    -1..1 (CDI, positive = course is to the right), ap/nav-valid 0/1, ap/nav-is-loc 0/1,
+  ap/nav-course-true-deg, ap/nav-distance-nm (gain programming), ap/gs-deflection -1..1 (positive = fly up), ap/gs-valid
+  ap/bank-limit-deg    max bank (default 27)
+  Outputs: ap/aileron-cmd, ap/elevator-cmd (added to the pilot's commands in the FCS), ap/pitch-target-deg,
+           ap/roll-target-deg, ap/fd-pitch-deg / ap/fd-roll-deg (flight director bars).
+-->
+<system name="autopilot">
+
+  <property value="0"> ap/engaged </property>
+  <property value="0"> ap/fd-on </property>
+  <property value="0"> ap/roll-mode </property>
+  <property value="0"> ap/pitch-mode </property>
+  <property value="0"> ap/target-heading-true-deg </property>
+  <property value="0"> ap/target-altitude-ft </property>
+  <property value="0"> ap/target-vs-fpm </property>
+  <property value="200"> ap/target-ias-kt </property>
+  <property value="0"> ap/target-pitch-deg </property>
+  <property value="0"> ap/nav-deflection </property>
+  <property value="0"> ap/nav-valid </property>
+  <property value="0"> ap/nav-is-loc </property>
+  <property value="0"> ap/nav-course-true-deg </property>
+  <property value="10"> ap/nav-distance-nm </property>
+  <property value="0"> ap/gs-deflection </property>
+  <property value="0"> ap/gs-valid </property>
+  <property value="27"> ap/bank-limit-deg </property>
+  <property value="0"> ap/aileron-cmd </property>
+  <property value="0"> ap/elevator-cmd </property>
+
+  <channel name="AP state">
+    <!-- integrators are reset while the autopilot is off -->
+    <switch name="ap/integrator-trigger">
+      <default value="-1"/>
+      <test value="0"> ap/engaged == 1 </test>
+    </switch>
+    <switch name="ap/active">
+      <default value="0"/>
+      <test value="1"> ap/engaged == 1 </test>
+      <test value="1"> ap/fd-on == 1 </test>
+    </switch>
+  </channel>
+
+  <!-- ===================== LATERAL ===================== -->
+  <channel name="Lateral guidance">
+    <!-- NAV / LOC: bank = Kx * deflection + Kd * deflection rate + Kh * (course - heading)  (beam + course damping law) -->
+    <lag_filter name="ap/nav-deflection-filt">
+      <input> ap/nav-deflection </input>
+      <c1> 1.0 </c1>
+    </lag_filter>
+    <washout_filter name="ap/nav-deflection-rate">
+      <input> ap/nav-deflection-filt </input>
+      <c1> 0.1 </c1>
+    </washout_filter>
+    <!-- beam gain reduced close to the station (beam narrows): full gain beyond 6 nm -->
+    <fcs_function name="ap/nav-kx">
+      <function>
+        <product>
+          <ifthen> <eq><property> ap/nav-is-loc </property><value> 1 </value></eq> <value> 32 </value> <value> 45 </value> </ifthen>
+          <max> <value> 0.15 </value> <min> <value> 1.0 </value> <product> <value> 0.1667 </value> <property> ap/nav-distance-nm </property> </product> </min> </max>
+        </product>
+      </function>
+    </fcs_function>
+    <!-- back course: deflection sense reversed -->
+    <fcs_function name="ap/nav-sense">
+      <function> <ifthen> <eq><property> ap/roll-mode </property><value> 3 </value></eq> <value> -1 </value> <value> 1 </value> </ifthen> </function>
+    </fcs_function>
+    <fcs_function name="ap/nav-course-error-deg">
+      <function>
+        <product>
+          <value> 57.29578 </value>
+          <atan2>
+            <sin> <product> <value> 0.01745329 </value> <difference> <property> ap/nav-course-true-deg </property> <property> attitude/psi-deg </property> </difference> </product> </sin>
+            <cos> <product> <value> 0.01745329 </value> <difference> <property> ap/nav-course-true-deg </property> <property> attitude/psi-deg </property> </difference> </product> </cos>
+          </atan2>
+        </product>
+      </function>
+    </fcs_function>
+    <fcs_function name="ap/roll-from-nav-deg">
+      <function>
+        <max> <product><value> -1 </value><property> ap/bank-limit-deg </property></product>
+          <min> <property> ap/bank-limit-deg </property>
+            <sum>
+              <product> <property> ap/nav-sense </property> <property> ap/nav-kx </property> <property> ap/nav-deflection-filt </property> </product>
+              <product> <property> ap/nav-sense </property> <value> 15.0 </value> <property> ap/nav-kx </property> <value> 0.03125 </value> <property> ap/nav-deflection-rate </property> </product>
+              <product> <value> 1.0 </value> <property> ap/nav-course-error-deg </property> </product>
+            </sum>
+          </min>
+        </max>
+      </function>
+    </fcs_function>
+    <switch name="ap/heading-target-deg">
+      <default value="attitude/psi-deg"/>
+      <test value="ap/target-heading-true-deg"> ap/roll-mode == 1 </test>
+      <test value="ap/nav-course-true-deg"> ap/roll-mode ge 2 </test>
+    </switch>
+    <!-- heading error wrapped to -180..180 -->
+    <fcs_function name="ap/heading-error-deg">
+      <function>
+        <product>
+          <value> 57.29578 </value>
+          <atan2>
+            <sin> <product> <value> 0.01745329 </value> <difference> <property> ap/heading-target-deg </property> <property> attitude/psi-deg </property> </difference> </product> </sin>
+            <cos> <product> <value> 0.01745329 </value> <difference> <property> ap/heading-target-deg </property> <property> attitude/psi-deg </property> </difference> </product> </cos>
+          </atan2>
+        </product>
+      </function>
+    </fcs_function>
+    <fcs_function name="ap/roll-from-heading-deg">
+      <function>
+        <max> <product><value> -1 </value><property> ap/bank-limit-deg </property></product>
+          <min> <property> ap/bank-limit-deg </property>
+            <product> <value> 1.6 </value> <property> ap/heading-error-deg </property> </product>
+          </min>
+        </max>
+      </function>
+    </fcs_function>
+    <switch name="ap/roll-target-deg">
+      <default value="0.0"/>
+      <test value="ap/roll-from-heading-deg"> ap/roll-mode == 1 </test>
+      <test logic="AND" value="ap/roll-from-nav-deg">
+        ap/roll-mode ge 2
+        ap/nav-valid == 1
+      </test>
+      <test logic="AND" value="ap/roll-from-heading-deg">
+        ap/roll-mode ge 2
+        ap/nav-valid == 0
+      </test>
+    </switch>
+    <lag_filter name="ap/roll-target-filt-deg">
+      <input> ap/roll-target-deg </input>
+      <c1> 0.7 </c1>
+    </lag_filter>
+    <summer name="ap/fd-roll-deg">
+      <input> ap/roll-target-filt-deg </input>
+      <input> -attitude/phi-deg </input>
+    </summer>
+  </channel>
+
+  <channel name="Roll control">
+    <pid name="ap/roll-pid">
+      <input> ap/fd-roll-deg </input>
+      <kp> 0.030 </kp>
+      <ki> 0.006 </ki>
+      <kd> 0.000 </kd>
+      <trigger> ap/integrator-trigger </trigger>
+      <clipto> <min> -0.6 </min> <max> 0.6 </max> </clipto>
+    </pid>
+    <fcs_function name="ap/roll-damp">
+      <function> <product> <value> -0.040 </value> <property> velocities/p-rad_sec </property> <value> 57.29578 </value> </product> </function>
+    </fcs_function>
+    <summer name="ap/aileron-raw">
+      <input> ap/roll-pid </input>
+      <input> ap/roll-damp </input>
+      <clipto> <min> -0.6 </min> <max> 0.6 </max> </clipto>
+    </summer>
+    <switch name="ap/aileron-cmd">
+      <default value="0.0"/>
+      <test value="ap/aileron-raw"> ap/engaged == 1 </test>
+    </switch>
+  </channel>
+
+  <!-- ===================== VERTICAL ===================== -->
+  <channel name="Vertical guidance">
+    <!-- vertical speed in fpm -->
+    <fcs_function name="ap/vs-fpm">
+      <function> <product> <value> 60 </value> <property> velocities/h-dot-fps </property> </product> </function>
+    </fcs_function>
+    <fcs_function name="ap/alt-error-ft">
+      <function> <difference> <property> ap/target-altitude-ft </property> <property> position/h-sl-ft </property> </difference> </function>
+    </fcs_function>
+    <!-- altitude hold: vs demand proportional to altitude error -->
+    <fcs_function name="ap/vs-from-alt">
+      <function> <max> <value> -1500 </value> <min> <value> 1500 </value>
+        <product> <value> 7.0 </value> <property> ap/alt-error-ft </property> </product>
+      </min> </max> </function>
+    </fcs_function>
+    <!-- IAS hold with pitch (PI on speed error -> vertical speed demand) -->
+    <switch name="ap/ias-trigger">
+      <default value="-1"/>
+      <test logic="AND" value="0">
+        ap/engaged == 1
+        ap/pitch-mode == 3
+      </test>
+    </switch>
+    <summer name="ap/ias-error-kt">
+      <input> velocities/vc-kts </input>
+      <input> -ap/target-ias-kt </input>
+    </summer>
+    <pid name="ap/vs-from-ias">
+      <input> ap/ias-error-kt </input>
+      <kp> 90.0 </kp>
+      <ki> 6.0 </ki>
+      <kd> 0.0 </kd>
+      <trigger> ap/ias-trigger </trigger>
+      <clipto> <min> -2500 </min> <max> 2500 </max> </clipto>
+    </pid>
+    <!-- glideslope: nominal 3 deg path plus deviation correction -->
+    <lag_filter name="ap/gs-deflection-filt">
+      <input> ap/gs-deflection </input>
+      <c1> 1.5 </c1>
+    </lag_filter>
+    <fcs_function name="ap/vs-from-gs">
+      <function> <max> <value> -2000 </value> <min> <value> 500 </value>
+        <sum>
+          <product> <value> -3.11 </value> <property> velocities/vg-fps </property> </product>
+          <product> <value> 900 </value> <property> ap/gs-deflection-filt </property> </product>
+        </sum>
+      </min> </max> </function>
+    </fcs_function>
+    <switch name="ap/vs-target-fpm">
+      <default value="ap/vs-fpm"/>
+      <test value="ap/vs-from-alt"> ap/pitch-mode == 1 </test>
+      <test value="ap/target-vs-fpm"> ap/pitch-mode == 2 </test>
+      <test value="ap/vs-from-ias"> ap/pitch-mode == 3 </test>
+      <test logic="AND" value="ap/vs-from-gs">
+        ap/pitch-mode == 4
+        ap/gs-valid == 1
+      </test>
+    </switch>
+    <summer name="ap/vs-error-fpm">
+      <input> ap/vs-target-fpm </input>
+      <input> -ap/vs-fpm </input>
+    </summer>
+    <pid name="ap/vs-pid">
+      <input> ap/vs-error-fpm </input>
+      <kp> 0.0035 </kp>
+      <ki> 0.0012 </ki>
+      <kd> 0.0 </kd>
+      <trigger> ap/integrator-trigger </trigger>
+      <clipto> <min> -10 </min> <max> 15 </max> </clipto>
+    </pid>
+    <summer name="ap/pitch-from-vs-deg">
+      <input> ap/vs-pid </input>
+      <input> attitude/theta-deg </input>
+      <clipto> <min> -10 </min> <max> 18 </max> </clipto>
+    </summer>
+    <switch name="ap/pitch-target-raw-deg">
+      <default value="ap/target-pitch-deg"/>
+      <test value="ap/pitch-from-vs-deg"> ap/pitch-mode ge 1 </test>
+    </switch>
+    <lag_filter name="ap/pitch-target-deg">
+      <input> ap/pitch-target-raw-deg </input>
+      <c1> 1.5 </c1>
+    </lag_filter>
+    <summer name="ap/fd-pitch-deg">
+      <input> ap/pitch-target-deg </input>
+      <input> -attitude/theta-deg </input>
+    </summer>
+  </channel>
+
+  <channel name="Pitch control">
+    <pid name="ap/pitch-pid">
+      <input> ap/fd-pitch-deg </input>
+      <kp> -0.045 </kp>
+      <ki> -0.012 </ki>
+      <kd> 0.0 </kd>
+      <trigger> ap/integrator-trigger </trigger>
+      <clipto> <min> -0.6 </min> <max> 0.6 </max> </clipto>
+    </pid>
+    <fcs_function name="ap/pitch-damp">
+      <function> <product> <value> 0.020 </value> <property> velocities/q-rad_sec </property> <value> 57.29578 </value> </product> </function>
+    </fcs_function>
+    <summer name="ap/elevator-raw">
+      <input> ap/pitch-pid </input>
+      <input> ap/pitch-damp </input>
+      <clipto> <min> -0.6 </min> <max> 0.6 </max> </clipto>
+    </summer>
+    <switch name="ap/elevator-cmd">
+      <default value="0.0"/>
+      <test value="ap/elevator-raw"> ap/engaged == 1 </test>
+    </switch>
+  </channel>
+
+</system>

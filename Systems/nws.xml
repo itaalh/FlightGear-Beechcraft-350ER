@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+  Nose wheel steering: rudder pedals steer the nose wheel. Authority is reduced with ground speed
+  (48 deg at taxi speed for manoeuvring, ~12 deg above 40 kt like the real pedal steering range),
+  and with the steering disengaged (/controls/gear/nosegear-steering-enabled = 0) only 8 deg are left.
+-->
+<system name="nws">
+  <property value="1"> /controls/gear/nosegear-steering-enabled </property>
+
+  <channel name="Nose wheel steering">
+    <fcs_function name="systems/nws/max-angle">
+      <function>
+        <table>
+          <independentVar lookup="row"> velocities/vg-fps </independentVar>
+          <tableData>
+             0.0   48.0
+            15.0   48.0
+            35.0   30.0
+            68.0   12.0
+           120.0    6.0
+          </tableData>
+        </table>
+      </function>
+    </fcs_function>
+    <switch name="systems/nws/authority">
+      <default value="8.0"/>
+      <test value="systems/nws/max-angle"> /controls/gear/nosegear-steering-enabled == 1 </test>
+    </switch>
+    <fcs_function name="systems/nws/steer-deg">
+      <function>
+        <product>
+          <value> -1.0 </value>
+          <property> fcs/rudder-cmd-norm </property>
+          <property> systems/nws/authority </property>
+        </product>
+      </function>
+      <output> fcs/steer-pos-deg[0] </output>
+    </fcs_function>
+  </channel>
+</system>

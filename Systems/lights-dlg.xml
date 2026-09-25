@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<PropertyList>
+  <name>lights</name>
+  <layout>vbox</layout>
+  <text><label>King Air 350 - Lights</label></text>
+  <hrule/>
+  <group>
+    <layout>table</layout>
+    <checkbox><row>0</row><col>0</col><halign>left</halign><label>Landing left</label><property>controls/lighting/landing-lights[0]</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>0</row><col>1</col><halign>left</halign><label>Landing right</label><property>controls/lighting/landing-lights[1]</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>1</row><col>0</col><halign>left</halign><label>Taxi</label><property>controls/lighting/taxi-lights</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>1</row><col>1</col><halign>left</halign><label>Recognition</label><property>controls/lighting/recog-lights</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>2</row><col>0</col><halign>left</halign><label>Navigation</label><property>controls/lighting/nav-lights</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>2</row><col>1</col><halign>left</halign><label>Logo</label><property>controls/lighting/logo-lights</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>3</row><col>0</col><halign>left</halign><label>Beacon</label><property>controls/lighting/beacon/switch</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>3</row><col>1</col><halign>left</halign><label>Strobes</label><property>controls/lighting/strobe/switch</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><row>4</row><col>0</col><halign>left</halign><label>Master panel</label><property>controls/lighting/master-panel</property><binding><command>dialog-apply</command></binding></checkbox>
+  </group>
+  <hrule/>
+  <group>
+    <layout>hbox</layout>
+    <text><label>Instruments</label></text>
+    <slider><name>instr</name><min>0</min><max>1</max><property>controls/lighting/instruments-norm</property><live>true</live><binding><command>dialog-apply</command></binding></slider>
+    <text><label>Engine gauges</label></text>
+    <slider><name>eng</name><min>0</min><max>1</max><property>controls/lighting/eng-norm</property><live>true</live><binding><command>dialog-apply</command></binding></slider>
+  </group>
+  <hrule/>
+  <button><legend>Close</legend><default>true</default><binding><command>dialog-close</command></binding></button>
+</PropertyList>

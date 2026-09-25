@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Beechcraft King Air 350 - instrumentation set (FlightGear).
+  Complete list so that the cockpit radios, EFIS, RMI, GPS and autopilot bridge have their data sources.
+-->
+<PropertyList>
+
+  <airspeed-indicator>
+    <name>airspeed-indicator</name>
+    <number>0</number>
+    <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </airspeed-indicator>
+
+  <airspeed-indicator>
+    <name>airspeed-indicator</name>
+    <number>1</number>
+    <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </airspeed-indicator>
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>0</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    <quantum>0</quantum>
+    <tau>0</tau>
+  </altimeter>
+
+  <altimeter>
+    <name>altimeter</name>
+    <number>1</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    <quantum>0</quantum>
+    <tau>0</tau>
+  </altimeter>
+
+  <altimeter>
+    <name>encoder</name>
+    <number>0</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    <quantum>10</quantum>
+    <tau>0.1</tau>
+  </altimeter>
+
+  <!-- electric attitude gyros (EFIS AHRS): the "suction" input is fed from the electrical system by Nasal -->
+  <attitude-indicator>
+    <name>attitude-indicator</name>
+    <number>0</number>
+    <suction>/systems/electrical/gyro-suction-inhg</suction>
+  </attitude-indicator>
+
+  <attitude-indicator>
+    <name>attitude-indicator</name>
+    <number>1</number>
+    <suction>/systems/electrical/gyro-suction-inhg</suction>
+  </attitude-indicator>
+
+  <heading-indicator-dg>
+    <name>heading-indicator-dg</name>
+    <number>0</number>
+  </heading-indicator-dg>
+
+  <heading-indicator-dg>
+    <name>heading-indicator-dg</name>
+    <number>1</number>
+  </heading-indicator-dg>
+
+  <heading-indicator>
+    <name>heading-indicator</name>
+    <number>0</number>
+    <suction>/systems/electrical/gyro-suction-inhg</suction>
+  </heading-indicator>
+
+  <magnetic-compass>
+    <name>magnetic-compass</name>
+    <number>0</number>
+  </magnetic-compass>
+
+  <turn-indicator>
+    <name>turn-indicator</name>
+    <number>0</number>
+  </turn-indicator>
+
+  <slip-skid-ball>
+    <name>slip-skid-ball</name>
+    <number>0</number>
+  </slip-skid-ball>
+
+  <vertical-speed-indicator>
+    <name>vertical-speed-indicator</name>
+    <number>0</number>
+    <static-pressure>/systems/static/pressure-inhg</static-pressure>
+  </vertical-speed-indicator>
+
+  <clock>
+    <name>clock</name>
+    <number>0</number>
+  </clock>
+
+  <comm-radio>
+    <name>comm</name>
+    <number>0</number>
+  </comm-radio>
+
+  <comm-radio>
+    <name>comm</name>
+    <number>1</number>
+  </comm-radio>
+
+  <nav-radio>
+    <name>nav</name>
+    <number>0</number>
+  </nav-radio>
+
+  <nav-radio>
+    <name>nav</name>
+    <number>1</number>
+  </nav-radio>
+
+  <adf>
+    <name>adf</name>
+    <number>0</number>
+  </adf>
+
+  <dme>
+    <name>dme</name>
+    <number>0</number>
+  </dme>
+
+  <transponder>
+    <name>transponder</name>
+    <number>0</number>
+    <mode-c-altitude>/instrumentation/encoder/mode-c-alt-ft</mode-c-altitude>
+  </transponder>
+
+  <marker-beacon>
+    <name>marker-beacon</name>
+    <number>0</number>
+  </marker-beacon>
+
+  <gps>
+    <name>gps</name>
+    <number>0</number>
+  </gps>
+
+  <mk-viii>
+    <name>mk-viii</name>
+    <number>0</number>
+  </mk-viii>
+
+</PropertyList>

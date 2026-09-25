@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!--
+  King Air 350 power plant controls (JSBSim system).
+  - Power lever  : fcs/throttle-cmd-norm[i]  (FlightGear: controls/engines/engine[i]/throttle)
+                   Beta / reverse range is entered with the reverser flag (controls/engines/engine[i]/reverser),
+                   the power lever then controls blade angle (0.35 of travel = full beta, above: reverse power).
+  - Prop lever   : fcs/advance-cmd-norm[i]   (controls/engines/engine[i]/propeller-pitch), 1450 - 1700 rpm,
+                   full aft (< 0.04) = FEATHER.
+  - Condition    : /controls/engines/engine[i]/condition : 0 = FUEL CUTOFF (Nasal sets cutoff), 0.5 = LOW IDLE (62 % N1),
+                   1.0 = HIGH IDLE (70 % N1).
+  - Autofeather  : /controls/engines/autofeather (ARM). Feathers the engine whose torque drops below ~17 %
+                   while both power levers are above ~90 % N1 and the other engine develops power.
+  - Outputs for instruments: propulsion/engine[i]/torque-pct (100 % = 3200 ft.lb), systems/engines/autofeather-active[i].
+-->
+<system name="engine-control">
+
+  <property value="0.0"> /controls/engines/engine[0]/condition </property>
+  <property value="0.0"> /controls/engines/engine[1]/condition </property>
+  <property value="1.0"> /controls/engines/autofeather </property>
+  <property value="0.0"> systems/engines/autofeather-active[0] </property>
+  <property value="0.0"> systems/engines/autofeather-active[1] </property>
+
+  <channel name="Torque indication">
+    <fcs_function name="propulsion/engine[0]/torque-pct">
+      <function> <product> <value> 0.03125 </value> <abs><property> propulsion/engine[0]/propeller-torque-ftlb </property></abs> </product> </function>
+    </fcs_function>
+    <fcs_function name="propulsion/engine[1]/torque-pct">
+      <function> <product> <value> 0.03125 </value> <abs><property> propulsion/engine[1]/propeller-torque-ftlb </property></abs> </product> </function>
+    </fcs_function>
+  </channel>
+
+  <channel name="Power levers">
+    <!-- high idle raises the N1 floor: 62 % -> 70 % N1 corresponds to 0.19 of the throttle range -->
+    <fcs_function name="systems/engines/idle-floor[0]">
+      <function> <product> <value> 0.19 </value> <max> <value> 0 </value> <min> <value> 1 </value>
+        <product> <value> 2.0 </value> <difference> <property> /controls/engines/engine[0]/condition </property> <value> 0.5 </value> </difference> </product>
+      </min> </max> </product> </function>
+    </fcs_function>
+    <fcs_function name="systems/engines/idle-floor[1]">
+      <function> <product> <value> 0.19 </value> <max> <value> 0 </value> <min> <value> 1 </value>
+        <product> <value> 2.0 </value> <difference> <property> /controls/engines/engine[1]/condition </property> <value> 0.5 </value> </difference> </product>
+      </min> </max> </product> </function>
+    </fcs_function>
+    <fcs_function name="systems/engines/throttle-floored[0]">
+      <function> <max> <property> fcs/throttle-cmd-norm[0] </property> <property> systems/engines/idle-floor[0] </property> </max> </function>
+    </fcs_function>
+    <fcs_function name="systems/engines/throttle-floored[1]">
+      <function> <max> <property> fcs/throttle-cmd-norm[1] </property> <property> systems/engines/idle-floor[1] </property> </max> </function>
+    </fcs_function>
+    <switch name="fcs/throttle-pos-norm[0]">
+      <default value="systems/engines/throttle-floored[0]"/>
+      <test value="fcs/throttle-cmd-norm[0]"> propulsion/engine[0]/reverser == 1 </test>
+    </switch>
+    <switch name="fcs/throttle-pos-norm[1]">
+      <default value="systems/engines/throttle-floored[1]"/>
+      <test value="fcs/throttle-cmd-norm[1]"> propulsion/engine[1]/reverser == 1 </test>
+    </switch>
+  </channel>
+
+  <channel name="Propeller levers">
+    <!-- governor setting: lever travel 0.08..1 -> 1450..1700 rpm; below 0.04 = feather detent -->
+    <fcs_function name="fcs/advance-pos-norm[0]">
+      <function> <max> <value> 0 </value> <min> <value> 1 </value>
+        <product> <value> 1.0869565 </value> <difference> <property> fcs/advance-cmd-norm[0] </property> <value> 0.08 </value> </difference> </product>
+      </min> </max> </function>
+    </fcs_function>
+    <fcs_function name="fcs/advance-pos-norm[1]">
+      <function> <max> <value> 0 </value> <min> <value> 1 </value>
+        <product> <value> 1.0869565 </value> <difference> <property> fcs/advance-cmd-norm[1] </property> <value> 0.08 </value> </difference> </product>
+      </min> </max> </function>
+    </fcs_function>
+    <switch name="systems/engines/manual-feather[0]">
+      <default value="0"/>
+      <test value="1"> fcs/advance-cmd-norm[0] lt 0.04 </test>
+      <test value="1"> fcs/feather-cmd-norm[0] == 1 </test>
+    </switch>
+    <switch name="systems/engines/manual-feather[1]">
+      <default value="0"/>
+      <test value="1"> fcs/advance-cmd-norm[1] lt 0.04 </test>
+      <test value="1"> fcs/feather-cmd-norm[1] == 1 </test>
+    </switch>
+  </channel>
+
+  <channel name="Autofeather">
+    <!-- armed when both power levers above ~90 % N1 (throttle > 0.67) -->
+    <switch name="systems/engines/autofeather-armed">
+      <default value="0"/>
+      <test logic="AND" value="1">
+        /controls/engines/autofeather == 1
+        fcs/throttle-cmd-norm[0] gt 0.67
+        fcs/throttle-cmd-norm[1] gt 0.67
+        propulsion/engine[0]/reverser == 0
+        propulsion/engine[1]/reverser == 0
+      </test>
+    </switch>
+    <!-- torque below 17 % on one side while the other side is above 40 %: feather after a short delay -->
+    <switch name="systems/engines/autofeather-trigger[0]">
+      <default value="0"/>
+      <test logic="AND" value="1">
+        systems/engines/autofeather-armed == 1
+        propulsion/engine[0]/torque-pct lt 17
+        propulsion/engine[1]/torque-pct gt 40
+      </test>
+    </switch>
+    <switch name="systems/engines/autofeather-trigger[1]">
+      <default value="0"/>
+      <test logic="AND" value="1">
+        systems/engines/autofeather-armed == 1
+        propulsion/engine[1]/torque-pct lt 17
+        propulsion/engine[0]/torque-pct gt 40
+      </test>
+    </switch>
+    <lag_filter name="systems/engines/autofeather-delay[0]">
+      <input> systems/engines/autofeather-trigger[0] </input>
+      <c1> 0.8 </c1>
+    </lag_filter>
+    <lag_filter name="systems/engines/autofeather-delay[1]">
+      <input> systems/engines/autofeather-trigger[1] </input>
+      <c1> 0.8 </c1>
+    </lag_filter>
+    <switch name="systems/engines/autofeather-active[0]">
+      <default value="0"/>
+      <test value="1"> systems/engines/autofeather-delay[0] gt 0.8 </test>
+    </switch>
+    <switch name="systems/engines/autofeather-active[1]">
+      <default value="0"/>
+      <test value="1"> systems/engines/autofeather-delay[1] gt 0.8 </test>
+    </switch>
+    <switch name="fcs/feather-pos-norm[0]">
+      <default value="0"/>
+      <test value="1"> systems/engines/manual-feather[0] == 1 </test>
+      <test value="1"> systems/engines/autofeather-active[0] == 1 </test>
+    </switch>
+    <switch name="fcs/feather-pos-norm[1]">
+      <default value="0"/>
+      <test value="1"> systems/engines/manual-feather[1] == 1 </test>
+      <test value="1"> systems/engines/autofeather-active[1] == 1 </test>
+    </switch>
+  </channel>
+
+</system>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+  King Air 350 fuel system (JSBSim).
+  Tanks: 0 L aux (79.5 gal), 1 L main (190 gal), 2 R main, 3 R aux. Engines feed from their own side.
+  Aux tanks transfer automatically into the mains (modelled with tank priorities: aux burned first).
+  Crossfeed: /controls/fuel/crossfeed = 1 : left main feeds the right engine (flow L -> R),
+             /controls/fuel/crossfeed = -1: right main feeds the left engine (flow R -> L), 0 = off.
+  Modelled as a transfer between the main tanks at the rate of the receiving engine's fuel flow.
+-->
+<system name="fuel-system">
+  <property value="0"> /controls/fuel/crossfeed </property>
+
+  <channel name="Crossfeed">
+    <fcs_function name="systems/fuel/xfeed-rate-lr">
+      <function>
+        <min>
+          <value> 0.25 </value>
+          <property> propulsion/engine[1]/fuel-flow-rate-pps </property>
+        </min>
+      </function>
+    </fcs_function>
+    <fcs_function name="systems/fuel/xfeed-rate-rl">
+      <function>
+        <min>
+          <value> 0.25 </value>
+          <property> propulsion/engine[0]/fuel-flow-rate-pps </property>
+        </min>
+      </function>
+    </fcs_function>
+    <switch name="systems/fuel/left-main-flow">
+      <default value="0"/>
+      <test logic="AND" value="-systems/fuel/xfeed-rate-lr">
+        /controls/fuel/crossfeed gt 0.5
+        propulsion/tank[1]/contents-lbs gt 20
+      </test>
+      <test logic="AND" value="systems/fuel/xfeed-rate-rl">
+        /controls/fuel/crossfeed lt -0.5
+        propulsion/tank[2]/contents-lbs gt 20
+      </test>
+      <output> propulsion/tank[1]/external-flow-rate-pps </output>
+    </switch>
+    <switch name="systems/fuel/right-main-flow">
+      <default value="0"/>
+      <test logic="AND" value="systems/fuel/xfeed-rate-lr">
+        /controls/fuel/crossfeed gt 0.5
+        propulsion/tank[1]/contents-lbs gt 20
+      </test>
+      <test logic="AND" value="-systems/fuel/xfeed-rate-rl">
+        /controls/fuel/crossfeed lt -0.5
+        propulsion/tank[2]/contents-lbs gt 20
+      </test>
+      <output> propulsion/tank[2]/external-flow-rate-pps </output>
+    </switch>
+  </channel>
+
+  <channel name="Totals">
+    <summer name="systems/fuel/left-total-lbs">
+      <input> propulsion/tank[0]/contents-lbs </input>
+      <input> propulsion/tank[1]/contents-lbs </input>
+    </summer>
+    <summer name="systems/fuel/right-total-lbs">
+      <input> propulsion/tank[2]/contents-lbs </input>
+      <input> propulsion/tank[3]/contents-lbs </input>
+    </summer>
+  </channel>
+</system>
