@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Beechcraft King Air 350 (B300) for FlightGear - JSBSim
+  Flight model rebuilt in 2026 from Beechcraft data (Specification and Description, TCDS A24CE, operator
+  limitation sheets), PT6A-60A / Hartzell 4-blade propeller modelling and blade-element propeller tables.
+  3D model and cockpit: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017).
+  License: GPL v2 or later. See ./COPYING
+-->
+<PropertyList>
+
+  <sim>
+    <description>Beechcraft King Air 350ER (JSBSim, PT6A-60A)</description>
+    <long-description>
+      Extended Range version of the King Air 350 (B300CER): MTOW 16500 lb, MLW 15675 lb, MZFW 13000 lb,
+      775 US gal (5192 lb) of fuel in enlarged nacelle tanks, reinforced landing gear. This is the airframe of
+      the French Air and Space Force ALSR "Vador" and of many ISR / special mission King Airs. Same flight model
+      family as the 350, validated at 16500 lb: 2400 fpm initial climb, 303 KTAS max cruise, 3900 ft take-off
+      distance over 50 ft. PT6A-60A engines with beta/reverse, feathering, autofeather, rudder boost,
+      yaw damper, aux-to-main fuel transfer, crossfeed and a 3-axis autopilot driven from the cockpit panel.
+    </long-description>
+    <author>3D: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky - FDM/systems rebuild 2026</author>
+    <aircraft-version>2.0.0</aircraft-version>
+    <variant-of>KingAir-350</variant-of>
+    <status>beta</status>
+    <minimum-fg-version>2020.3</minimum-fg-version>
+    <rating>
+      <FDM type="int">4</FDM>
+      <systems type="int">3</systems>
+      <cockpit type="int">3</cockpit>
+      <model type="int">3</model>
+    </rating>
+    <tags>
+      <tag>turboprop</tag>
+      <tag>twin-engine</tag>
+      <tag>business</tag>
+      <tag>retractable-gear</tag>
+      <tag>pressurised</tag>
+      <tag>ils</tag>
+      <tag>2000s</tag>
+      <tag>surveillance</tag>
+      <tag>beechcraft</tag>
+    </tags>
+
+    <flight-model>jsb</flight-model>
+    <aero>Aero/KingAir-350ER</aero>
+
+    <startup>
+      <splash-texture>Aircraft/KingAir-350/splashScreen/KingAir-350-splash1.png</splash-texture>
+    </startup>
+
+    <model>
+      <path>Aircraft/KingAir-350/Models/KingAir.xml</path>
+      <livery>
+        <file type="string">prototype</file>
+      </livery>
+      <yokes-visible type="bool">true</yokes-visible>
+      <door-positions>
+        <crew><position-norm type="double">0</position-norm></crew>
+        <passenger><position-norm type="double">0</position-norm></passenger>
+        <leftbagage><position-norm type="double">0</position-norm></leftbagage>
+        <rightbagage><position-norm type="double">0</position-norm></rightbagage>
+      </door-positions>
+      <pushback>
+        <kp type="double">300</kp>
+        <ki type="double">0</ki>
+        <kd type="double">0</kd>
+        <position-norm type="double">0</position-norm>
+        <enabled type="bool">false</enabled>
+      </pushback>
+    </model>
+
+    <sound>
+      <path>Aircraft/KingAir-350/Sounds/KingAir-350-sound.xml</path>
+    </sound>
+
+    <!-- instruments -->
+    <instrumentation include="Systems/instrumentation.xml"/>
+
+    <!-- no <systems> entry: the electrical system is handled by Nasal/electrical.nas and the autopilot
+         loops run inside JSBSim (Systems/autopilot.xml, bridged by Nasal/autopilot.nas) -->
+
+    <flaps>
+      <setting>0.0</setting>   <!-- UP -->
+      <setting>0.5</setting>   <!-- APPROACH 14 deg -->
+      <setting>1.0</setting>   <!-- DOWN 35 deg -->
+    </flaps>
+
+    <fuel-fraction>0.8</fuel-fraction>
+    <chase-distance-m type="double" archive="y">-35.0</chase-distance-m>
+
+    <help>
+      <title>Beechcraft King Air 350ER</title>
+      <key><name>Delete</name><desc>Toggle beta / reverse range (power levers then control the reverse)</desc></key>
+      <key><name>Ctrl-F</name><desc>Toggle autopilot (FGC panel)</desc></key>
+      <key><name>Ctrl-Y</name><desc>Toggle yaw damper</desc></key>
+      <key><name>D</name><desc>Airstair door</desc></key>
+      <key><name>h</name><desc>Toggle HUD</desc></key>
+      <key><name>n / N</name><desc>Prop levers finer / coarser (feather = full aft)</desc></key>
+      <key><name>Shift-F / Shift-C</name><desc>Condition levers: next / previous detent (cut-off, low idle, high idle)</desc></key>
+      <line>Start: battery ON, power levers IDLE, prop levers FULL FWD, condition levers CUT-OFF.</line>
+      <line>Press the starter (cockpit switch or 's' with the engine selected); at 12 % N1 move the condition</line>
+      <line>lever to LOW IDLE. Light-off follows, N1 stabilises at 62 %. Generators ON after the start.</line>
+      <line>Menu KingAir-350 > Automatic start does the whole sequence.</line>
+      <line>Take-off: flaps APPROACH or UP, prop levers 1700 rpm, torque 100 % (3200 ft.lb), rotate at 104 kt.</line>
+      <line>Limits: Vmo 263 KIAS / M 0.58, Vfe 202 (APP) / 158 (DOWN), Vle 184, Vmca 94.</line>
+      <line>350ER: MTOW 16500 lb, MLW 15675 lb, MZFW 13000 lb, fuel 5192 lb (775 gal). Vs ~100 / Vso ~89 KCAS at 16500 lb,</line>
+      <line>rotate at 108 kt, Vref ~110 kt at max landing weight. Range over 2300 nm.</line>
+      <line>Cruise: 1500-1700 rpm, ITT below 820 C. Landing: flaps DOWN, Vref ~105 kt at 15000 lb.</line>
+      <line>Reverse: with the power levers at idle press Delete, then advance the power levers (beta then reverse).</line>
+    </help>
+
+    <menubar include="Dialogs/Pilot_Menu.xml"/>
+
+    <!-- HUD (optional, key h) -->
+    <hud>
+      <enable3d>false</enable3d>
+      <path n="1">Systems/HUD/hud.xml</path>
+      <visibility n="1">false</visibility>
+    </hud>
+
+    <view n="0">
+      <name>Pilot</name>
+      <type>lookfrom</type>
+      <internal archive="y" type="bool">true</internal>
+      <config>
+        <from-model type="bool">true</from-model>
+        <from-model-idx type="int">0</from-model-idx>
+        <ground-level-nearplane-m type="double">0.01</ground-level-nearplane-m>
+        <x-offset-m archive="y">-0.34</x-offset-m>
+        <y-offset-m archive="y">0.58</y-offset-m>
+        <z-offset-m archive="y">-4.00</z-offset-m>
+        <pitch-offset-deg>-5</pitch-offset-deg>
+        <heading-offset-deg>0</heading-offset-deg>
+        <default-field-of-view-deg>73</default-field-of-view-deg>
+      </config>
+    </view>
+
+    <view n="101">
+      <name>Copilot</name>
+      <type>lookfrom</type>
+      <internal archive="y">true</internal>
+      <config>
+        <from-model type="bool">true</from-model>
+        <from-model-idx type="int">0</from-model-idx>
+        <ground-level-nearplane-m type="double">0.01</ground-level-nearplane-m>
+        <x-offset-m archive="y">0.37</x-offset-m>
+        <y-offset-m archive="y">0.58</y-offset-m>
+        <z-offset-m archive="y">-4.00</z-offset-m>
+        <pitch-offset-deg>-5</pitch-offset-deg>
+        <heading-offset-deg>0</heading-offset-deg>
+        <default-field-of-view-deg>73</default-field-of-view-deg>
+      </config>
+    </view>
+
+    <view n="102">
+      <name>Cabin</name>
+      <internal archive="y">true</internal>
+      <type>lookfrom</type>
+      <config>
+        <from-model type="bool">true</from-model>
+        <ground-level-nearplane-m type="double">0.5</ground-level-nearplane-m>
+        <x-offset-m archive="y">0.25</x-offset-m>
+        <y-offset-m archive="y">0.50</y-offset-m>
+        <z-offset-m archive="y">-0.20</z-offset-m>
+        <pitch-offset-deg>-5</pitch-offset-deg>
+        <default-field-of-view-deg>90</default-field-of-view-deg>
+        <dynamic-view type="bool">true</dynamic-view>
+      </config>
+    </view>
+
+    <multiplay>
+      <chat_display>1</chat_display>
+      <generic>
+        <int n="0" type="int">0</int>
+        <int n="8" alias="/systems/electrical/outputs/lights/nav-lights">0</int>
+        <int n="9" alias="/sim/model/lights/beacon/state">false</int>
+        <float n="0" alias="/sim/model/door-positions/crew/position-norm"/>
+        <float n="1" alias="/sim/model/door-positions/passenger/position-norm"/>
+        <float n="2" alias="/position/gear-agl-m">0</float>
+        <float n="3" alias="/position/altitude-ft">0</float>
+        <float n="4" alias="/sim/model/door-positions/leftbagage/position-norm"/>
+        <float n="5" alias="/sim/model/door-positions/rightbagage/position-norm"/>
+        <float n="6" alias="/engines/engine[0]/rpm"/>
+        <float n="7" alias="/engines/engine[0]/cranking"/>
+        <float n="8" alias="/engines/engine[1]/rpm"/>
+        <float n="9" alias="/engines/engine[1]/cranking"/>
+        <float n="10" alias="/gear/gear[0]/wow"/>
+        <float n="11" alias="/gear/gear[1]/wow"/>
+        <float n="12" alias="/gear/gear[2]/wow"/>
+        <float n="13" alias="/gear/gear[0]/rollspeed-ms"/>
+        <float n="14" alias="/gear/gear[1]/rollspeed-ms"/>
+        <float n="15" alias="/gear/gear[2]/rollspeed-ms"/>
+      </generic>
+    </multiplay>
+
+    <rendering>
+      <redout>
+        <parameters>
+          <blackout-complete-g>7.0</blackout-complete-g>
+          <blackout-onset-g>5.0</blackout-onset-g>
+        </parameters>
+      </redout>
+    </rendering>
+  </sim>
+
+  <!-- ===================== engines ===================== -->
+  <engines>
+    <engine n="0">
+      <reverser type="bool">false</reverser>
+      <rpm type="double">0</rpm>
+      <n1 type="double">0</n1>
+      <running type="bool">false</running>
+      <torque-pct type="double">0</torque-pct>
+      <itt-degc type="double">0</itt-degc>
+    </engine>
+    <engine n="1">
+      <reverser type="bool">false</reverser>
+      <rpm type="double">0</rpm>
+      <n1 type="double">0</n1>
+      <running type="bool">false</running>
+      <torque-pct type="double">0</torque-pct>
+      <itt-degc type="double">0</itt-degc>
+    </engine>
+  </engines>
+
+  <!-- ===================== fuel: 4 tanks, Jet-A 6.7 lb/gal ===================== -->
+  <consumables>
+    <fuel>
+      <tank n="0">
+        <name>Left aux</name>
+        <tank-num type="int">0</tank-num>
+        <capacity-gal_us type="double">79.5</capacity-gal_us>
+        <density-ppg type="double">6.7</density-ppg>
+        <level-gal_us type="double" archive="y">63.6</level-gal_us>
+        <selected type="bool">true</selected>
+      </tank>
+      <tank n="1">
+        <name>Left main + nacelle</name>
+        <tank-num type="int">1</tank-num>
+        <capacity-gal_us type="double">308.5</capacity-gal_us>
+        <density-ppg type="double">6.7</density-ppg>
+        <level-gal_us type="double" archive="y">246.8</level-gal_us>
+        <selected type="bool">true</selected>
+      </tank>
+      <tank n="2">
+        <name>Right main + nacelle</name>
+        <tank-num type="int">2</tank-num>
+        <capacity-gal_us type="double">308.5</capacity-gal_us>
+        <density-ppg type="double">6.7</density-ppg>
+        <level-gal_us type="double" archive="y">246.8</level-gal_us>
+        <selected type="bool">true</selected>
+      </tank>
+      <tank n="3">
+        <name>Right aux</name>
+        <tank-num type="int">3</tank-num>
+        <capacity-gal_us type="double">79.5</capacity-gal_us>
+        <density-ppg type="double">6.7</density-ppg>
+        <level-gal_us type="double" archive="y">63.6</level-gal_us>
+        <selected type="bool">true</selected>
+      </tank>
+    </fuel>
+  </consumables>
+
+  <!-- ===================== payload ===================== -->
+  <payload>
+    <weight n="0">
+      <name>Pilot</name>
+      <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[0]"/>
+      <min-lb type="double">0.0</min-lb>
+      <max-lb type="double">300.0</max-lb>
+    </weight>
+    <weight n="1">
+      <name>Copilot</name>
+      <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[1]"/>
+      <min-lb type="double">0.0</min-lb>
+      <max-lb type="double">300.0</max-lb>
+    </weight>
+    <weight n="2">
+      <name>Passengers / mission equipment (cabin)</name>
+      <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[2]"/>
+      <min-lb type="double">0.0</min-lb>
+      <max-lb type="double">2600.0</max-lb>
+    </weight>
+    <weight n="3">
+      <name>Baggage (aft)</name>
+      <weight-lb alias="/fdm/jsbsim/inertia/pointmass-weight-lbs[3]"/>
+      <min-lb type="double">0.0</min-lb>
+      <max-lb type="double">550.0</max-lb>
+    </weight>
+  </payload>
+
+  <!-- ===================== controls ===================== -->
+  <controls>
+    <engines>
+      <engine n="0">
+        <throttle type="double">0.0</throttle>
+        <propeller-pitch type="double">1.0</propeller-pitch>   <!-- prop lever full forward (1700 rpm) -->
+        <condition type="double">0.0</condition>               <!-- FUEL CUT-OFF -->
+        <mixture type="double">1.0</mixture>
+        <cutoff type="bool">false</cutoff>
+        <starter type="bool">false</starter>
+        <ignition type="bool">false</ignition>
+        <reverser type="bool">false</reverser>
+        <propeller-feather type="bool">false</propeller-feather>
+        <selected type="bool">true</selected>
+      </engine>
+      <engine n="1">
+        <throttle type="double">0.0</throttle>
+        <propeller-pitch type="double">1.0</propeller-pitch>
+        <condition type="double">0.0</condition>
+        <mixture type="double">1.0</mixture>
+        <cutoff type="bool">false</cutoff>
+        <starter type="bool">false</starter>
+        <ignition type="bool">false</ignition>
+        <reverser type="bool">false</reverser>
+        <propeller-feather type="bool">false</propeller-feather>
+        <selected type="bool">true</selected>
+      </engine>
+      <autofeather type="bool">true</autofeather>
+    </engines>
+    <flight>
+      <yaw-damper type="bool">true</yaw-damper>
+      <rudder-boost type="bool">true</rudder-boost>
+    </flight>
+    <gear>
+      <brake-parking type="double">1</brake-parking>
+      <nosegear-steering-enabled type="bool">true</nosegear-steering-enabled>
+    </gear>
+    <fuel>
+      <crossfeed type="int">0</crossfeed>            <!-- 1: left main to right engine, -1: right main to left engine -->
+      <transfer type="string">off</transfer>         <!-- cockpit switch: left / off / right -->
+      <Laux-switch type="string">auto</Laux-switch>
+      <Raux-switch type="string">auto</Raux-switch>
+      <gauge-switch type="string">main</gauge-switch>
+    </fuel>
+    <electric>
+      <battery-switch type="bool">false</battery-switch>
+      <external-power type="bool">false</external-power>
+      <avionics-switch type="bool">false</avionics-switch>
+      <inverter-switch type="bool">true</inverter-switch>
+      <LH-AC-bus type="bool">true</LH-AC-bus>
+      <RH-AC-bus type="bool">true</RH-AC-bus>
+      <engine n="0"><generator type="bool">false</generator><bus-tie type="bool">false</bus-tie></engine>
+      <engine n="1"><generator type="bool">false</generator><bus-tie type="bool">false</bus-tie></engine>
+      <efis><bank n="0" type="bool">true</bank><bank n="1" type="bool">true</bank></efis>
+    </electric>
+    <lighting>
+      <landing-lights n="0" type="bool">false</landing-lights>
+      <landing-lights n="1" type="bool">false</landing-lights>
+      <taxi-lights type="bool">false</taxi-lights>
+      <nav-lights type="bool">false</nav-lights>
+      <recog-lights type="bool">false</recog-lights>
+      <logo-lights type="bool">false</logo-lights>
+      <master-panel type="bool">false</master-panel>
+      <instruments-norm type="double">0.6</instruments-norm>
+      <eng-norm type="double">0.6</eng-norm>
+      <beacon><switch type="bool">false</switch></beacon>
+      <strobe><switch type="bool">false</switch></strobe>
+    </lighting>
+  </controls>
+
+  <input>
+    <keyboard include="Dialogs/Keyboard.xml"/>
+  </input>
+
+  <!-- ===================== autopilot (FG dialog compatible; the loops run in JSBSim) ===================== -->
+  <autopilot>
+    <locks>
+      <heading type="string"></heading>
+      <altitude type="string"></altitude>
+      <speed type="string"></speed>
+      <passive-mode type="bool">false</passive-mode>
+    </locks>
+    <settings>
+      <heading-bug-deg type="double">0</heading-bug-deg>
+      <true-heading-deg type="double">0</true-heading-deg>
+      <target-altitude-ft type="double">10000</target-altitude-ft>
+      <vertical-speed-fpm type="double">0</vertical-speed-fpm>
+      <target-speed-kt type="double">200</target-speed-kt>
+      <target-pitch-deg type="double">2</target-pitch-deg>
+      <target-agl-ft type="double">1000</target-agl-ft>
+      <target-aoa-deg type="double">3</target-aoa-deg>
+      <gps-driving-true-heading type="bool">false</gps-driving-true-heading>
+    </settings>
+    <internal>
+      <altitude-armed type="bool">false</altitude-armed>
+    </internal>
+  </autopilot>
+
+  <instrumentation>
+    <fgc-65>
+      <app-65a>
+        <AP type="string">AP DISENGAGED</AP>
+        <YD type="string">YD</YD>
+        <SR type="string"></SR>
+        <BANK type="string"></BANK>
+      </app-65a>
+      <internal>
+        <lateral type="string"></lateral>
+        <lateral-arm type="string"></lateral-arm>
+        <vertical type="string"></vertical>
+        <vertical-arm type="string"></vertical-arm>
+        <nav-armed type="bool">false</nav-armed>
+        <nav-active type="bool">false</nav-active>
+        <appr-armed type="bool">false</appr-armed>
+        <appr-active type="bool">false</appr-active>
+        <trim type="string"></trim>
+        <offsets>
+          <nav1-brg type="double">0</nav1-brg>
+          <nav2-brg type="double">0</nav2-brg>
+        </offsets>
+      </internal>
+      <settings>
+        <hdg type="double">0</hdg>
+        <roll type="double">0</roll>
+      </settings>
+    </fgc-65>
+    <alt-alerter>
+      <enabled type="bool">true</enabled>
+      <fl type="int">100</fl>
+    </alt-alerter>
+    <efis>
+      <unit n="0"><nav-data type="string">GSP</nav-data></unit>
+      <unit n="1"><nav-data type="string">GSP</nav-data></unit>
+    </efis>
+    <rmi>
+      <unit n="0"><btn n="0" type="bool">false</btn><btn n="1" type="bool">false</btn></unit>
+      <unit n="1"><btn n="0" type="bool">false</btn><btn n="1" type="bool">false</btn></unit>
+    </rmi>
+    <annunciators>
+      <caution><Master type="bool">false</Master></caution>
+      <warning><Master type="bool">false</Master><test type="bool">false</test></warning>
+    </annunciators>
+    <nav n="0">
+      <slaved-to-gps type="bool">false</slaved-to-gps>
+    </nav>
+  </instrumentation>
+
+  <systems>
+    <electrical>
+      <volts type="double">0</volts>
+      <AC type="double">0</AC>
+      <gyro-suction-inhg type="double">0</gyro-suction-inhg>
+    </electrical>
+  </systems>
+
+  <!-- ===================== Nasal ===================== -->
+  <nasal>
+    <kingair350>
+      <file>Aircraft/KingAir-350/Nasal/kingair350.nas</file>
+    </kingair350>
+    <electrical>
+      <file>Aircraft/KingAir-350/Nasal/electrical.nas</file>
+    </electrical>
+    <FCS>
+      <file>Aircraft/KingAir-350/Nasal/autopilot.nas</file>
+    </FCS>
+    <systems>
+      <file>Aircraft/KingAir-350/Nasal/kln90b.nas</file>
+    </systems>
+    <doors>
+      <file>Aircraft/KingAir-350/Nasal/doors.nas</file>
+    </doors>
+  </nasal>
+
+</PropertyList>
