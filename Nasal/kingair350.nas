@@ -274,6 +274,44 @@ var shutdown = func {
 };
 
 # --------------------------------------------------------------------------
+# windshield wipers: selector PARK / OFF / SLOW / FAST (controls/electric/wipers/switch-pos -1..2) on the DC bus.
+# The blades sweep outboard and back (sim/model/wipers/position-norm, 0 = parked); OFF stops them where they
+# are, PARK brings them back to the parked position and the selector springs back to OFF.
+# --------------------------------------------------------------------------
+var wiper_sw = props.globals.getNode("controls/electric/wipers/switch-pos", 1);
+var wiper_pos = props.globals.getNode("sim/model/wipers/position-norm", 1);
+var wiper_dir = 1;
+var WIPER_RATE = [0.9, 1.25, 2.2];      # sweeps (0 -> 1) per second: PARK, SLOW, FAST
+
+var update_wipers = func {
+    var dt = 0.05;
+    var sw = int(wiper_sw.getValue() or 0);
+    var pos = wiper_pos.getValue() or 0;
+    var powered = (getprop("systems/electrical/volts") or 0) > 20;
+    if (!powered or sw == 0) {
+        wiper_timer.stop();
+        return;
+    }
+    if (sw < 0) {                                 # PARK: back to the stop, then OFF
+        pos = math.max(0, pos - WIPER_RATE[0] * dt);
+        if (pos == 0) { wiper_sw.setIntValue(0); wiper_dir = 1; }
+    } else {
+        pos += wiper_dir * WIPER_RATE[sw] * dt;
+        if (pos >= 1) { pos = 1; wiper_dir = -1; }
+        if (pos <= 0) { pos = 0; wiper_dir = 1; }
+    }
+    wiper_pos.setDoubleValue(pos);
+};
+var wiper_timer = maketimer(0.05, update_wipers);
+setlistener(wiper_sw, func { if (int(wiper_sw.getValue() or 0) != 0) wiper_timer.start(); }, 0, 0);
+setlistener("systems/electrical/volts", func(n) {
+    if ((n.getValue() or 0) > 20 and int(wiper_sw.getValue() or 0) != 0 and !wiper_timer.isRunning) wiper_timer.start();
+}, 0, 0);
+
+# yokes shown or hidden (menu King Air 350 > Yokes visible): kept between sessions
+aircraft.data.add("sim/model/yokes-visible");
+
+# --------------------------------------------------------------------------
 # init
 # --------------------------------------------------------------------------
 setlistener("sim/signals/fdm-initialized", func {
