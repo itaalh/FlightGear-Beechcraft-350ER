@@ -6,6 +6,12 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 ## [Non publié]
 
 ### Ajouté
+- **G1000 : trois écrans alignés**, comme les King Air 350 modernisés G1000 NXi : un PFD copilote (troisième GDU
+  1044B, écran FG1000 n° 3) avec la même bande de vitesse et la même fenêtre CAS que le PFD pilote, et une plaque
+  qui recouvre les anciens instruments des deux places, les radios et la colonne des jauges moteur (les moteurs
+  sont sur l'EIS du MFD). Les objets recouverts sont masqués. Menu *copilot PFD pop-up window*.
+- **G1000 : éclairage de nuit** des touches et boutons des trois écrans (rétroéclairage des cadres GDU), réglé par
+  le rhéostat *Instruments* du dialogue *Lights* et alimenté par le bus DC.
 - **G1000 : pilote automatique relié au G1000.**
   - **Touches :** celles des écrans GDU (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP / DN) commandent le
     pilote automatique du King Air, comme le panneau FGC.
@@ -14,6 +20,11 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   - **ALT SEL :** l'altitude choisie est capturée depuis VS, FLC ou PIT, sans modifier l'altitude tenue en ALT.
   - **Affichage :** les modes actifs et armés, la référence (vitesse verticale, vitesse, altitude) et le directeur
     de vol s'affichent sur le PFD.
+
+### Corrigé
+- **Index de cap** : le bouton HDG du G1000 et le dialogue du pilote automatique n'agissaient qu'en mode HDG (le
+  bouton du panneau FGC reprenait la main aussitôt dans les autres modes). Le dernier bouton tourné l'emporte
+  désormais, sur les trois variantes.
 
 ## [2.2.0] — 2026-09-26
 
