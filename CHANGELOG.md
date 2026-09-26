@@ -3,6 +3,23 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **Essuie-glaces** : le sélecteur PARK / OFF / SLOW / FAST du panneau supérieur fonctionne (clic, molette) et
+  anime les balais du pare-brise, qui balaient vers l'extérieur. Alimentés par le bus DC ; OFF les arrête sur
+  place, PARK les ramène en butée et revient sur OFF.
+
+### Corrigé
+- **Volets APPROACH à 14°** (40 %, *Pilot Training Manual*) au lieu de 17,5° : le cran intermédiaire était réglé à
+  50 % de la course, alors que les tables aérodynamiques sont construites pour 0 / 14 / 35°. Le levier du
+  piédestal passe par les mêmes crans que les touches `[` `]`, et l'indicateur pointe sur le repère APPROACH.
+- **Volants** : ils ne s'affichaient jamais (l'animation lisait une propriété que rien ne définissait) et le menu
+  *Yokes visible* restait sans effet. Visibles par défaut, réglage conservé d'une session à l'autre.
+- **Ampèremètre batterie** : il restait à zéro. Il indique la décharge sur batterie seule (bus, dégivrage,
+  environ 300 A par démarreur au lancement, aiguille en butée) et la recharge, décroissante, une fois une
+  génératrice ou le groupe de parc en ligne. La batterie ne se recharge plus interrupteur BATT sur OFF.
+
 ## [2.2.0] — 2026-09-26
 
 ### Ajouté

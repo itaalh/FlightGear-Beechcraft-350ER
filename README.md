@@ -25,7 +25,9 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 | Condition levers | `Shift-F` cran suivant / `Shift-C` cran précédent (CUT-OFF → LOW IDLE → HIGH IDLE), ou les commandes *Mixture* du joystick (axe ou boutons ; mixture 0 = CUT-OFF, 0,5 = LOW IDLE, 1 = HIGH IDLE) |
 | Manettes d'hélice | `n` (petit pas, plus de tours) / `N` (grand pas) : 1 450–1 700 tr/min, plein arrière = DRAPEAU |
 | Beta / inverse | manettes de puissance au ralenti, `Suppr` (ou menu) puis avancer les manettes : plage beta jusqu'à 35 % de course, inverse au-delà |
-| Volets | `[` `]` : UP / APPROACH 14° / DOWN 35° |
+| Volets | `[` `]` ou levier du piédestal : UP / APPROACH 40 % (14°) / DOWN 35° |
+| Essuie-glaces | sélecteur du panneau supérieur (clic gauche / molette) : PARK / OFF / SLOW / FAST ; PARK ramène les balais en butée puis revient sur OFF |
+| Volants | menu *King Air 350 › Yokes visible* (réglage conservé d'une session à l'autre) |
 | Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
 | Amortisseur de lacet | bouton YD ou `Ctrl-Y` (obligatoire au-dessus de 5 000 ft sur l'avion réel) |
 | Porte / escalier | `D` |
@@ -123,7 +125,8 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - Carburant : 2 × 190 gal (main) + 2 × 79,5 gal (aux) ; les aux se transfèrent d'abord dans les main
   (pompes AUTO/OFF), crossfeed gauche→droite / droite→gauche.
 - Circuit électrique : 2 générateurs 28 V (interrupteurs cockpit), batterie 24 V avec décharge, inverter
-  115 V AC pour les EFIS, bus avionique, éclairages.
+  115 V AC pour les EFIS, bus avionique, éclairages. Ampèremètre batterie : décharge sur batterie seule (bus et
+  démarreurs, environ 300 A par démarreur), recharge décroissante une fois une génératrice en ligne.
 - **Rudder boost** pneumatique (déflexion proportionnelle à l'écart de couple) et **amortisseur de lacet**.
 - **Pilote automatique 3 axes** dont les boucles tournent dans JSBSim (`Systems/autopilot.xml`, testées
   hors FlightGear) : HDG, NAV/VOR, LOC avec programmation de gain à l'approche de la station, back course,
