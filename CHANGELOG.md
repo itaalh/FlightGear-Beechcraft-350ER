@@ -20,6 +20,29 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   environ 300 A par démarreur au lancement, aiguille en butée) et la recharge, décroissante, une fois une
   génératrice ou le groupe de parc en ligne. La batterie ne se recharge plus interrupteur BATT sur OFF.
 
+## [2.3.0] — 2026-09-26
+
+### Ajouté
+- **G1000 : trois écrans alignés**, comme les King Air 350 modernisés G1000 NXi : un PFD copilote (troisième GDU
+  1044B, écran FG1000 n° 3) avec la même bande de vitesse et la même fenêtre CAS que le PFD pilote, et une plaque
+  qui recouvre les anciens instruments des deux places, les radios et la colonne des jauges moteur (les moteurs
+  sont sur l'EIS du MFD). Les objets recouverts sont masqués. Menu *copilot PFD pop-up window*.
+- **G1000 : éclairage de nuit** des touches et boutons des trois écrans (rétroéclairage des cadres GDU), réglé par
+  le rhéostat *Instruments* du dialogue *Lights* et alimenté par le bus DC.
+- **G1000 : pilote automatique relié au G1000.**
+  - **Touches :** celles des écrans GDU (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP / DN) commandent le
+    pilote automatique du King Air, comme le panneau FGC.
+  - **Guidage :** la touche CDI du PFD pilote choisit la source. En GPS, le mode NAV suit le plan de vol actif du
+    G1000 : interception à 45°, puis convergence sur la branche sans dépassement.
+  - **ALT SEL :** l'altitude choisie est capturée depuis VS, FLC ou PIT, sans modifier l'altitude tenue en ALT.
+  - **Affichage :** les modes actifs et armés, la référence (vitesse verticale, vitesse, altitude) et le directeur
+    de vol s'affichent sur le PFD.
+
+### Corrigé
+- **Index de cap** : le bouton HDG du G1000 et le dialogue du pilote automatique n'agissaient qu'en mode HDG (le
+  bouton du panneau FGC reprenait la main aussitôt dans les autres modes). Le dernier bouton tourné l'emporte
+  désormais, sur les trois variantes.
+
 ## [2.2.0] — 2026-09-26
 
 ### Ajouté
@@ -127,6 +150,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.3.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.4...v2.2.0
 [2.1.4]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
