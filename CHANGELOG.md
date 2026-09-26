@@ -3,6 +3,14 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [2.1.1] — 2026-09-26
+
+### Corrigé
+- **Page CHKLIST du G1000** : ouvrir la page faisait planter l'interface de données de navigation du FG1000
+  (FlightGear 2024.1 ne gère pas les check-lists sans groupe), qui était alors retirée et ne répondait plus
+  aux autres pages. Les check-lists sont maintenant rangées en deux groupes, « Normal Procedures » et
+  « EMERGENCY » (celui qu'ouvre la touche EMERGENCY du G1000).
+
 ## [2.1.0] — 2026-09-26
 
 Améliorations tirées de l'étude des mods MSFS 2020 (King Air G1000, Pro Line 21, Realism Mod) et du
@@ -62,5 +70,6 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...main
 [2.1.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/c71f701...f75b48e
 [2.0.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/tree/c71f701
