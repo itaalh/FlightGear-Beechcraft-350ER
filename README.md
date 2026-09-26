@@ -72,6 +72,19 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   s'éteignent avec l'avionique.
 - Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* ; commandes clavier du
   FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le dialogue *Help › Aircraft keys*).
+- Carte hors ligne : menu *King Air 350 › G1000: map tiles (offline map)* (`Nasal/fg1000-maptiles.nas`). On y choisit
+  la source des tuiles du fond de carte (TOPO du MFD, encart carte du PFD) :
+  - **OpenStreetMap** (par défaut) : téléchargement par Internet, cache dans `$FG_HOME/cache/maps/osm-cache` ;
+  - **Local server** : un serveur de tuiles XYZ, par exemple `http://localhost:8090/{z}/{x}/{y}.png` (`{tms_y}` pour
+    une numérotation TMS). Les tuiles reçues sont mises en cache dans `$FG_HOME/cache/maps/tiles-<serveur>` et restent
+    disponibles serveur arrêté. Un simple dossier de tuiles peut être servi avec
+    `python -m http.server 8090 --directory D:\Tiles` ;
+  - **Local folder** : un dossier de tuiles `zoom/x/y.png`, lu directement sans téléchargement. FlightGear n'autorise
+    la lecture que sous FG_HOME, FG_ROOT et les dossiers d'avions et de scènerie. Un dossier situé ailleurs est
+    refusé (FlightGear 2024.1 plante sur une lecture interdite) ; il faut alors le servir en *Local server*.
+
+  Le bouton *Test* vérifie la source à la position de l'avion. *Max zoom* indique le niveau de zoom le plus fin que
+  possède la source : au-delà, les tuiles sont agrandies. Les réglages sont conservés d'une session à l'autre.
 - Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
   `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
   Les propriétés `sim/model/g1000/pfd|mfd/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.

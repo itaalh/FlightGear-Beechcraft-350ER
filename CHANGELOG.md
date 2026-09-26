@@ -3,6 +3,14 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **G1000 : carte hors ligne.** Menu *King Air 350 › G1000: map tiles (offline map)* : le fond de carte du MFD et de
+  l'encart du PFD peut venir d'un serveur de tuiles local (URL `{z}/{x}/{y}`, tuiles mises en cache pour le vol
+  hors ligne) ou d'un dossier de tuiles, au lieu d'OpenStreetMap par Internet. Bouton de test, réglages conservés
+  entre les sessions.
+
 ## [2.1.4] — 2026-09-26
 
 ### Corrigé
