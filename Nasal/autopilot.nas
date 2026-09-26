@@ -33,6 +33,7 @@ var updating_locks = 0;
 var target_pitch = 0.0;
 var target_vs = 0.0;
 var alt_offset = nil;    # true - indicated altitude, low-pass filtered (the altimeter lags)
+var bug_written = nil;   # heading bug value written at the last update
 
 # standard FlightGear engage property: created here (FlightGear does not), so that the generic
 # "Autopilot disconnect" joystick action finds it; kept equal to the autopilot state by annunciate()
@@ -189,11 +190,14 @@ var update = func {
     var dt = 0.1;
     var magvar = getprop("environment/magnetic-variation-deg") or 0;
     var heading_bug = fgc.getNode("settings/hdg", 1).getValue() or 0;
-    # heading bug: cockpit knob and dialog share the value
-    var dlg_bug = set.getNode("heading-bug-deg", 1).getValue() or 0;
-    if (math.abs(dlg_bug - heading_bug) > 0.5 and lateral == "HDG") heading_bug = dlg_bug;
+    # heading bug: the FGC-65 knob, the G1000 HDG knobs and the autopilot dialog share the value;
+    # the last one turned wins (the G1000 and the dialog write autopilot/settings/heading-bug-deg)
+    var ext_bug = set.getNode("heading-bug-deg", 1).getValue() or 0;
+    if (bug_written != nil and math.abs(ext_bug - bug_written) > 0.01 and math.abs(heading_bug - bug_written) < 0.01)
+        heading_bug = ext_bug;
     set.getNode("heading-bug-deg", 1).setDoubleValue(heading_bug);
     fgc.getNode("settings/hdg", 1).setDoubleValue(heading_bug);
+    bug_written = heading_bug;
 
     # NAV data
     var in_range = nav.getNode("in-range", 1).getBoolValue();

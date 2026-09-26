@@ -48,10 +48,12 @@ croisière max 305 KTAS FL240 (livre 303), décollage 3 910 ft sur 50 ft (BFL li
 
 ## Variante 350ER G1000 (`KingAir-350ER-G1000-set.xml`, `Models/KingAir-G1000.xml`)
 
-Cellule et modèle de vol du **350ER** (ci-dessus) avec un cockpit modernisé façon **King Air 350i / retrofit Garmin** : les deux écrans Garmin GDU 1044B du
-FG1000 fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`, FlightGear ≥ 2018.3) remplacent
-le PFD EFIS-84 du pilote (ADI, HSI, anémomètre, altimètre, variomètre, RMI) et la pile radio COM1/NAV1/ADF1,
-l'alerteur d'altitude et le KLN-90B, qui sont masqués automatiquement (`sim/model/g1000/enabled`).
+Cellule et modèle de vol du **350ER** (ci-dessus) avec un cockpit modernisé façon **King Air 350 / retrofit Garmin
+G1000 NXi** : trois écrans Garmin GDU 1044B du FG1000 fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`,
+FlightGear ≥ 2018.3) alignés sur le tableau de bord, PFD pilote, MFD au centre et PFD copilote. Ils remplacent les
+instruments EFIS-84 et analogiques des deux places (ADI, HSI, anémomètre, altimètre, variomètre, RMI), les radios
+COM/NAV/ADF/transpondeur, l'alerteur d'altitude, le KLN-90B et la colonne des jauges moteur : une plaque
+(`Models/G1000-panel.ac`) les recouvre et ils sont masqués automatiquement (`sim/model/g1000/enabled`).
 Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le lanceur propose donc `KingAir-350`,
 `KingAir-350ER` et `KingAir-350ER-G1000`.
 
@@ -62,19 +64,22 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   par côté et total, tension / courant / charge des générateurs. Plages de couleur = marquages des instruments
   du 350 (couple 100 %, ITT 400-820 °C, hélice 1 450-1 700 tr/min, N1 62-104 %, huile 60/90-135 psi et
   0-99/110 °C, carburant 0-265 lb interdit au décollage).
-- PFD : Vmo 263 kt (fond de l'anémomètre rouge au-delà), repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de
+- PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà), repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de
   vitesse marquée comme l'anémomètre du 350 (arc blanc large 81-96 / étroit 96-158 kt, repère volets APP 202 kt,
   trait rouge Vmca 94, trait bleu Vyse 125, bande rayée au-delà de Vmo).
 - PFD : fenêtre CAS (à droite de l'altimètre) alimentée par `Nasal/annunciators.nas` : alarmes en rouge, cautions
   en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
   MASTER CAUTION.
-- Alimentation : sorties `fg1000-pfd` et `fg1000-mfd` du bus avionique (`Nasal/electrical.nas`) ; les écrans
-  s'éteignent avec l'avionique.
-- Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* ; commandes clavier du
+- Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`) ;
+  les écrans s'éteignent avec l'avionique.
+- Cap : les boutons HDG des deux PFD, celui du panneau FGC et le dialogue du pilote automatique règlent le même
+  index de cap (le dernier tourné l'emporte).
+- Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* / *copilot PFD
+  pop-up window* ; commandes clavier du
   FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le dialogue *Help › Aircraft keys*).
 - Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
   `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
-  Les propriétés `sim/model/g1000/pfd|mfd/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
+  Les propriétés `sim/model/g1000/pfd|mfd|pfd2/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
 - Limites : pilote automatique = panneau FGC de l'avion (le GFC 700 du FG1000 n'est pas chargé), pas de mode
   réversion (EIS sur le PFD). Si le dossier FG1000 est absent, la variante
   démarre avec les instruments d'origine et affiche un message.

@@ -62,7 +62,7 @@ var update = func {
 
     # avionics bus
     var av = elec.getNode("avionics-switch", 1).getBoolValue() ? volts : 0.0;
-    foreach (var n; ["nav", "nav[1]", "comm", "comm[1]", "adf", "dme", "gps", "transponder", "turn-coordinator", "mk-viii", "fgc-65", "audio-panel", "autopilot", "fg1000-pfd", "fg1000-mfd"])
+    foreach (var n; ["nav", "nav[1]", "comm", "comm[1]", "adf", "dme", "gps", "transponder", "turn-coordinator", "mk-viii", "fgc-65", "audio-panel", "autopilot", "fg1000-pfd", "fg1000-mfd", "fg1000-pfd2"])
         out.getNode(n, 1).setDoubleValue(av);
     out.getNode("efis[0]", 1).setDoubleValue(elec.getNode("efis/bank[0]", 1).getBoolValue() ? lh_ac / 115.0 * 29 : 0);
     out.getNode("efis[1]", 1).setDoubleValue(elec.getNode("efis/bank[1]", 1).getBoolValue() ? rh_ac / 115.0 * 29 : 0);
