@@ -121,6 +121,10 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   (`Systems/no-generic-autopilot.xml`), sinon il agissait lui aussi sur les gouvernes. Gains vérifiés sur le
   350 et le 350ER (tenue d'altitude et VS à 3 000 et 10 000 ft).
 - Instrumentation complète (deux NAV/COM, ADF, DME, transpondeur, GPS KLN-90B, EGPWS).
+- **Son moteur** en couches (`Sounds/KingAir-350-sound.xml`) : sifflement de turbine (N1), hélice (régime et
+  couple), grondement de charge (couple), grave de combustion à l'extérieur, bourdonnement cabine à l'intérieur ;
+  `whine.wav`, `engine-prop.wav` et `turboprop1.wav` viennent de FGData. Les niveaux relatifs des couches sont les
+  derniers `<value>` de chaque bloc `<volume>`.
 - **Annonciateurs** (`Nasal/annunciators.nas`, trois variantes) : panneau d'alarmes/cautions du cockpit classique,
   MASTER WARNING / MASTER CAUTION clignotants (extinction par appui), test des voyants, et messages CAS du G1000.
   Messages et seuils des tableaux d'annonciateurs du 350 : #1/#2 AC BUS, DOOR UNLOCKED, L/R FUEL PRES LO,
