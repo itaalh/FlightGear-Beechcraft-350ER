@@ -3,6 +3,21 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+- **Aiguilles et boutons qui tournaient autour d'un mauvais point** (centres de rotation hérités d'une ancienne
+  version du modèle 3D, décalés de 2 à 80 cm) : les aiguilles sortaient de leur cadran ou disparaissaient.
+  Centres et axes recalculés sur la géométrie et vérifiés en vue de face dans FlightGear :
+  - indicateur de volets (piédestal) ;
+  - horloges pilote et copilote (heures, minutes, secondes) ;
+  - jauges carburant gauche et droite, avec leur échelle non linéaire (graduations plus larges autour de 1 000 lb) ;
+  - panneau supérieur : DC % LOAD (0-100 % sur toute l'échelle), voltmètre et ampèremètre batterie, AC VOLTS,
+    PROP AMPS (chaque aiguille tourne du côté opposé à son échelle ; elles affichent maintenant le courant de
+    dégivrage hélice au lieu de la charge des génératrices) ;
+  - boutons calage altimétrique, alerteur d'altitude, volume COM/NAV/ADF, trims d'aileron et de direction, roue de
+    trim de profondeur, bouton de roulis du pilote automatique, sélecteur d'essuie-glace ; axe des volants.
+
 ## [2.1.3] — 2026-09-26
 
 ### Corrigé
