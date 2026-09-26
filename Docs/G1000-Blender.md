@@ -84,7 +84,7 @@ donne la liste des commandes clavier correspondantes).
 - Le bandeau moteur (EIS) du FG1000 est conçu pour un monomoteur à pistons : il affiche le moteur 1 avec les
   libellés RPM / MAN (= couple %) / FF / huile / EGT (= ITT). Les jauges analogiques des deux moteurs restent
   dans le tableau de bord.
-- Le pilote automatique reste celui de l'avion (panneau FGC ou dialogue F11) ; le GFC 700 du FG1000 n'est pas chargé
+- Le pilote automatique reste celui de l'avion (panneau FGC, touches des GDU ou dialogue F11) ; le GFC 700 du FG1000 n'est pas chargé
   pour ne pas entrer en conflit avec les boucles JSBSim.
 - La page carburant du FG1000 lit les deux premiers réservoirs (`tank[0]`, `tank[1]`).
 - Nécessite FlightGear 2018.3 ou plus récent (présence du dossier FG1000) ; sinon la variante démarre avec les
