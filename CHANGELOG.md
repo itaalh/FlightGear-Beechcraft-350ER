@@ -5,6 +5,18 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 
 ## [Non publié]
 
+### Modifié
+- **Son moteur refait** (`Sounds/KingAir-350-sound.xml`) : son de PT6A en couches, par moteur et positionné —
+  sifflement de turbine suivant le N1 (y compris pendant la mise en route et le ralentissement), hélice suivant
+  le régime et le couple, grondement de charge suivant le couple, grave de combustion à l'extérieur,
+  bourdonnement cabine à l'intérieur. Sons `whine.wav`, `engine-prop.wav` et `turboprop1.wav` de FGData.
+  Auparavant, le volume dépendait d'une propriété de moteur à pistons vide sur ce turbopropulseur et la hauteur
+  du régime hélice régulé : le son ne changeait pas avec la puissance ; la boucle extérieure principale était
+  écrêtée à 45 % et deux boucles cliquaient.
+- Sons du démarreur dès l'enclenchement du démarreur (ils attendaient l'ouverture du carburant), fichiers
+  intérieur / extérieur remis dans le bon sens ; son d'arrêt avec une hauteur normale ; toussotements de moteur
+  à pistons supprimés ; boucle intérieure `eng_run_int_1340.wav` recoupée sans clic.
+
 ### Corrigé
 - **Leviers de condition au joystick** : les commandes *Mixture* de la configuration joystick de FlightGear (axes
   « Mixture », « Mixture All Engines », boutons Rich / Lean) déplacent maintenant les leviers de condition
