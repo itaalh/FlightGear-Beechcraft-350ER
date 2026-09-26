@@ -3,7 +3,7 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [2.3.0] — 2026-09-26
 
 ### Ajouté
 - **G1000 : trois écrans alignés**, comme les King Air 350 modernisés G1000 NXi : un PFD copilote (troisième GDU
@@ -133,6 +133,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.3.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.4...v2.2.0
 [2.1.4]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
