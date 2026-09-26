@@ -3,7 +3,7 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
-## [2.1.3] — 2026-09-26
+## [Non publié]
 
 ### Modifié
 - **Son moteur refait** (`Sounds/KingAir-350-sound.xml`) : son de PT6A en couches, par moteur et positionné —
@@ -16,6 +16,8 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 - Sons du démarreur dès l'enclenchement du démarreur (ils attendaient l'ouverture du carburant), fichiers
   intérieur / extérieur remis dans le bon sens ; son d'arrêt avec une hauteur normale ; toussotements de moteur
   à pistons supprimés ; boucle intérieure `eng_run_int_1340.wav` recoupée sans clic.
+
+## [2.1.3] — 2026-09-26
 
 ### Corrigé
 - **Leviers de condition au joystick** : les commandes *Mixture* de la configuration joystick de FlightGear (axes
@@ -99,6 +101,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...main
 [2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...v2.1.1
