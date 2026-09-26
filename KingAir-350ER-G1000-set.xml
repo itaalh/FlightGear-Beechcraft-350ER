@@ -22,7 +22,7 @@
       yaw damper, aux-to-main fuel transfer, crossfeed and a 3-axis autopilot driven from the cockpit panel.
     </long-description>
     <author>3D: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky - FDM/systems rebuild 2026</author>
-    <aircraft-version>2.1.4</aircraft-version>
+    <aircraft-version>2.2.0</aircraft-version>
     <variant-of>KingAir-350</variant-of>
     <status>beta</status>
     <minimum-fg-version>2020.3</minimum-fg-version>
