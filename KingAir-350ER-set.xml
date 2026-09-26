@@ -461,6 +461,9 @@
     <doors>
       <file>Aircraft/KingAir-350/Nasal/doors.nas</file>
     </doors>
+    <annunciators>
+      <file>Aircraft/KingAir-350/Nasal/annunciators.nas</file>
+    </annunciators>
   </nasal>
 
 </PropertyList>

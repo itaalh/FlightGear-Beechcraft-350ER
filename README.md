@@ -54,9 +54,19 @@ l'alerteur d'altitude et le KLN-90B, qui sont masqués automatiquement (`sim/mod
 Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le lanceur propose donc `KingAir-350`,
 `KingAir-350ER` et `KingAir-350ER-G1000`.
 
-- `Nasal/fg1000-kingair.nas` charge le FG1000 après l'initialisation du FDM ; `Nasal/fg1000-kingair-interfaces.nas`
-  remplace l'*Engine Indication System* piston du FG1000 par un éditeur turbopropulseur (moteur 1 : tr/min hélice,
-  MAN = couple %, FF, huile, EGT = ITT). Les jauges analogiques des deux moteurs restent dans le tableau de bord.
+- `Nasal/fg1000-kingair.nas` charge le FG1000 après l'initialisation du FDM, avec un *Engine Indication System*
+  bimoteur turbopropulseur (`Nasal/fg1000-kingair-eis.nas`, cadre `Models/Instruments/FG1000/EIS-KingAir.svg`,
+  données publiées par `Nasal/fg1000-kingair-interfaces.nas`) : couple, ITT, tr/min hélice, N1, débit carburant,
+  pression et température d'huile en échelles horizontales à deux index L/R avec valeurs numériques, carburant
+  par côté et total, tension / courant / charge des générateurs. Plages de couleur = marquages des instruments
+  du 350 (couple 100 %, ITT 400-820 °C, hélice 1 450-1 700 tr/min, N1 62-104 %, huile 60/90-135 psi et
+  0-99/110 °C, carburant 0-265 lb interdit au décollage).
+- PFD : Vmo 263 kt (fond de l'anémomètre rouge au-delà), repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de
+  vitesse marquée comme l'anémomètre du 350 (arc blanc large 81-96 / étroit 96-158 kt, repère volets APP 202 kt,
+  trait rouge Vmca 94, trait bleu Vyse 125, bande rayée au-delà de Vmo).
+- PFD : fenêtre CAS (à droite de l'altimètre) alimentée par `Nasal/annunciators.nas` : alarmes en rouge, cautions
+  en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
+  MASTER CAUTION.
 - Alimentation : sorties `fg1000-pfd` et `fg1000-mfd` du bus avionique (`Nasal/electrical.nas`) ; les écrans
   s'éteignent avec l'avionique.
 - Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* ; commandes clavier du
@@ -64,8 +74,8 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
   `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
   Les propriétés `sim/model/g1000/pfd|mfd/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
-- Limites : EIS conçu pour un monomoteur, pilote automatique = panneau FGC de l'avion (le GFC 700 du FG1000
-  n'est pas chargé), page carburant sur `tank[0]`/`tank[1]`. Si le dossier FG1000 est absent, la variante
+- Limites : pilote automatique = panneau FGC de l'avion (le GFC 700 du FG1000 n'est pas chargé), pas de mode
+  réversion (EIS sur le PFD). Si le dossier FG1000 est absent, la variante
   démarre avec les instruments d'origine et affiche un message.
 
 ## Ce qui a été refait
@@ -107,6 +117,13 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   déconnexion sur action pilote ou attitude excessive. Le panneau FGC du cockpit et le dialogue
   standard de FlightGear pilotent les mêmes modes.
 - Instrumentation complète (deux NAV/COM, ADF, DME, transpondeur, GPS KLN-90B, EGPWS).
+- **Annonciateurs** (`Nasal/annunciators.nas`, trois variantes) : panneau d'alarmes/cautions du cockpit classique,
+  MASTER WARNING / MASTER CAUTION clignotants (extinction par appui), test des voyants, et messages CAS du G1000.
+  Messages et seuils des tableaux d'annonciateurs du 350 : #1/#2 AC BUS, DOOR UNLOCKED, L/R FUEL PRES LO,
+  L/R OIL PRES LO (< 60 psi), L/R DC GEN, L/R FUEL QTY (< 300 lb, délai 6 s), L/R NO FUEL XFR, BATTERY CHARGE,
+  EXT PWR, RVS NOT READY, AUTOFTHER OFF, RUD BOOST OFF, L/R IGNITION ON, FUEL CROSSFEED, L/R AUTOFEATHER (N1 > 88 %),
+  L/R PROP PITCH (beta/reverse), LDG/TAXI LIGHT. Sans modèle de feu, d'air de prélèvement ni de pressurisation,
+  les voyants correspondants ne s'allument qu'au test.
 
 ## Validation (JSBSim autonome, ISA, 15 000 lb sauf mention)
 
@@ -139,6 +156,8 @@ la traînée en configuration lisse a été réglée en priorité sur les vitess
 - Fiches de limitations opérateur (vitesses, carburant, autofeather, rudder boost, amortisseur de lacet).
 - Articles AOPA / King Air Magazine (croisière réelle FL280 / FL350, temps de montée).
 - ICAS 2002-783 (enveloppe d'essais en vol du 350), code source JSBSim (FGTurboProp, FGPropeller) et interface JSBSim de FlightGear.
+- FlightSafety *King Air 300/350 Pilot Training Manual* (marquages des instruments, vitesses, tableaux
+  d'annonciateurs) et check-list King Air 350 (V1/Vr/V2), fournis avec le *King Air 350 Realism Mod* pour MSFS.
 - MSFS (Asobo King Air 350i) : débattements de gouvernes et incidence de l'empennage utilisés comme recoupement.
 
 ## Outils (`Tools/`)
