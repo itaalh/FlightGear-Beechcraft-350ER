@@ -3,7 +3,7 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [2.4.0] — 2026-09-26
 
 ### Ajouté
 - **Essuie-glaces** : le sélecteur PARK / OFF / SLOW / FAST du panneau supérieur fonctionne (clic, molette) et
@@ -150,6 +150,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.4.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.4...v2.2.0
 [2.1.4]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...v2.1.4
