@@ -794,6 +794,41 @@ License: GPL2. See ./COPYING
 		</axis>
 	</animation>
   
+	<!-- windshield wipers (Nasal/kingair350.nas): parked along the centre post, pivot at the foot of the blade,
+	     axis = normal of each windshield panel (plane fit on the glass), sweep outboard -->
+	<animation>
+		<type>rotate</type>
+		<object-name>LHwiper</object-name>
+		<property>sim/model/wipers/position-norm</property>
+		<factor>-42</factor>
+		<center>
+			<x-m>-4.9742</x-m>
+			<y-m>-0.0671</y-m>
+			<z-m>0.4163</z-m>
+		</center>
+		<axis>
+			<x>-0.5915</x>
+			<y>-0.0615</y>
+			<z>0.8040</z>
+		</axis>
+	</animation>
+	<animation>
+		<type>rotate</type>
+		<object-name>RHwiper</object-name>
+		<property>sim/model/wipers/position-norm</property>
+		<factor>42</factor>
+		<center>
+			<x-m>-4.9707</x-m>
+			<y-m>0.1346</y-m>
+			<z-m>0.4253</z-m>
+		</center>
+		<axis>
+			<x>-0.5837</x>
+			<y>0.0770</y>
+			<z>0.8083</z>
+		</axis>
+	</animation>
+
 	<model>
 		<name>Flightdeck</name>
 		<path>Aircraft/KingAir-350/Models/flightdeck.xml</path>

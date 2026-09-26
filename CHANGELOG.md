@@ -17,6 +17,76 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   intérieur / extérieur remis dans le bon sens ; son d'arrêt avec une hauteur normale ; toussotements de moteur
   à pistons supprimés ; boucle intérieure `eng_run_int_1340.wav` recoupée sans clic.
 
+## [2.4.1] — 2026-09-26
+
+### Modifié
+- **G1000 : heure UTC.** L'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h, libellé « UTC », comme les
+  horloges analogiques. Il affichait l'heure locale sur 12 h (« LCL »). Les horloges analogiques suivent l'heure
+  UTC du simulateur, et non celle du PC.
+
+## [2.4.0] — 2026-09-26
+
+### Ajouté
+- **Essuie-glaces** : le sélecteur PARK / OFF / SLOW / FAST du panneau supérieur fonctionne (clic, molette) et
+  anime les balais du pare-brise, qui balaient vers l'extérieur. Alimentés par le bus DC ; OFF les arrête sur
+  place, PARK les ramène en butée et revient sur OFF.
+
+### Corrigé
+- **Volets APPROACH à 14°** (40 %, *Pilot Training Manual*) au lieu de 17,5° : le cran intermédiaire était réglé à
+  50 % de la course, alors que les tables aérodynamiques sont construites pour 0 / 14 / 35°. Le levier du
+  piédestal passe par les mêmes crans que les touches `[` `]`, et l'indicateur pointe sur le repère APPROACH.
+- **Volants** : ils ne s'affichaient jamais (l'animation lisait une propriété que rien ne définissait) et le menu
+  *Yokes visible* restait sans effet. Visibles par défaut, réglage conservé d'une session à l'autre.
+- **Ampèremètre batterie** : il restait à zéro. Il indique la décharge sur batterie seule (bus, dégivrage,
+  environ 300 A par démarreur au lancement, aiguille en butée) et la recharge, décroissante, une fois une
+  génératrice ou le groupe de parc en ligne. La batterie ne se recharge plus interrupteur BATT sur OFF.
+
+## [2.3.0] — 2026-09-26
+
+### Ajouté
+- **G1000 : trois écrans alignés**, comme les King Air 350 modernisés G1000 NXi : un PFD copilote (troisième GDU
+  1044B, écran FG1000 n° 3) avec la même bande de vitesse et la même fenêtre CAS que le PFD pilote, et une plaque
+  qui recouvre les anciens instruments des deux places, les radios et la colonne des jauges moteur (les moteurs
+  sont sur l'EIS du MFD). Les objets recouverts sont masqués. Menu *copilot PFD pop-up window*.
+- **G1000 : éclairage de nuit** des touches et boutons des trois écrans (rétroéclairage des cadres GDU), réglé par
+  le rhéostat *Instruments* du dialogue *Lights* et alimenté par le bus DC.
+- **G1000 : pilote automatique relié au G1000.**
+  - **Touches :** celles des écrans GDU (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP / DN) commandent le
+    pilote automatique du King Air, comme le panneau FGC.
+  - **Guidage :** la touche CDI du PFD pilote choisit la source. En GPS, le mode NAV suit le plan de vol actif du
+    G1000 : interception à 45°, puis convergence sur la branche sans dépassement.
+  - **ALT SEL :** l'altitude choisie est capturée depuis VS, FLC ou PIT, sans modifier l'altitude tenue en ALT.
+  - **Affichage :** les modes actifs et armés, la référence (vitesse verticale, vitesse, altitude) et le directeur
+    de vol s'affichent sur le PFD.
+
+### Corrigé
+- **Index de cap** : le bouton HDG du G1000 et le dialogue du pilote automatique n'agissaient qu'en mode HDG (le
+  bouton du panneau FGC reprenait la main aussitôt dans les autres modes). Le dernier bouton tourné l'emporte
+  désormais, sur les trois variantes.
+
+## [2.2.0] — 2026-09-26
+
+### Ajouté
+- **G1000 : carte hors ligne.** Menu *King Air 350 › G1000: map tiles (offline map)* : le fond de carte du MFD et de
+  l'encart du PFD peut venir d'un serveur de tuiles local (URL `{z}/{x}/{y}`, tuiles mises en cache pour le vol
+  hors ligne) ou d'un dossier de tuiles, au lieu d'OpenStreetMap par Internet. Bouton de test, réglages conservés
+  entre les sessions.
+
+## [2.1.4] — 2026-09-26
+
+### Corrigé
+- **Aiguilles et boutons qui tournaient autour d'un mauvais point** (centres de rotation hérités d'une ancienne
+  version du modèle 3D, décalés de 2 à 80 cm) : les aiguilles sortaient de leur cadran ou disparaissaient.
+  Centres et axes recalculés sur la géométrie et vérifiés en vue de face dans FlightGear :
+  - indicateur de volets (piédestal) ;
+  - horloges pilote et copilote (heures, minutes, secondes) ;
+  - jauges carburant gauche et droite, avec leur échelle non linéaire (graduations plus larges autour de 1 000 lb) ;
+  - panneau supérieur : DC % LOAD (0-100 % sur toute l'échelle), voltmètre et ampèremètre batterie, AC VOLTS,
+    PROP AMPS (chaque aiguille tourne du côté opposé à son échelle ; elles affichent maintenant le courant de
+    dégivrage hélice au lieu de la charge des génératrices) ;
+  - boutons calage altimétrique, alerteur d'altitude, volume COM/NAV/ADF, trims d'aileron et de direction, roue de
+    trim de profondeur, bouton de roulis du pilote automatique, sélecteur d'essuie-glace ; axe des volants.
+
 ## [2.1.3] — 2026-09-26
 
 ### Corrigé
@@ -102,6 +172,12 @@ Première publication de la version reconstruite.
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
 [Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...main
+
+[2.4.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.0...v2.4.1
+[2.4.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.4...v2.2.0
+[2.1.4]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...v2.1.1
