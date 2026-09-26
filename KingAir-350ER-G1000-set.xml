@@ -497,6 +497,9 @@
     <fg1000ka>
       <file>Aircraft/KingAir-350/Nasal/fg1000-kingair.nas</file>
     </fg1000ka>
+    <fg1000map>
+      <file>Aircraft/KingAir-350/Nasal/fg1000-maptiles.nas</file>
+    </fg1000map>
   </nasal>
 
 </PropertyList>

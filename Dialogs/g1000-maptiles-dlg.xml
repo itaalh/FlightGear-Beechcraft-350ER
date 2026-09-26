@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!-- King Air 350ER G1000: source of the moving map tiles (Nasal/fg1000-maptiles.nas) -->
+<PropertyList>
+  <name>g1000-maptiles</name>
+  <layout>vbox</layout>
+  <text><label>G1000 - Map tiles (MFD TOPO, PFD inset map)</label></text>
+  <hrule/>
+
+  <group>
+    <layout>table</layout>
+    <text><row>0</row><col>0</col><halign>right</halign><label>Source:</label></text>
+    <combo>
+      <row>0</row><col>1</col><halign>fill</halign>
+      <property>/sim/model/g1000/map/source</property>
+      <value>OpenStreetMap</value>
+      <value>Local server</value>
+      <value>Local folder</value>
+      <binding><command>dialog-apply</command></binding>
+    </combo>
+
+    <text><row>1</row><col>0</col><halign>right</halign><label>Server URL:</label></text>
+    <input>
+      <row>1</row><col>1</col><pref-width>420</pref-width>
+      <property>/sim/model/g1000/map/url</property>
+    </input>
+
+    <text><row>2</row><col>0</col><halign>right</halign><label>Tile folder:</label></text>
+    <input>
+      <row>2</row><col>1</col><pref-width>420</pref-width>
+      <property>/sim/model/g1000/map/folder</property>
+    </input>
+
+    <text><row>3</row><col>0</col><halign>right</halign><label>Max zoom:</label></text>
+    <input>
+      <row>3</row><col>1</col><halign>left</halign><pref-width>50</pref-width>
+      <property>/sim/model/g1000/map/max-zoom</property>
+    </input>
+  </group>
+
+  <text><halign>left</halign><label>Server URL: XYZ tiles, e.g. http://localhost:8090/{z}/{x}/{y}.png ({tms_y} for TMS numbering).</label></text>
+  <text><halign>left</halign><label>Tile folder: a folder laid out as zoom/x/y.png (e.g. D:/Tiles), read directly without any download.</label></text>
+  <text><halign>left</halign><label>Max zoom: highest zoom level the source has; beyond it the tiles are enlarged.</label></text>
+
+  <hrule/>
+  <text>
+    <halign>left</halign>
+    <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
+    <property>/sim/model/g1000/map/status</property>
+    <live>true</live>
+  </text>
+
+  <group>
+    <layout>hbox</layout>
+    <button>
+      <legend>Test</legend>
+      <binding><command>dialog-apply</command></binding>
+      <binding><command>nasal</command><script>fg1000map.test();</script></binding>
+    </button>
+    <button>
+      <legend>Apply</legend>
+      <default>true</default>
+      <binding><command>dialog-apply</command></binding>
+      <binding><command>nasal</command><script>fg1000map.apply();</script></binding>
+    </button>
+    <button>
+      <legend>Close</legend>
+      <key>Esc</key>
+      <binding><command>dialog-close</command></binding>
+    </button>
+  </group>
+</PropertyList>
