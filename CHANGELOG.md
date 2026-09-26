@@ -3,6 +3,13 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Modifié
+- **G1000 : heure UTC.** L'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h, libellé « UTC », comme les
+  horloges analogiques. Il affichait l'heure locale sur 12 h (« LCL »). Les horloges analogiques suivent l'heure
+  UTC du simulateur, et non celle du PC.
+
 ## [2.4.0] — 2026-09-26
 
 ### Ajouté
