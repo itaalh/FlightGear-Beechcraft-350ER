@@ -1,0 +1,66 @@
+# Journal des modifications
+
+Toutes les évolutions notables du King Air 350 pour FlightGear.
+Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
+
+## [2.1.0] — 2026-09-26
+
+Améliorations tirées de l'étude des mods MSFS 2020 (King Air G1000, Pro Line 21, Realism Mod) et du
+*King Air 300/350 Pilot Training Manual* de FlightSafety. Testé dans FlightGear 2024.1.
+
+### Ajouté
+- **EIS bimoteur sur le MFD G1000** : couple, ITT, hélice, N1, débit carburant, pression et température
+  d'huile (échelles à deux index L/R et valeurs numériques), carburant par côté et total, tension / courant /
+  charge des générateurs, courant de dégivrage hélice, et bloc CABIN (altitude, variation, différentiel).
+  Plages de couleur = marquages des instruments du 350.
+- **Fenêtre CAS du PFD G1000** : alarmes en rouge, cautions en jaune, avis en blanc ; les nouvelles alarmes
+  clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING / MASTER CAUTION.
+- **Bande de vitesse du PFD** marquée comme l'anémomètre du 350 (arc blanc large 81-96 / étroit 96-158 kt,
+  repère volets APP 202 kt, trait rouge Vmca 94, trait bleu Vyse 125, bande rayée au-delà de Vmo 263) et repères
+  Vr 110, Vx 125, Vy 140, plané 135 kt.
+- **Logique d'annonciateurs** commune aux trois variantes (`Nasal/annunciators.nas`) : le panneau d'alarmes du
+  cockpit classique est enfin alimenté, MASTER WARNING / CAUTION clignotants, test des voyants ; messages et
+  seuils des tableaux d'annonciateurs du 350.
+- **Check-lists** (`Checklists/KingAir-350-checklists.xml`) : 14 check-lists (procédures normales et deux pannes
+  moteur), dans *Aide › Check-lists de l'appareil* et sur la page CHKLIST du MFD G1000 ; items cochés
+  automatiquement.
+- **Protection contre le givre** (`Nasal/ice-protection.nas`) : panneau ICE PROTECTION animé et fonctionnel
+  (antigivrage moteur, boudins ailes et empennage, dégivrage hélice, réchauffage pare-brise, pitots,
+  avertisseur de décrochage, mises à l'air carburant, freins) avec leurs charges électriques et leurs avis CAS.
+- **Pressurisation** (`Nasal/pressurization.nas`, menu *King Air 350 › Pressurization*) : air de prélèvement,
+  contrôleur altitude cabine / vitesse de variation, différentiel limité à 6,5 psid, dépressurisation au sol ;
+  alarmes CABIN ALT HI, CABIN DIFF HI, CABIN ALTITUDE, L/R BL AIR OFF.
+- Commandes du cockpit jusque-là inertes : interrupteur AUTOFEATHER, GEN TIES, PROP TEST, poignées coupe-feu
+  (fermeture du robinet carburant), bouton de test des voyants de train ; boutons ALTS, VS et CLIMB du
+  panneau FGC.
+
+### Corrigé
+- **Pilote automatique** :
+  - les boutons du panneau FGC (HDG, NAV, APPR, BC, ALT, VS, AP, YD, SR, 1/2 BANK, molette de tangage) étaient
+    désactivés dans le modèle 3D : ils sont de nouveau cliquables ;
+  - le pilote automatique générique de FlightGear agissait en parallèle sur les gouvernes et provoquait des
+    désengagements : il est remplacé par un fichier vide (`Systems/no-generic-autopilot.xml`) ;
+  - la tenue d'altitude oscillait sur le 350ER : trim automatique ralentie avec zone morte, gain intégral de la
+    boucle VS divisé par deux, décalage altitude vraie / indiquée filtré.
+- **Jauges d'huile** : JSBSim et le script Nasal écrivaient la même propriété, ce qui faisait trembler les
+  aiguilles ; le modèle Nasal a ses propres propriétés (`oil-pressure-ind-psi`, `oil-temperature-ind-degf`) et
+  les jauges du tableau classique sont réétalonnées sur leur cadran (la température tournait en °F × 30).
+- Valeurs de l'EIS colorées d'après la valeur affichée (une hélice régulée à 1 700 tr/min n'est plus en rouge).
+
+### Modifié
+- Le publieur moteur du FG1000 envoie les données des deux moteurs (auparavant moteur 1 seulement, sur les
+  cases d'un moteur à pistons) et remplace le publieur carburant générique.
+
+## [2.0.0] — 2026-09-25
+
+Première publication de la version reconstruite.
+
+### Ajouté
+- Modèle de vol JSBSim entièrement refait (aérodynamique, PT6A-60A, hélices Hartzell), validé sur les données
+  constructeur (voir le README).
+- Variantes **KingAir-350**, **KingAir-350ER** et **KingAir-350ER-G1000** (FG1000 de FlightGear).
+- Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
+  boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
+
+[2.1.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/c71f701...f75b48e
+[2.0.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/tree/c71f701
