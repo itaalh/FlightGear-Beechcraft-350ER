@@ -3,7 +3,7 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [2.1.3] — 2026-09-26
 
 ### Modifié
 - **Son moteur refait** (`Sounds/KingAir-350-sound.xml`) : son de PT6A en couches, par moteur et positionné —
@@ -99,7 +99,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
-[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...main
+[2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...v2.1.1
 [2.1.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/c71f701...f75b48e
