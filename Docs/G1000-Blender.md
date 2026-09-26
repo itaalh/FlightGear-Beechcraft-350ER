@@ -1,11 +1,12 @@
 # King Air 350ER « G1000 » — intégration des écrans dans le cockpit 3D (Blender)
 
-La variante `KingAir-350ER-G1000` fonctionne **sans retoucher le 3D** : les deux afficheurs Garmin GDU 1044B
+La variante `KingAir-350ER-G1000` fonctionne **sans retoucher le 3D** : les trois afficheurs Garmin GDU 1044B
 du FG1000 (livrés avec FlightGear dans `$FG_ROOT/Aircraft/Instruments-3d/FG1000/GDU104X/`) sont posés
-**en applique**, 3,7 cm devant la face du tableau de bord, et les instruments qu'ils recouvrent sont masqués
-(`sim/model/g1000/enabled`, animation *select* ajoutée en fin de `Models/flightdeck.xml`). Le travail Blender
-décrit ici sert à obtenir un montage **affleurant** et propre : découpe du tableau de bord, suppression des
-cadrans peints sous les écrans, éventuellement un cadre encastré.
+**en applique**, 3,7 cm devant la face du tableau de bord, sur une plaque (`Models/G1000-panel.ac`, à x = −4,614)
+qui recouvre les anciens instruments, les radios et la colonne des jauges moteur ; les objets recouverts sont
+masqués (`sim/model/g1000/enabled`, animation *select* en fin de `Models/flightdeck.xml`). Le travail Blender
+décrit ici sert à obtenir un montage **affleurant** : découpe du tableau de bord, suppression des cadrans peints
+sous les écrans, éventuellement un cadre encastré (la plaque devient alors inutile).
 
 ## 1. Repères et coordonnées
 
@@ -24,23 +25,26 @@ Si les y sont inversés, votre importateur n'a pas fait la conversion : remplace
 Les instruments occupent z ∈ [0,04 ; 0,34] ; les boutons du panneau FGC (rangée `HDG.btn`… ) sont à z 0,29–0,32,
 les voyants FD à z 0,33, les poignées incendie à z 0,35.
 
-## 2. Emplacement des deux écrans (voir `G1000-panel-layout.png`)
+## 2. Emplacement des trois écrans (voir `G1000-panel-layout.png`, qui ne montre que le PFD pilote et le MFD)
 
 | Écran | Modèle FG1000 | Centre (y, z) | Encombrement bezel (approx.) | Zone écran |
 |---|---|---|---|---|
 | PFD (pilote) | `GDU-1044B.1.xml` | y = −0,425 m, z = 0,165 m | 277 × 203 mm (10,9 × 8,0 in) | 211 × 158 mm (10,4", 4:3) |
 | MFD (centre) | `GDU-1044B.2.xml` | y = +0,010 m, z = 0,165 m | 277 × 203 mm | 211 × 158 mm |
+| PFD (copilote, écran FG1000 n° 3) | `GDU-1044B.3.xml` | y = +0,445 m, z = 0,165 m | 277 × 203 mm | 211 × 158 mm |
 
-Le PFD est centré sur la colonne EADI/EHSI du pilote (les deux tubes EFIS-84 sont à y −0,425) ; le MFD recouvre
-la pile COM1/NAV1/ADF1, l'alerteur d'altitude et le KLN-90B. La colonne des jauges moteur (y −0,23 … −0,13) reste
-visible entre les deux, ainsi que COM2/NAV2/transpondeur à droite, le panneau audio au-dessus et le panneau FGC.
+Les PFD sont centrés sur les colonnes EADI/EHSI du pilote et du copilote (tubes EFIS-84 à y −0,425 et +0,445) ;
+le MFD recouvre la pile COM1/NAV1/ADF1, l'alerteur d'altitude et le KLN-90B. Entre le PFD pilote et le MFD, la
+plaque recouvre la colonne des jauges moteur (y −0,25 … −0,13, jusqu'à z 0,37) ; le panneau audio au-dessus et
+les panneaux FGC restent visibles.
 
 Les dimensions du bezel sont celles du GDU 1040/1044 réel ; **mesurez le modèle FG1000** pour être exact :
 importez `$FG_ROOT/Aircraft/Instruments-3d/FG1000/GDU104X/GDU-1044B.ac` dans Blender (il donne aussi la position
 de l'origine du modèle, qui fixe le point placé par `<offsets>` dans `Models/KingAir-G1000.xml`).
 
-Deux gabarits de découpe sont fournis, aux positions ci-dessus, profondeur 8 cm (x de −4,70 à −4,62) :
-`G1000-cutters.obj` (import direct dans Blender, repère modèle) et `G1000-cutters.ac` (repère AC3D).
+Deux gabarits de découpe sont fournis (PFD pilote et MFD ; pour le PFD copilote, dupliquer celui du PFD en
+y = +0,445), profondeur 8 cm (x de −4,70 à −4,62) : `G1000-cutters.obj` (import direct dans Blender, repère modèle)
+et `G1000-cutters.ac` (repère AC3D).
 
 ## 3. Procédure Blender
 
@@ -65,7 +69,7 @@ Deux gabarits de découpe sont fournis, aux positions ci-dessus, profondeur 8 cm
    transformation d'axes supplémentaire), en écrasant l'ancien fichier. Le nom des objets et des textures doit
    rester identique.
 7. Dans FlightGear, lancer `KingAir-350ER-G1000`, ouvrir le navigateur de propriétés et régler
-   `sim/model/g1000/pfd/dx-m` (et `mfd`) pour reculer les bezels dans les ouvertures (typiquement dx ≈ −0,035
+   `sim/model/g1000/pfd/dx-m` (et `mfd`, `pfd2`) pour reculer les bezels dans les ouvertures (typiquement dx ≈ −0,035
    pour revenir à la face x = −4,647, dy/dz pour centrer). Reporter ensuite les valeurs dans les `<offsets>` de
    `Models/KingAir-G1000.xml` et remettre les propriétés à 0.
 
@@ -81,9 +85,8 @@ donne la liste des commandes clavier correspondantes).
 
 ## 5. Limites connues de la variante
 
-- Le bandeau moteur (EIS) du FG1000 est conçu pour un monomoteur à pistons : il affiche le moteur 1 avec les
-  libellés RPM / MAN (= couple %) / FF / huile / EGT (= ITT). Les jauges analogiques des deux moteurs restent
-  dans le tableau de bord.
+- Les moteurs sont affichés sur le bandeau EIS bimoteur du MFD (`Nasal/fg1000-kingair-eis.nas`) ; les jauges
+  analogiques sont sous la plaque.
 - Le pilote automatique reste celui de l'avion (panneau FGC ou dialogue F11) ; le GFC 700 du FG1000 n'est pas chargé
   pour ne pas entrer en conflit avec les boucles JSBSim.
 - La page carburant du FG1000 lit les deux premiers réservoirs (`tank[0]`, `tank[1]`).
