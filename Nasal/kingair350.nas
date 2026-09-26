@@ -149,6 +149,23 @@ var condition_step = func(dir) {
     gui.popupTip("Condition levers: " ~ (c < 0.25 ? "FUEL CUT-OFF" : (c < 0.75 ? "LOW IDLE" : "HIGH IDLE")));
 };
 
+# joystick / keyboard "Mixture" controls move the condition levers (a turboprop has no mixture):
+# FlightGear's joystick dialog only offers mixture axes and buttons. Same scale: 0 = FUEL CUT-OFF,
+# 0.5 = LOW IDLE, 1 = HIGH IDLE. Listeners fire on changes only and are set after the FDM
+# initialisation, so the mixture value of the -set.xml (1.0) never opens the fuel by itself.
+# The "Mixture All Engines" axis needs nothing more: FGData (controls.nas) turns its raw -1..1 value
+# into each engine's mixture, which these listeners follow.
+var mixture_to_condition = func(i, v) {
+    ctl[i].getNode("condition", 1).setDoubleValue(math.clamp(v or 0, 0, 1));
+};
+setlistener("sim/signals/fdm-initialized", func {
+    foreach (var i; ENGINES) {
+        (func(i) {
+            setlistener("controls/engines/engine[" ~ i ~ "]/mixture", func(n) { mixture_to_condition(i, n.getValue()); }, 0, 0);
+        })(i);
+    }
+}, 0, 0);
+
 # --------------------------------------------------------------------------
 # automatic start-up (menu)
 # --------------------------------------------------------------------------

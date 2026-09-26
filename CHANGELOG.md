@@ -3,6 +3,15 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+- **Leviers de condition au joystick** : les commandes *Mixture* de la configuration joystick de FlightGear (axes
+  « Mixture », « Mixture All Engines », boutons Rich / Lean) déplacent maintenant les leviers de condition
+  (0 = CUT-OFF, 0,5 = LOW IDLE, 1 = HIGH IDLE) ; auparavant ils restaient sans effet et seuls la souris, le clavier
+  et le menu les manœuvraient. Seuls les mouvements sont suivis : la mixture à 1 du démarrage n'ouvre pas le
+  carburant.
+
 ## [2.1.2] — 2026-09-26
 
 ### Corrigé
@@ -78,6 +87,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...main
 [2.1.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...v2.1.1
 [2.1.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/c71f701...f75b48e

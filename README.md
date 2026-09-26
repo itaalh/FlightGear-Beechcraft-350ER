@@ -22,7 +22,7 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 |---|---|
 | Démarrage automatique | menu *King Air 350 › Automatic start-up* |
 | Démarrage manuel | batterie ON, manettes de puissance IDLE, manettes d'hélice plein avant, condition levers CUT-OFF ; starter (interrupteur cockpit ou `s`) ; à 12 % N1 condition lever LOW IDLE (`Shift-F`) ; l'allumage suit, N1 se stabilise à 62 % ; générateurs ON |
-| Condition levers | `Shift-F` cran suivant / `Shift-C` cran précédent (CUT-OFF → LOW IDLE → HIGH IDLE) ou axe *condition* du joystick |
+| Condition levers | `Shift-F` cran suivant / `Shift-C` cran précédent (CUT-OFF → LOW IDLE → HIGH IDLE), ou les commandes *Mixture* du joystick (axe ou boutons ; mixture 0 = CUT-OFF, 0,5 = LOW IDLE, 1 = HIGH IDLE) |
 | Manettes d'hélice | `n` (petit pas, plus de tours) / `N` (grand pas) : 1 450–1 700 tr/min, plein arrière = DRAPEAU |
 | Beta / inverse | manettes de puissance au ralenti, `Suppr` (ou menu) puis avancer les manettes : plage beta jusqu'à 35 % de course, inverse au-delà |
 | Volets | `[` `]` : UP / APPROACH 14° / DOWN 35° |
