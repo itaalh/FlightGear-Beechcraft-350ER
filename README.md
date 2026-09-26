@@ -71,7 +71,8 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
   MASTER CAUTION.
 - Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`) ;
-  les écrans s'éteignent avec l'avionique.
+  les écrans s'éteignent avec l'avionique. Rétroéclairage des touches des cadres réglé par le rhéostat
+  *Instruments* (menu *King Air 350 › Lights*).
 - Cap : les boutons HDG des deux PFD, celui du panneau FGC et le dialogue du pilote automatique règlent le même
   index de cap (le dernier tourné l'emporte).
 - Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* / *copilot PFD

@@ -175,6 +175,12 @@ var init = func {
         })(i);
     }
 
+    # key and knob backlighting of the GDU bezels (FGData lightmap, factor 0..1) with the instrument lights
+    # (dimmer King Air 350 > Lights > Instruments, on the DC bus: systems/electrical/outputs/lights/instrument-lights)
+    setlistener("/systems/electrical/outputs/lights/instrument-lights", func(n) {
+        setprop("/instrumentation/FG1000/Lightmap", math.min(1, (n.getValue() or 0) / 28.0));
+    }, 1, 0);
+
     print("KingAir-350ER G1000: FG1000 pilot PFD, MFD and copilot PFD initialised");
 };
 
