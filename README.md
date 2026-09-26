@@ -6,6 +6,8 @@ Licence : GPL v2 ou ultérieure (voir `COPYING`).
 
 ## Installation
 
+Après téléchargement, renommez le dossier obtenu en KingAir-350 avant de le placer dans votre dossier Aircraft.
+
 Copier le dossier `KingAir-350` dans un répertoire d'avions FlightGear (par exemple
 `~/.fgfs/Aircraft/` ou le dossier `Aircraft` de votre installation), puis choisir
 **KingAir-350**, **KingAir-350ER** ou **KingAir-350ER-G1000** dans le lanceur (les trois variantes sont dans le
