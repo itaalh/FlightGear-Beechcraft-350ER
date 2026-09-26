@@ -1,6 +1,6 @@
 # Beechcraft King Air 350 (B300) pour FlightGear — modèle de vol JSBSim reconstruit
 
-Version 2.1.1 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
+Version 2.1.2 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
 historique des versions dans `CHANGELOG.md`.
 Modèle 3D et cockpit : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017).
 Licence : GPL v2 ou ultérieure (voir `COPYING`).
@@ -26,7 +26,7 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 | Manettes d'hélice | `n` (petit pas, plus de tours) / `N` (grand pas) : 1 450–1 700 tr/min, plein arrière = DRAPEAU |
 | Beta / inverse | manettes de puissance au ralenti, `Suppr` (ou menu) puis avancer les manettes : plage beta jusqu'à 35 % de course, inverse au-delà |
 | Volets | `[` `]` : UP / APPROACH 14° / DOWN 35° |
-| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage |
+| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
 | Amortisseur de lacet | bouton YD ou `Ctrl-Y` (obligatoire au-dessus de 5 000 ft sur l'avion réel) |
 | Porte / escalier | `D` |
 | Carburant | menu *System failures* (dialogue systèmes) : crossfeed, pompes de transfert aux, générateurs, batterie… |

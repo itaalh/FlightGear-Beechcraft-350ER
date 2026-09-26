@@ -5,6 +5,9 @@
 # This module:
 #   - implements the cockpit FGC panel (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, AP, YD, SR, BNK, pitch wheel),
 #   - accepts the standard FlightGear autopilot dialog (/autopilot/locks/...),
+#   - disconnects when the standard engage property /controls/autoflight/autopilot/engage is cleared
+#     by the "Autopilot disconnect" joystick action (controls.autopilotDisconnect()), like the AP
+#     disconnect button of the control wheel; it never engages the autopilot,
 #   - feeds navigation data (heading bug, NAV1/LOC/GS) to the JSBSim loops,
 #   - trims the elevator while engaged and handles altitude pre-select capture.
 #
@@ -31,7 +34,16 @@ var target_pitch = 0.0;
 var target_vs = 0.0;
 var alt_offset = nil;    # true - indicated altitude, low-pass filtered (the altimeter lags)
 
+# standard FlightGear engage property: created here (FlightGear does not), so that the generic
+# "Autopilot disconnect" joystick action finds it; kept equal to the autopilot state by annunciate()
+var ap_engage = props.globals.getNode("controls/autoflight/autopilot[0]/engage", 1);
+ap_engage.setBoolValue(0);
+var syncing_engage = 0;
+
 var annunciate = func {
+    syncing_engage = 1;
+    ap_engage.setBoolValue(engaged);
+    syncing_engage = 0;
     fgc.getNode("internal/lateral", 1).setValue(lateral);
     fgc.getNode("internal/lateral-arm", 1).setValue(lat_armed);
     fgc.getNode("internal/vertical", 1).setValue(vertical == "PIT" ? "" : vertical);
@@ -283,6 +295,13 @@ setlistener("sim/signals/fdm-initialized", func {
     setlistener("autopilot/locks/heading", lock_changed, 0, 0);
     setlistener("autopilot/locks/altitude", lock_changed, 0, 0);
     setlistener("autopilot/locks/speed", lock_changed, 0, 0);
+    # engage property written from outside: disconnect only, like the control wheel AP disconnect
+    # button (engaging stays on the FGC panel AP button, Ctrl-F or the F11 dialog)
+    setlistener(ap_engage, func(n) {
+        if (syncing_engage) return;
+        if (!n.getBoolValue() and engaged) engage(0);
+        else annunciate();       # any other write: back to the real state
+    }, 0, 0);
     annunciate();
     timer.start();
     print("KingAir-350: autopilot bridge ok");
