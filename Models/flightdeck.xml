@@ -96,7 +96,7 @@
 		<object-name>Yoke1</object-name>
 		<object-name>Yokebase</object-name>
 		<condition>
-			<property>/options/yoke-visible</property>
+			<property>sim/model/yokes-visible</property>
 		</condition>
 	</animation>
 
@@ -341,21 +341,15 @@
 		<action>
 			<button>0</button>
 			<binding>
-				<command>property-adjust</command>
-				<property>/controls/flight/flaps</property>
-				<step>0.5</step>
-				<min>0</min>
-				<max>1</max>
+				<command>nasal</command>
+				<script>controls.flapsDown(1);</script>
 			</binding>
 		</action>
 		<action>
 			<button>1</button>
 			<binding>
-				<command>property-adjust</command>
-				<property>/controls/flight/flaps</property>
-				<step>-0.5</step>
-				<min>0</min>
-				<max>1</max>
+				<command>nasal</command>
+				<script>controls.flapsDown(-1);</script>
 			</binding>
 		</action>
 		<hovered>
@@ -373,7 +367,12 @@
 		<type>translate</type>
 		<object-name>FlapLever</object-name>
 		<property>controls/flight/flaps</property>
-		<factor>0.0390</factor>
+		<!-- APPROACH (0.4) on the middle mark of the quadrant -->
+		<interpolation>
+			<entry><ind>0.0</ind><dep>0.0</dep></entry>
+			<entry><ind>0.4</ind><dep>0.0195</dep></entry>
+			<entry><ind>1.0</ind><dep>0.0390</dep></entry>
+		</interpolation>
 		<axis>
 			<x>0.423</x>
 			<y>0.0</y>
@@ -385,7 +384,11 @@
 		<type>translate</type>
 		<object-name>FlapIndicator</object-name>
 		<property>surface-positions/flap-pos-norm</property>
-		<factor>0.0430</factor>
+		<interpolation>
+			<entry><ind>0.0</ind><dep>0.0</dep></entry>
+			<entry><ind>0.4</ind><dep>0.0215</dep></entry>
+			<entry><ind>1.0</ind><dep>0.0430</dep></entry>
+		</interpolation>
 		<axis>
 			<x>0.423</x>
 			<y>0.0</y>
@@ -2062,6 +2065,8 @@
         <object-name>Batt-amp</object-name>
         <property>systems/electrical/ammeter</property>
         <factor>-0.825</factor>
+        <min-deg>-54</min-deg>
+        <max-deg>54</max-deg>
         <center>
             <x-m>-4.1785</x-m>
             <y-m>-0.058</y-m>
@@ -2250,8 +2255,10 @@
         <type>rotate</type>
         <object-name>Flapneedle</object-name>
         <property>surface-positions/flap-pos-norm</property>
+        <!-- dial marks UP / APPROACH / DOWN at 0 / 90 / 180 deg; APPROACH = 40 % (14 deg) -->
         <interpolation>
             <entry><ind>0.0</ind><dep>0.0</dep></entry>
+            <entry><ind>0.4</ind><dep>90.0</dep></entry>
             <entry><ind>1.0</ind><dep>180.0</dep></entry>
         </interpolation>
         <center>
@@ -5849,7 +5856,13 @@
         <type>rotate</type>
         <object-name>Wiper.knob</object-name>
         <property>controls/electric/wipers/switch-pos</property>
-        <factor>35.0</factor>
+        <!-- -1 PARK (spring-loaded, Nasal/kingair350.nas), 0 OFF, 1 SLOW, 2 FAST -->
+        <interpolation>
+            <entry><ind>-1</ind><dep>-65</dep></entry>
+            <entry><ind>0</ind><dep>0</dep></entry>
+            <entry><ind>1</ind><dep>60</dep></entry>
+            <entry><ind>2</ind><dep>90</dep></entry>
+        </interpolation>
         <center>
             <x-m>-4.0391</x-m>
             <y-m>0.1299</y-m>
@@ -5860,6 +5873,54 @@
             <y>0</y>
             <z>0.861</z>
         </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>Wiper.knob</object-name>
+        <action>
+            <button>0</button>
+            <button>3</button>
+            <binding>
+                <command>property-adjust</command>
+                <property>controls/electric/wipers/switch-pos</property>
+                <step>1</step>
+                <min>-1</min>
+                <max>2</max>
+                <wrap>false</wrap>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <action>
+            <button>1</button>
+            <button>2</button>
+            <button>4</button>
+            <binding>
+                <command>property-adjust</command>
+                <property>controls/electric/wipers/switch-pos</property>
+                <step>-1</step>
+                <min>-1</min>
+                <max>2</max>
+                <wrap>false</wrap>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>wipers</tooltip-id>
+                <label>Windshield wiper: %s</label>
+                <property>controls/electric/wipers/switch-pos</property>
+                <mapping>nasal</mapping>
+                <script>return ["PARK", "OFF", "SLOW", "FAST"][math.min(3, math.max(0, int(arg[0] or 0) + 1))];</script>
+            </binding>
+        </hovered>
     </animation>
 
 <!-- 

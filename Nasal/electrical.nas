@@ -38,10 +38,21 @@ var update = func {
     var volts = 0.0;
     if (ngen > 0 or ext_sw) volts = 28.5;
     elsif (batt_sw) volts = 22.0 + 2.5 * battery_charge;
-    # battery charge / discharge
-    if (batt_sw and ngen == 0 and !ext_sw) battery_charge -= dt / 3600.0 * ((25.0 + extra) / BATTERY_AH);
-    elsif (ngen > 0 or ext_sw) battery_charge += dt / 3600.0 * (10.0 / BATTERY_AH);
+    # battery current (BATT AMP gauge, + = charge): on its own the battery feeds the bus (25 A + heaters) and the
+    # starters (about 300 A each while cranking); with a generator or external power on line it recharges, at a
+    # current that falls as it fills up. Disconnected when the battery switch is off.
+    var batt_amps = 0.0;
+    if (batt_sw and ngen == 0 and !ext_sw) {
+        batt_amps = -(25.0 + extra);
+        foreach (var i; [0, 1])
+            if (getprop("controls/engines/engine[" ~ i ~ "]/starter") and (getprop("engines/engine[" ~ i ~ "]/n1") or 0) < 50)
+                batt_amps -= 300.0;
+    } elsif (batt_sw) {
+        batt_amps = math.min(60.0, 2.0 + 150.0 * (1.0 - battery_charge));
+    }
+    battery_charge += dt / 3600.0 * batt_amps / BATTERY_AH;
     battery_charge = math.min(1.0, math.max(0.0, battery_charge));
+    sys.getNode("ammeter", 1).setDoubleValue(batt_amps);
     if (batt_sw and ngen == 0 and battery_charge < 0.05) volts = 18.0;
 
     var dc = (volts > 20) ? 1 : 0;

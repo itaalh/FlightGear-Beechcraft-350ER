@@ -85,7 +85,7 @@
 
     <flaps>
       <setting>0.0</setting>   <!-- UP -->
-      <setting>0.5</setting>   <!-- APPROACH 14 deg -->
+      <setting>0.4</setting>   <!-- APPROACH 40 % = 14 deg (x 35 deg, Aero flap-pos-deg) -->
       <setting>1.0</setting>   <!-- DOWN 35 deg -->
     </flaps>
 
