@@ -77,6 +77,13 @@
         </binding>
       </item>
       <item>
+        <label>G1000: map tiles (offline map)</label>
+        <binding>
+          <command>nasal</command>
+          <script>fg1000map.open_dialog();</script>
+        </binding>
+      </item>
+      <item>
         <label>G1000: PFD pop-up window</label>
         <binding>
           <command>nasal</command>

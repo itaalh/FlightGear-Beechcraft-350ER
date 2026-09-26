@@ -16,6 +16,29 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   bouton du panneau FGC reprenait la main aussitôt dans les autres modes). Le dernier bouton tourné l'emporte
   désormais, sur les trois variantes.
 
+## [2.2.0] — 2026-09-26
+
+### Ajouté
+- **G1000 : carte hors ligne.** Menu *King Air 350 › G1000: map tiles (offline map)* : le fond de carte du MFD et de
+  l'encart du PFD peut venir d'un serveur de tuiles local (URL `{z}/{x}/{y}`, tuiles mises en cache pour le vol
+  hors ligne) ou d'un dossier de tuiles, au lieu d'OpenStreetMap par Internet. Bouton de test, réglages conservés
+  entre les sessions.
+
+## [2.1.4] — 2026-09-26
+
+### Corrigé
+- **Aiguilles et boutons qui tournaient autour d'un mauvais point** (centres de rotation hérités d'une ancienne
+  version du modèle 3D, décalés de 2 à 80 cm) : les aiguilles sortaient de leur cadran ou disparaissaient.
+  Centres et axes recalculés sur la géométrie et vérifiés en vue de face dans FlightGear :
+  - indicateur de volets (piédestal) ;
+  - horloges pilote et copilote (heures, minutes, secondes) ;
+  - jauges carburant gauche et droite, avec leur échelle non linéaire (graduations plus larges autour de 1 000 lb) ;
+  - panneau supérieur : DC % LOAD (0-100 % sur toute l'échelle), voltmètre et ampèremètre batterie, AC VOLTS,
+    PROP AMPS (chaque aiguille tourne du côté opposé à son échelle ; elles affichent maintenant le courant de
+    dégivrage hélice au lieu de la charge des génératrices) ;
+  - boutons calage altimétrique, alerteur d'altitude, volume COM/NAV/ADF, trims d'aileron et de direction, roue de
+    trim de profondeur, bouton de roulis du pilote automatique, sélecteur d'essuie-glace ; axe des volants.
+
 ## [2.1.3] — 2026-09-26
 
 ### Corrigé
@@ -100,6 +123,8 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.2.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.4...v2.2.0
+[2.1.4]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...v2.1.4
 [2.1.3]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.2...v2.1.3
 [2.1.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/42422ea...v2.1.1

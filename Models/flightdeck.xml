@@ -135,9 +135,9 @@
 		<property>controls/flight/elevator</property>
 		<factor>-0.1</factor>
 		<axis>
-			<x>0.985</x>
-			<y>0.0</y>
-			<z>0.174</z>
+			<x>0.9768</x>
+			<y>0</y>
+			<z>0.2143</z>
 		</axis>
 	</animation>
 
@@ -147,14 +147,14 @@
 		<property>controls/flight/aileron</property>
 		<factor>-45.0</factor>
 		<center>
-			<x-m> 0.0000</x-m>
+			<x-m>-4.868</x-m>
 			<y-m>-0.4274</y-m>
-			<z-m>-0.0038</z-m>
+			<z-m>-0.0312</z-m>
 		</center>
 		<axis>
-			<x>0.985</x>
-			<y>0.000</y>
-			<z>0.174</z>
+			<x>0.9768</x>
+			<y>0</y>
+			<z>0.2143</z>
 		</axis>
 	</animation>
 
@@ -164,14 +164,14 @@
 		<property>controls/flight/aileron</property>
 		<factor>-45.0</factor>
 		<center>
-			<x-m> 0.0000</x-m>
-			<y-m> 0.4937</y-m>
-			<z-m>-0.0038</z-m>
+			<x-m>-4.8684</x-m>
+			<y-m>0.4399</y-m>
+			<z-m>-0.0312</z-m>
 		</center>
 		<axis>
-			<x>0.985</x>
-			<y>0.000</y>
-			<z>0.174</z>
+			<x>0.9768</x>
+			<y>0</y>
+			<z>0.2143</z>
 		</axis>
 	</animation>
 
@@ -437,9 +437,9 @@
 		</interpolation>
 		<drag-direction>vertical</drag-direction>
 		<center>
-			<x-m>-4.760</x-m>
-			<y-m>0.0</y-m>
-			<z-m>-0.428</z-m>
+			<x-m>-4.4337</x-m>
+			<y-m>-0.15</y-m>
+			<z-m>-0.226</z-m>
 		</center>
 		<axis>
 			<x>0.0</x>
@@ -476,14 +476,14 @@
         <factor>-90</factor>
         <drag-direction>horizontal</drag-direction>
         <center>
-            <x-m>-4.583</x-m>
-            <y-m>-0.070</y-m>
-            <z-m>-0.458</z-m>
+            <x-m>-4.1856</x-m>
+            <y-m>-0.0718</y-m>
+            <z-m>-0.2564</z-m>
         </center>
         <axis>
-            <x>0.906</x>
-            <y>0.0</y>
-            <z>0.423</z>
+            <x>0.9355</x>
+            <y>0</y>
+            <z>0.3534</z>
         </axis>
         <action>
             <button>0</button>
@@ -516,14 +516,14 @@
         <factor>-90</factor>
         <drag-direction>horizontal</drag-direction>
         <center>
-            <x-m>-4.581</x-m>
-            <y-m>0.026</y-m>
-            <z-m>-0.471</z-m>
+            <x-m>-4.1623</x-m>
+            <y-m>0.0421</y-m>
+            <z-m>-0.2518</z-m>
         </center>
         <axis>
-            <x>0.766</x>
-            <y>0.0</y>
-            <z>0.643</z>
+            <x>0.7891</x>
+            <y>0</y>
+            <z>0.6142</z>
         </axis>
         <action>
             <button>0</button>
@@ -1872,9 +1872,9 @@
             <z>-1.0</z>
         </axis>
         <center>
-            <x-m>-4.409</x-m>
-            <y-m>-0.068</y-m>
-            <z-m>-0.514</z-m>
+            <x-m>-3.9726</x-m>
+            <y-m>-0.0694</y-m>
+            <z-m>-0.3189</z-m>
         </center>
         <action>
             <button>0</button>
@@ -2009,16 +2009,16 @@
         <type>rotate</type>
         <object-name>DC-load1</object-name>
         <property>systems/electrical/gen-load[0]</property>
-        <factor>65</factor>
+        <factor>89</factor>
         <center>
-            <x-m>-4.523</x-m>
-            <y-m>-0.173</y-m>
-            <z-m>0.494</z-m>
+            <x-m>-4.1838</x-m>
+            <y-m>-0.1944</y-m>
+            <z-m>0.7958</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
@@ -2026,16 +2026,16 @@
         <type>rotate</type>
         <object-name>DC-load2</object-name>
         <property>systems/electrical/gen-load[1]</property>
-        <factor>65</factor>
+        <factor>89</factor>
         <center>
-            <x-m>-4.523</x-m>
-            <y-m>-0.116</y-m>
-            <z-m>0.494</z-m>
+            <x-m>-4.1839</x-m>
+            <y-m>-0.1266</y-m>
+            <z-m>0.7957</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
@@ -2043,16 +2043,17 @@
         <type>rotate</type>
         <object-name>Batt-volt</object-name>
         <property>systems/electrical/volts</property>
-        <factor>4</factor>
+        <factor>4.94</factor>
+        <offset-deg>-27.2</offset-deg>
         <center>
-            <x-m>-4.517</x-m>
+            <x-m>-4.1785</x-m>
             <y-m>-0.058</y-m>
-            <z-m>0.504</z-m>
+            <z-m>0.8034</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
@@ -2060,16 +2061,16 @@
         <type>rotate</type>
         <object-name>Batt-amp</object-name>
         <property>systems/electrical/ammeter</property>
-        <factor>4</factor>
+        <factor>-0.825</factor>
         <center>
-            <x-m>-4.517</x-m>
+            <x-m>-4.1785</x-m>
             <y-m>-0.058</y-m>
-            <z-m>0.504</z-m>
+            <z-m>0.8034</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
@@ -2083,48 +2084,48 @@
             <entry><ind>130.0</ind><dep>88.0</dep></entry>
         </interpolation>
         <center>
-            <x-m>-4.521</x-m>
-            <y-m>0.068</y-m>
-            <z-m>0.496</z-m>
+            <x-m>-4.1849</x-m>
+            <y-m>0.0923</y-m>
+            <z-m>0.7944</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
     <animation>
         <type>rotate</type>
         <object-name>LHpropAmps</object-name>
-        <property>systems/electrical/gen-load[0]</property>
-        <factor>-75</factor>
+        <property>systems/anti-ice/prop-deice-amps</property>
+        <factor>-2.26</factor>
         <center>
-            <x-m>-4.517</x-m>
-            <y-m>0.109</y-m>
-            <z-m>0.504</z-m>
+            <x-m>-4.1775</x-m>
+            <y-m>0.1388</y-m>
+            <z-m>0.8047</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
     <animation>
         <type>rotate</type>
         <object-name>RHpropAmps</object-name>
-        <property>systems/electrical/gen-load[1]</property>
-        <factor>75</factor>
+        <property>systems/anti-ice/prop-deice-amps</property>
+        <factor>2.26</factor>
         <center>
-            <x-m>-4.517</x-m>
-            <y-m>0.144</y-m>
-            <z-m>0.504</z-m>
+            <x-m>-4.1781</x-m>
+            <y-m>0.1821</y-m>
+            <z-m>0.8039</z-m>
         </center>
         <axis>
-            <x>-0.866</x>
+            <x>-0.8149</x>
             <y>0</y>
-            <z>0.50</z>
+            <z>0.5796</z>
         </axis>
     </animation>
 
@@ -2191,22 +2192,27 @@
         <object-name>FQneedle.1</object-name>
         <property>consumables/fuel/tank/level-lbs</property>
         <interpolation>
-            <entry>
-                <ind>0.0</ind><dep>0.0</dep>
-            </entry>
-            <entry>
-                <ind>2000.0</ind><dep>240.0</dep>
-            </entry>
+            <entry><ind>0</ind><dep>0</dep></entry>
+            <entry><ind>200</ind><dep>21.7</dep></entry>
+            <entry><ind>400</ind><dep>41.4</dep></entry>
+            <entry><ind>600</ind><dep>61.9</dep></entry>
+            <entry><ind>800</ind><dep>87.3</dep></entry>
+            <entry><ind>1000</ind><dep>117</dep></entry>
+            <entry><ind>1200</ind><dep>146.7</dep></entry>
+            <entry><ind>1400</ind><dep>172.1</dep></entry>
+            <entry><ind>1600</ind><dep>192.6</dep></entry>
+            <entry><ind>1800</ind><dep>212.3</dep></entry>
+            <entry><ind>2000</ind><dep>234</dep></entry>
         </interpolation>
         <center>
-            <x-m>-4.603</x-m>
-            <y-m>-0.606</y-m>
-            <z-m>-0.091</z-m>
+            <x-m>-4.2207</x-m>
+            <y-m>-0.7075</y-m>
+            <z-m>-0.0055</z-m>
         </center>
         <axis>
-            <x>-0.075</x>
-            <y>-0.863</y>
-            <z>-0.50</z>
+            <x>-0.064</x>
+            <y>-0.85</y>
+            <z>-0.523</z>
         </axis>
     </animation>
 
@@ -2215,22 +2221,27 @@
         <object-name>FQneedle.2</object-name>
         <property>consumables/fuel/tank[1]/level-lbs</property>
         <interpolation>
-            <entry>
-                <ind>0.0</ind><dep>0.0</dep>
-            </entry>
-            <entry>
-                <ind>2000.0</ind><dep>240.0</dep>
-            </entry>
+            <entry><ind>0</ind><dep>0</dep></entry>
+            <entry><ind>200</ind><dep>21.7</dep></entry>
+            <entry><ind>400</ind><dep>41.4</dep></entry>
+            <entry><ind>600</ind><dep>61.9</dep></entry>
+            <entry><ind>800</ind><dep>87.3</dep></entry>
+            <entry><ind>1000</ind><dep>117</dep></entry>
+            <entry><ind>1200</ind><dep>146.7</dep></entry>
+            <entry><ind>1400</ind><dep>172.1</dep></entry>
+            <entry><ind>1600</ind><dep>192.6</dep></entry>
+            <entry><ind>1800</ind><dep>212.3</dep></entry>
+            <entry><ind>2000</ind><dep>234</dep></entry>
         </interpolation>
         <center>
-            <x-m>-4.711</x-m>
-            <y-m>-0.597</y-m>
-            <z-m>-0.091</z-m>
+            <x-m>-4.3674</x-m>
+            <y-m>-0.6964</y-m>
+            <z-m>-0.0055</z-m>
         </center>
         <axis>
-            <x>-0.075</x>
-            <y>-0.863</y>
-            <z>-0.50</z>
+            <x>-0.064</x>
+            <y>-0.85</y>
+            <z>-0.523</z>
         </axis>
     </animation>
 
@@ -2244,14 +2255,14 @@
             <entry><ind>1.0</ind><dep>180.0</dep></entry>
         </interpolation>
         <center>
-            <x-m>-4.827</x-m>
-            <y-m>-0.077</y-m>
-            <z-m>-0.299</z-m>
+            <x-m>-4.5245</x-m>
+            <y-m>-0.0801</y-m>
+            <z-m>-0.0823</z-m>
         </center>
         <axis>
-            <x>-0.766</x>
+            <x>-0.695</x>
             <y>0</y>
-            <z>-0.643</z>
+            <z>-0.719</z>
         </axis>
     </animation>
 
@@ -3187,9 +3198,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.904</x-m>
-            <y-m>-0.245</y-m>
-            <z-m>-0.048</z-m>
+            <x-m>-4.63</x-m>
+            <y-m>-0.2793</y-m>
+            <z-m>0.1938</z-m>
         </center>
         <action>
             <button>0</button>
@@ -3226,9 +3237,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.904</x-m>
-            <y-m>0.487</y-m>
-            <z-m>-0.048</z-m>
+            <x-m>-4.63</x-m>
+            <y-m>0.588</y-m>
+            <z-m>0.1938</z-m>
         </center>
         <action>
             <button>0</button>
@@ -3366,9 +3377,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.909</x-m>
-            <y-m>-0.053</y-m>
-            <z-m>-0.095</z-m>
+            <x-m>-4.642</x-m>
+            <y-m>-0.0517</y-m>
+            <z-m>0.1424</z-m>
         </center>
         <action>
             <button>0</button>
@@ -3416,7 +3427,7 @@
 
 
 
-<!-- clock1 -->
+<!-- clock1 (pilot): dial centre y -0.6154, z 0.2224 -->
 
     <animation>
         <type>rotate</type>
@@ -3429,9 +3440,9 @@
             <z>0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>-0.529</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>-0.6154</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
@@ -3446,9 +3457,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>-0.529</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>-0.6154</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
@@ -3463,14 +3474,14 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>-0.529</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>-0.6154</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
 
-<!-- clock2 -->
+<!-- clock2 (copilot): dial centre y 0.6416, z 0.2224 -->
 
     <animation>
         <type>rotate</type>
@@ -3483,9 +3494,9 @@
             <z>0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>0.532</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>0.6416</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
@@ -3500,9 +3511,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>0.532</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>0.6416</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
@@ -3517,9 +3528,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.920</x-m>
-            <y-m>0.532</y-m>
-            <z-m>-0.022</z-m>
+            <x-m>-4.65</x-m>
+            <y-m>0.6416</y-m>
+            <z-m>0.2224</z-m>
         </center>
     </animation>
 
@@ -4838,9 +4849,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.907</x-m>
-            <y-m>-0.094</y-m>
-            <z-m>-0.049</z-m>
+            <x-m>-4.634</x-m>
+            <y-m>-0.1004</y-m>
+            <z-m>0.1927</z-m>
         </center>
         <action>
             <button>0</button>
@@ -5026,9 +5037,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.913</x-m>
-            <y-m>0.168</y-m>
-            <z-m>-0.049</z-m>
+            <x-m>-4.634</x-m>
+            <y-m>0.21</y-m>
+            <z-m>0.1927</z-m>
         </center>
         <action>
             <button>0</button>
@@ -5215,9 +5226,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.913</x-m>
-            <y-m>-0.029</y-m>
-            <z-m>-0.049</z-m>
+            <x-m>-4.633</x-m>
+            <y-m>-0.0234</y-m>
+            <z-m>0.1927</z-m>
         </center>
         <action>
             <button>0</button>
@@ -5403,9 +5414,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.913</x-m>
-            <y-m>0.102</y-m>
-            <z-m>-0.049</z-m>
+            <x-m>-4.633</x-m>
+            <y-m>0.1319</y-m>
+            <z-m>0.1924</z-m>
         </center>
         <action>
             <button>0</button>
@@ -5592,9 +5603,9 @@
             <z>0.0</z>
         </axis>
         <center>
-            <x-m>-4.807</x-m>
-            <y-m>-0.091</y-m>
-            <z-m>-0.175</z-m>
+            <x-m>-4.633</x-m>
+            <y-m>-0.0968</y-m>
+            <z-m>0.0535</z-m>
         </center>
         <action>
             <button>0</button>
@@ -5840,14 +5851,14 @@
         <property>controls/electric/wipers/switch-pos</property>
         <factor>35.0</factor>
         <center>
-            <x-m>-3.584</x-m>
-            <y-m>0.207</y-m>
-            <z-m>0.921</z-m>
+            <x-m>-4.0391</x-m>
+            <y-m>0.1299</y-m>
+            <z-m>0.8396</z-m>
         </center>
         <axis>
-            <x>0</x>
-            <y>1</y>
-            <z>0</z>
+            <x>-0.509</x>
+            <y>0</y>
+            <z>0.861</z>
         </axis>
     </animation>
 
