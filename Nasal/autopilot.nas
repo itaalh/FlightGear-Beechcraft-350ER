@@ -3,7 +3,7 @@
 #
 # The control loops run inside JSBSim (Systems/autopilot.xml, properties /fdm/jsbsim/ap/...).
 # This module:
-#   - implements the cockpit FGC panel (HDG, NAV, APPR, BC, ALT, AP, YD, SR, BNK, pitch wheel),
+#   - implements the cockpit FGC panel (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, AP, YD, SR, BNK, pitch wheel),
 #   - accepts the standard FlightGear autopilot dialog (/autopilot/locks/...),
 #   - feeds navigation data (heading bug, NAV1/LOC/GS) to the JSBSim loops,
 #   - trims the elevator while engaged and handles altitude pre-select capture.
@@ -29,6 +29,7 @@ var half_bank = 0;
 var updating_locks = 0;
 var target_pitch = 0.0;
 var target_vs = 0.0;
+var alt_offset = nil;    # true - indicated altitude, low-pass filtered (the altimeter lags)
 
 var annunciate = func {
     fgc.getNode("internal/lateral", 1).setValue(lateral);
@@ -121,6 +122,24 @@ var btn_pressed = func(name, state, toggle = 0) {
             vertical = "ALT"; alt_armed = 0;
             set.getNode("target-altitude-ft", 1).setDoubleValue(math.round((getprop("instrumentation/altimeter/indicated-altitude-ft") or 0) / 10) * 10);
         }
+    } elsif (name == "vs") {
+        # VS: hold the current vertical speed (pitch wheel adjusts it), altitude pre-select armed
+        if (vertical == "VS") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        else {
+            target_vs = math.max(-3000, math.min(3000, math.round((getprop("velocities/vertical-speed-fps") or 0) * 60 / 100) * 100));
+            set.getNode("vertical-speed-fpm", 1).setDoubleValue(target_vs);
+            vertical = "VS"; alt_armed = 1;
+        }
+    } elsif (name == "climb" or name == "ias") {
+        # CLIMB / IAS: hold the current indicated airspeed with pitch, altitude pre-select armed
+        if (vertical == "IAS") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        else {
+            set.getNode("target-speed-kt", 1).setDoubleValue(math.round(getprop("instrumentation/airspeed-indicator/indicated-speed-kt") or 150));
+            vertical = "IAS"; alt_armed = 1;
+        }
+    } elsif (name == "alts") {
+        # ALTS: arm / disarm the capture of the pre-selected altitude
+        alt_armed = !alt_armed;
     }
     fd_on = 1;
     annunciate();
@@ -216,8 +235,11 @@ var update = func {
     var true_hdg = heading_bug + magvar;
     if (locks.getNode("heading", 1).getValue() == "true-heading-hold") true_hdg = set.getNode("true-heading-deg", 1).getValue() or 0;
     ap.getNode("target-heading-true-deg", 1).setDoubleValue(true_hdg);
-    # altitude target in true altitude (the JSBSim loop uses h-sl-ft)
-    ap.getNode("target-altitude-ft", 1).setDoubleValue(alt_target + ((getprop("position/altitude-ft") or 0) - alt_ind));
+    # altitude target in true altitude (the JSBSim loop uses h-sl-ft); the true - indicated offset is
+    # filtered (~10 s) so that the altimeter lag in climbs and descents does not move the target
+    var off = (getprop("position/altitude-ft") or 0) - alt_ind;
+    alt_offset = (alt_offset == nil) ? off : alt_offset + (off - alt_offset) * dt / 10.0;
+    ap.getNode("target-altitude-ft", 1).setDoubleValue(alt_target + alt_offset);
     ap.getNode("target-vs-fpm", 1).setDoubleValue(set.getNode("vertical-speed-fpm", 1).getValue() or 0);
     ap.getNode("target-ias-kt", 1).setDoubleValue(set.getNode("target-speed-kt", 1).getValue() or 200);
     ap.getNode("target-pitch-deg", 1).setDoubleValue(target_pitch);
@@ -229,11 +251,14 @@ var update = func {
     ap.getNode("gs-deflection", 1).setDoubleValue(gs_defl);
     ap.getNode("gs-valid", 1).setBoolValue(has_gs);
 
-    # auto-trim: transfer the autopilot elevator command into the pitch trim
+    # auto-trim: slowly offload a sustained autopilot elevator command into the pitch trim (deadband 0.03,
+    # 0.03 /s per unit of command). A faster trim adds a second integrator to the JSBSim pitch loop and makes
+    # ALT / VS hold oscillate (checked with the JSBSim loop alone: 0.35 /s diverges to +-13 deg pitch).
     if (engaged) {
         var cmd = ap.getNode("elevator-cmd", 1).getValue() or 0;
+        var excess = (cmd > 0.03) ? cmd - 0.03 : ((cmd < -0.03) ? cmd + 0.03 : 0);
         var trim = getprop("controls/flight/elevator-trim") or 0;
-        trim = math.max(-1, math.min(1, trim + cmd * 0.35 * dt));
+        trim = math.max(-1, math.min(1, trim + excess * 0.03 * dt));
         setprop("controls/flight/elevator-trim", trim);
         fgc.getNode("internal/trim", 1).setValue(math.abs(cmd) > 0.15 ? (cmd < 0 ? "TRIM UP" : "TRIM DN") : "");
         # disconnect on stall warning or excessive attitude

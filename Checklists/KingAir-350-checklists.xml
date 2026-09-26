@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- King Air 350 checklists (Help > Aircraft Checklists, and the CHKLIST page of the G1000 MFD).
+     Normal procedures after a King Air 350 checklist, adapted to the controls of this aircraft;
+     speeds and limits from the FlightSafety King Air 300/350 Pilot Training Manual.
+     Items with a condition are ticked automatically; items with a binding can be done from the dialog.
+     License: GPL v2 or later -->
+<PropertyList>
+  <checklist>
+    <title>Before Start</title>
+    <item>
+      <name>Parking brake</name>
+      <value>SET</value>
+      <condition><equals><property>/controls/gear/brake-parking</property><value>1</value></equals></condition>
+      <binding><command>property-assign</command><property>/controls/gear/brake-parking</property><value>1</value></binding>
+    </item>
+    <item>
+      <name>Power levers</name>
+      <value>IDLE</value>
+      <condition><and><less-than><property>/controls/engines/engine[0]/throttle</property><value>0.05</value></less-than><less-than><property>/controls/engines/engine[1]/throttle</property><value>0.05</value></less-than></and></condition>
+    </item>
+    <item>
+      <name>Propeller levers</name>
+      <value>HIGH RPM (full forward)</value>
+      <condition><and><greater-than><property>/controls/engines/engine[0]/propeller-pitch</property><value>0.98</value></greater-than><greater-than><property>/controls/engines/engine[1]/propeller-pitch</property><value>0.98</value></greater-than></and></condition>
+    </item>
+    <item>
+      <name>Condition levers</name>
+      <value>FUEL CUTOFF</value>
+      <condition><and><less-than><property>/controls/engines/engine[0]/condition</property><value>0.05</value></less-than><less-than><property>/controls/engines/engine[1]/condition</property><value>0.05</value></less-than></and></condition>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>UP</value>
+      <condition><less-than><property>/controls/flight/flaps</property><value>0.01</value></less-than></condition>
+    </item>
+    <item>
+      <name>Landing gear handle</name>
+      <value>DOWN</value>
+      <condition><property>/controls/gear/gear-down</property></condition>
+    </item>
+    <item>
+      <name>Avionics master</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/electric/avionics-switch</property></not></condition>
+    </item>
+    <item>
+      <name>Battery</name>
+      <value>ON</value>
+      <condition><property>/controls/electric/battery-switch</property></condition>
+      <binding><command>property-assign</command><property>/controls/electric/battery-switch</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Annunciators</name>
+      <value>TEST (press and hold)</value>
+    </item>
+    <item>
+      <name>Fuel quantity</name>
+      <value>CHECK</value>
+    </item>
+    <item>
+      <name>Aux fuel transfer</name>
+      <value>AUTO</value>
+    </item>
+    <item>
+      <name>Beacon</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/beacon/switch</property></condition>
+      <binding><command>property-assign</command><property>/controls/lighting/beacon/switch</property><value>true</value></binding>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Engine Start (right, then left)</title>
+    <item>
+      <name>Power lever</name>
+      <value>IDLE</value>
+    </item>
+    <item>
+      <name>Ignition and engine start switch</name>
+      <value>ON (starter engaged)</value>
+    </item>
+    <item>
+      <name>N1</name>
+      <value>12 % minimum</value>
+    </item>
+    <item>
+      <name>Condition lever</name>
+      <value>LOW IDLE (light-off)</value>
+    </item>
+    <item>
+      <name>ITT and N1</name>
+      <value>MONITOR (1000 C maximum for starting)</value>
+    </item>
+    <item>
+      <name>FUEL PRES LO annunciator</name>
+      <value>EXTINGUISHED</value>
+    </item>
+    <item>
+      <name>Ignition and engine start switch</name>
+      <value>OFF at 50 % N1</value>
+    </item>
+    <item>
+      <name>Oil pressure</name>
+      <value>CHECK (60 psi minimum, 90-135 normal)</value>
+    </item>
+    <item>
+      <name>OIL PRES LO annunciator</name>
+      <value>EXTINGUISHED</value>
+    </item>
+    <item>
+      <name>Generator</name>
+      <value>ON (DC GEN annunciator extinguished)</value>
+    </item>
+    <item>
+      <name>Repeat</name>
+      <value>for the other engine</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Before Taxi</title>
+    <item>
+      <name>Generators</name>
+      <value>ON</value>
+      <condition><and><property>/controls/electric/engine[0]/bus-tie</property><property>/controls/electric/engine[1]/bus-tie</property></and></condition>
+    </item>
+    <item>
+      <name>Inverter and AC buses</name>
+      <value>ON</value>
+      <condition><and><property>/controls/electric/inverter-switch</property><property>/controls/electric/LH-AC-bus</property><property>/controls/electric/RH-AC-bus</property></and></condition>
+    </item>
+    <item>
+      <name>Avionics master</name>
+      <value>ON</value>
+      <condition><property>/controls/electric/avionics-switch</property></condition>
+      <binding><command>property-assign</command><property>/controls/electric/avionics-switch</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Battery charge</name>
+      <value>CHECK (BATTERY CHARGE extinguishes)</value>
+    </item>
+    <item>
+      <name>Nav lights</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/nav-lights</property></condition>
+      <binding><command>property-assign</command><property>/controls/lighting/nav-lights</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Altimeters and heading</name>
+      <value>SET</value>
+    </item>
+    <item>
+      <name>Radios and avionics</name>
+      <value>SET</value>
+    </item>
+    <item>
+      <name>Autopilot</name>
+      <value>OFF, flight director ON</value>
+    </item>
+    <item>
+      <name>Yaw damper</name>
+      <value>AS REQUIRED</value>
+    </item>
+    <item>
+      <name>Autofeather</name>
+      <value>ARM</value>
+      <condition><property>/controls/engines/autofeather</property></condition>
+      <binding><command>property-assign</command><property>/controls/engines/autofeather</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Taxi light</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/taxi-lights</property></condition>
+      <binding><command>property-assign</command><property>/controls/lighting/taxi-lights</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Parking brake</name>
+      <value>RELEASE (20 kt maximum taxi speed)</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Before Takeoff</title>
+    <item>
+      <name>Parking brake</name>
+      <value>SET</value>
+      <condition><equals><property>/controls/gear/brake-parking</property><value>1</value></equals></condition>
+    </item>
+    <item>
+      <name>Propeller levers</name>
+      <value>HIGH RPM</value>
+      <condition><and><greater-than><property>/controls/engines/engine[0]/propeller-pitch</property><value>0.98</value></greater-than><greater-than><property>/controls/engines/engine[1]/propeller-pitch</property><value>0.98</value></greater-than></and></condition>
+    </item>
+    <item>
+      <name>Condition levers</name>
+      <value>LOW IDLE or HIGH IDLE</value>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>UP or APPROACH (40 %)</value>
+      <condition><less-than><property>/controls/flight/flaps</property><value>0.45</value></less-than></condition>
+    </item>
+    <item>
+      <name>Trim</name>
+      <value>SET for takeoff</value>
+    </item>
+    <item>
+      <name>Fuel quantity and balance</name>
+      <value>CHECK</value>
+    </item>
+    <item>
+      <name>Doors</name>
+      <value>CLOSED (DOOR UNLOCKED extinguished)</value>
+      <condition><and><less-than><property>/sim/model/door-positions/passenger/position-norm</property><value>0.01</value></less-than><less-than><property>/sim/model/door-positions/crew/position-norm</property><value>0.01</value></less-than></and></condition>
+    </item>
+    <item>
+      <name>Annunciators</name>
+      <value>CHECK (no warning)</value>
+    </item>
+    <item>
+      <name>Rudder boost</name>
+      <value>ON</value>
+      <condition><property>/controls/flight/rudder-boost</property></condition>
+    </item>
+    <item>
+      <name>Autofeather</name>
+      <value>ARMED</value>
+      <condition><property>/controls/engines/autofeather</property></condition>
+    </item>
+    <item>
+      <name>Pitot heat</name>
+      <value>ON</value>
+      <condition><and><property>/controls/anti-ice/pitot-heat[0]</property><property>/controls/anti-ice/pitot-heat[1]</property></and></condition>
+    </item>
+    <item>
+      <name>Engine anti-ice</name>
+      <value>AS REQUIRED</value>
+    </item>
+    <item>
+      <name>Landing lights</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/landing-lights</property></condition>
+    </item>
+    <item>
+      <name>Taxi light</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/lighting/taxi-lights</property></not></condition>
+    </item>
+    <item>
+      <name>Strobes</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/strobe/switch</property></condition>
+      <binding><command>property-assign</command><property>/controls/lighting/strobe/switch</property><value>true</value></binding>
+    </item>
+    <item>
+      <name>Transponder</name>
+      <value>ON / ALT</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Takeoff</title>
+    <item>
+      <name>Brakes</name>
+      <value>RELEASE</value>
+      <condition><equals><property>/controls/gear/brake-parking</property><value>0</value></equals></condition>
+    </item>
+    <item>
+      <name>Power</name>
+      <value>SET (100 % torque, ITT 820 C, N1 104 % maximum)</value>
+    </item>
+    <item>
+      <name>V1</name>
+      <value>105 KIAS</value>
+    </item>
+    <item>
+      <name>Vr</name>
+      <value>110 KIAS - rotate to about 10 degrees</value>
+    </item>
+    <item>
+      <name>V2</name>
+      <value>115 KIAS</value>
+    </item>
+    <item>
+      <name>Landing gear</name>
+      <value>UP (positive rate)</value>
+      <condition><not><property>/controls/gear/gear-down</property></not></condition>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>UP</value>
+    </item>
+    <item>
+      <name>Climb</name>
+      <value>140 KIAS (Vy)</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Climb</title>
+    <item>
+      <name>Yaw damper</name>
+      <value>ON</value>
+      <condition><property>/controls/flight/yaw-damper</property></condition>
+    </item>
+    <item>
+      <name>Landing lights</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Cruise climb</name>
+      <value>170 KIAS to 10000 ft, then 10 kt less per 5000 ft</value>
+    </item>
+    <item>
+      <name>Propellers</name>
+      <value>1600 RPM</value>
+    </item>
+    <item>
+      <name>Engine instruments</name>
+      <value>MONITOR (ITT 820 C maximum)</value>
+    </item>
+    <item>
+      <name>Pressurization</name>
+      <value>CHECK (cabin rate and differential)</value>
+    </item>
+    <item>
+      <name>Altimeters</name>
+      <value>29.92 at transition altitude</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Cruise</title>
+    <item>
+      <name>Power</name>
+      <value>SET (cruise torque, ITT within limits)</value>
+    </item>
+    <item>
+      <name>Propellers</name>
+      <value>1600 RPM</value>
+    </item>
+    <item>
+      <name>Fuel balance</name>
+      <value>CHECK (300 lb maximum imbalance)</value>
+    </item>
+    <item>
+      <name>Engine instruments</name>
+      <value>MONITOR</value>
+    </item>
+    <item>
+      <name>Anti-ice</name>
+      <value>AS REQUIRED</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Descent</title>
+    <item>
+      <name>Altimeters</name>
+      <value>SET</value>
+    </item>
+    <item>
+      <name>Cabin altitude controller</name>
+      <value>SET field elevation + 500 ft</value>
+    </item>
+    <item>
+      <name>Autofeather</name>
+      <value>ARM</value>
+      <condition><property>/controls/engines/autofeather</property></condition>
+    </item>
+    <item>
+      <name>Speed</name>
+      <value>263 KIAS / M 0.58 maximum</value>
+    </item>
+    <item>
+      <name>Fuel balance</name>
+      <value>CHECK</value>
+    </item>
+    <item>
+      <name>Landing lights</name>
+      <value>ON below FL100</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Approach</title>
+    <item>
+      <name>Autofeather</name>
+      <value>ARMED</value>
+      <condition><property>/controls/engines/autofeather</property></condition>
+    </item>
+    <item>
+      <name>Landing lights</name>
+      <value>ON</value>
+      <condition><property>/controls/lighting/landing-lights</property></condition>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>APPROACH below 202 KIAS</value>
+    </item>
+    <item>
+      <name>Landing gear</name>
+      <value>DOWN below 184 KIAS</value>
+      <condition><property>/controls/gear/gear-down</property></condition>
+    </item>
+    <item>
+      <name>Propeller levers</name>
+      <value>HIGH RPM</value>
+      <condition><and><greater-than><property>/controls/engines/engine[0]/propeller-pitch</property><value>0.98</value></greater-than><greater-than><property>/controls/engines/engine[1]/propeller-pitch</property><value>0.98</value></greater-than></and></condition>
+    </item>
+    <item>
+      <name>Condition levers</name>
+      <value>HIGH IDLE</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Landing</title>
+    <item>
+      <name>Landing gear</name>
+      <value>DOWN - 3 GREEN</value>
+      <condition><and><greater-than><property>/gear/gear[0]/position-norm</property><value>0.99</value></greater-than><greater-than><property>/gear/gear[1]/position-norm</property><value>0.99</value></greater-than><greater-than><property>/gear/gear[2]/position-norm</property><value>0.99</value></greater-than></and></condition>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>DOWN below 158 KIAS</value>
+    </item>
+    <item>
+      <name>Autopilot and yaw damper</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Power levers</name>
+      <value>IDLE at touchdown</value>
+    </item>
+    <item>
+      <name>Beta / reverse</name>
+      <value>AS REQUIRED (Delete key)</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>After Landing</title>
+    <item>
+      <name>Power levers</name>
+      <value>IDLE / BETA</value>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>UP</value>
+      <condition><less-than><property>/controls/flight/flaps</property><value>0.01</value></less-than></condition>
+    </item>
+    <item>
+      <name>Condition levers</name>
+      <value>LOW IDLE</value>
+    </item>
+    <item>
+      <name>Landing lights and strobes</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Taxi light</name>
+      <value>ON</value>
+    </item>
+    <item>
+      <name>Pitot heat and anti-ice</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Transponder</name>
+      <value>STANDBY</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Shutdown</title>
+    <item>
+      <name>Parking brake</name>
+      <value>SET</value>
+      <condition><equals><property>/controls/gear/brake-parking</property><value>1</value></equals></condition>
+      <binding><command>property-assign</command><property>/controls/gear/brake-parking</property><value>1</value></binding>
+    </item>
+    <item>
+      <name>Avionics master</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/electric/avionics-switch</property></not></condition>
+    </item>
+    <item>
+      <name>Autofeather</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/engines/autofeather</property></not></condition>
+    </item>
+    <item>
+      <name>Inverter</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/electric/inverter-switch</property></not></condition>
+    </item>
+    <item>
+      <name>Power levers</name>
+      <value>IDLE</value>
+      <condition><and><less-than><property>/controls/engines/engine[0]/throttle</property><value>0.05</value></less-than><less-than><property>/controls/engines/engine[1]/throttle</property><value>0.05</value></less-than></and></condition>
+    </item>
+    <item>
+      <name>Condition levers</name>
+      <value>FUEL CUTOFF</value>
+      <condition><and><less-than><property>/controls/engines/engine[0]/condition</property><value>0.05</value></less-than><less-than><property>/controls/engines/engine[1]/condition</property><value>0.05</value></less-than></and></condition>
+    </item>
+    <item>
+      <name>Lights</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Battery</name>
+      <value>OFF</value>
+      <condition><not><property>/controls/electric/battery-switch</property></not></condition>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Emergency: Engine failure after V1</title>
+    <item>
+      <name>Directional control</name>
+      <value>MAINTAIN (Vmca 94 KIAS)</value>
+    </item>
+    <item>
+      <name>Power</name>
+      <value>MAXIMUM ALLOWABLE on the operating engine</value>
+    </item>
+    <item>
+      <name>Autofeather</name>
+      <value>CHECK failed propeller feathered</value>
+    </item>
+    <item>
+      <name>Landing gear</name>
+      <value>UP (positive rate)</value>
+    </item>
+    <item>
+      <name>Airspeed</name>
+      <value>125 KIAS (Vyse)</value>
+    </item>
+    <item>
+      <name>Flaps</name>
+      <value>UP</value>
+    </item>
+    <item>
+      <name>Failed engine power lever</name>
+      <value>IDLE</value>
+    </item>
+    <item>
+      <name>Failed engine propeller lever</name>
+      <value>FEATHER</value>
+    </item>
+    <item>
+      <name>Failed engine condition lever</name>
+      <value>FUEL CUTOFF</value>
+    </item>
+    <item>
+      <name>Bank</name>
+      <value>up to 5 degrees toward the operating engine</value>
+    </item>
+  </checklist>
+  <checklist>
+    <title>Emergency: Engine failure in flight</title>
+    <item>
+      <name>Power</name>
+      <value>AS REQUIRED on the operating engine</value>
+    </item>
+    <item>
+      <name>Identify</name>
+      <value>dead foot, dead engine</value>
+    </item>
+    <item>
+      <name>Failed engine power lever</name>
+      <value>IDLE</value>
+    </item>
+    <item>
+      <name>Failed engine propeller lever</name>
+      <value>FEATHER</value>
+    </item>
+    <item>
+      <name>Failed engine condition lever</name>
+      <value>FUEL CUTOFF</value>
+    </item>
+    <item>
+      <name>Failed engine generator</name>
+      <value>OFF</value>
+    </item>
+    <item>
+      <name>Airspeed</name>
+      <value>125 KIAS (Vyse) in climb, never below 94 KIAS (Vmca)</value>
+    </item>
+    <item>
+      <name>Electrical load</name>
+      <value>MONITOR (one generator)</value>
+    </item>
+    <item>
+      <name>Fuel crossfeed</name>
+      <value>AS REQUIRED</value>
+    </item>
+    <item>
+      <name>Land</name>
+      <value>at the nearest suitable airport</value>
+    </item>
+  </checklist>
+</PropertyList>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- Replaces FlightGear's generic autopilot (Aircraft/Generic/generic-autopilot.xml), which would otherwise
+     react to /autopilot/locks and drive /controls/flight/* in parallel with the King Air autopilot. The
+     King Air loops run inside JSBSim (Systems/autopilot.xml), bridged by Nasal/autopilot.nas.
+     License: GPL v2 or later -->
+<PropertyList>
+</PropertyList>

@@ -93,6 +93,18 @@ var KingAirEIS =
     obj._text(root, "GEN LOAD %", 8, y + 54, 13, "left-baseline", EIS_CYAN);
     obj._loadL = obj._text(root, "", 108, y + 54, 16, "right-baseline", EIS_WHITE);
     obj._loadR = obj._text(root, "", 146, y + 54, 16, "right-baseline", EIS_WHITE);
+    obj._text(root, "PROP DEICE A", 8, y + 74, 13, "left-baseline", EIS_CYAN);
+    obj._propAmps = obj._text(root, "", 146, y + 74, 16, "right-baseline", EIS_WHITE);
+    y += 88;
+
+    # pressurization (Nasal/pressurization.nas)
+    root.createChild("path").moveTo(4, y - 4).horizTo(146).setColor(EIS_GREY).setStrokeLineWidth(1);
+    obj._text(root, "CABIN ALT FT", 8, y + 14, 13, "left-baseline", EIS_CYAN);
+    obj._cabinAlt = obj._text(root, "", 146, y + 14, 16, "right-baseline", EIS_WHITE);
+    obj._text(root, "CABIN RATE FPM", 8, y + 34, 13, "left-baseline", EIS_CYAN);
+    obj._cabinRate = obj._text(root, "", 146, y + 34, 16, "right-baseline", EIS_WHITE);
+    obj._text(root, "DIFF PSI", 8, y + 54, 13, "left-baseline", EIS_CYAN);
+    obj._diff = obj._text(root, "", 146, y + 54, 16, "right-baseline", EIS_WHITE);
 
     obj._fuelMax = nil;
     return obj;
@@ -152,8 +164,11 @@ var KingAirEIS =
   _setGauge : func(gauge, vl, vr) {
     var g = gauge.def;
     me._setPointers(gauge, vl, vr);
-    gauge.valueL.setText(sprintf(g.fmt, vl)).setColor(eis_zone_colour(g, vl));
-    gauge.valueR.setText(sprintf(g.fmt, vr)).setColor(eis_zone_colour(g, vr));
+    # colour from the displayed (rounded) value: a propeller governed at 1700.2 rpm reads 1700, not red
+    var tl = sprintf(g.fmt, vl);
+    var tr = sprintf(g.fmt, vr);
+    gauge.valueL.setText(tl).setColor(eis_zone_colour(g, num(tl)));
+    gauge.valueR.setText(tr).setColor(eis_zone_colour(g, num(tr)));
   },
 
   updateEngineData : func(data) {
@@ -178,6 +193,15 @@ var KingAirEIS =
     me._amps.setText(sprintf("%+.0f", data.Amps));
     me._loadL.setText(sprintf("%.0f", data.GenLoad[0] * 100));
     me._loadR.setText(sprintf("%.0f", data.GenLoad[1] * 100));
+    me._propAmps.setText(sprintf("%.0f", data.PropAmps));
+
+    # cabin altitude: white, amber above 10000 ft (CABIN ALTITUDE), red above 12000 ft (CABIN ALT HI);
+    # differential: green 0-6.6 psi (approved range), red above
+    var ca = data.CabinAlt;
+    me._cabinAlt.setText(sprintf("%.0f", math.round(ca, 50)))
+      .setColor(ca > 12000 ? EIS_RED : (ca > 10000 ? EIS_YELLOW : EIS_WHITE));
+    me._cabinRate.setText(sprintf("%+.0f", math.round(data.CabinRate, 50)));
+    me._diff.setText(sprintf("%.1f", data.DiffPsi)).setColor(data.DiffPsi > 6.6 ? EIS_RED : EIS_WHITE);
   },
 
   # Menu tree. engineMenu is referenced from most pages as softkey 0:

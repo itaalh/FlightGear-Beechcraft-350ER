@@ -113,17 +113,32 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - **Rudder boost** pneumatique (déflexion proportionnelle à l'écart de couple) et **amortisseur de lacet**.
 - **Pilote automatique 3 axes** dont les boucles tournent dans JSBSim (`Systems/autopilot.xml`, testées
   hors FlightGear) : HDG, NAV/VOR, LOC avec programmation de gain à l'approche de la station, back course,
-  ALT avec capture de l'altitude présélectionnée, VS, IAS, glide. Trim automatique en tangage,
-  déconnexion sur action pilote ou attitude excessive. Le panneau FGC du cockpit et le dialogue
-  standard de FlightGear pilotent les mêmes modes.
+  ALT avec capture de l'altitude présélectionnée, VS, IAS, glide. Trim automatique lente en tangage
+  (zone morte), déconnexion sur action pilote ou attitude excessive. Le panneau FGC du cockpit (HDG, NAV,
+  APPR, BC, ALT, ALTS, VS, CLIMB, AP, YD, SR, 1/2 BANK, molette de tangage) et le dialogue standard de
+  FlightGear pilotent les mêmes modes ; le pilote automatique générique de FlightGear est désactivé
+  (`Systems/no-generic-autopilot.xml`), sinon il agissait lui aussi sur les gouvernes. Gains vérifiés sur le
+  350 et le 350ER (tenue d'altitude et VS à 3 000 et 10 000 ft).
 - Instrumentation complète (deux NAV/COM, ADF, DME, transpondeur, GPS KLN-90B, EGPWS).
 - **Annonciateurs** (`Nasal/annunciators.nas`, trois variantes) : panneau d'alarmes/cautions du cockpit classique,
   MASTER WARNING / MASTER CAUTION clignotants (extinction par appui), test des voyants, et messages CAS du G1000.
   Messages et seuils des tableaux d'annonciateurs du 350 : #1/#2 AC BUS, DOOR UNLOCKED, L/R FUEL PRES LO,
   L/R OIL PRES LO (< 60 psi), L/R DC GEN, L/R FUEL QTY (< 300 lb, délai 6 s), L/R NO FUEL XFR, BATTERY CHARGE,
   EXT PWR, RVS NOT READY, AUTOFTHER OFF, RUD BOOST OFF, L/R IGNITION ON, FUEL CROSSFEED, L/R AUTOFEATHER (N1 > 88 %),
-  L/R PROP PITCH (beta/reverse), LDG/TAXI LIGHT. Sans modèle de feu, d'air de prélèvement ni de pressurisation,
-  les voyants correspondants ne s'allument qu'au test.
+  L/R PROP PITCH (beta/reverse), LDG/TAXI LIGHT, CABIN ALT HI / CABIN DIFF HI / CABIN ALTITUDE, L/R BL AIR OFF,
+  L/R ENG ANTI-ICE, WING / TAIL DEICE, L/R BK DEICE ON, MAN TIES CLOSE. Sans modèle de feu ni de fuite d'air de
+  prélèvement, les voyants correspondants ne s'allument qu'au test.
+- **Protection contre le givre** (`Nasal/ice-protection.nas`) : panneau ICE PROTECTION animé et fonctionnel
+  (antigivrage moteur avec séparateur inertiel ~20 s, cycle SINGLE des boudins ailes 6 s puis empennage 4 s,
+  dégivrage hélice AUTO / MANUAL 26-32 A, réchauffage pare-brise, pitots, avertisseur de décrochage, mises à
+  l'air carburant, freins), charges électriques correspondantes ; interrupteurs AUTOFEATHER, GEN TIES, PROP TEST,
+  poignées coupe-feu (fermeture du robinet carburant) et bouton de test des voyants de train.
+- **Pressurisation** (`Nasal/pressurization.nas`, menu *King Air 350 › Pressurization*) : air de prélèvement des
+  deux moteurs, contrôleur altitude cabine / vitesse de variation, différentiel limité à 6,5 psid (cabine
+  ~2 800 ft au FL200, ~8 600 ft au FL310), cabine dépressurisée au sol (sauf TEST) et fuite sans air de
+  prélèvement ; altitude, variation et différentiel cabine affichés sur l'EIS du G1000.
+- **Check-lists** (`Checklists/KingAir-350-checklists.xml`) : procédures normales et deux urgences moteur, dans
+  *Aide › Check-lists de l'appareil* et sur la page CHKLIST du MFD G1000 ; items cochés automatiquement.
 
 ## Validation (JSBSim autonome, ISA, 15 000 lb sauf mention)
 
