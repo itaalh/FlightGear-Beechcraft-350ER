@@ -6009,7 +6009,8 @@
 
 
 
-    <!-- ===== G1000 variant: hide the instruments and radio heads covered by the two GDU displays ===== -->
+    <!-- ===== G1000 variant: hide the instruments, radio heads and engine gauges covered by the G1000 panel
+                (Models/G1000-panel.ac, Models/KingAir-G1000.xml) ===== -->
     <animation>
         <type>select</type>
         <object-name>ASI1.needle</object-name>
@@ -6083,6 +6084,82 @@
         <object-name>gpsDIRECT.btn</object-name>
         <object-name>gpsENT.btn</object-name>
         <object-name>CRSR.btn</object-name>
+        <object-name>RMI.compass</object-name>
+        <object-name>RMI.flag</object-name>
+        <object-name>slipball</object-name>
+        <object-name>GPWS.annun</object-name>
+        <object-name>GS.cancld</object-name>
+        <object-name>altnum10000</object-name>
+        <object-name>altnum1000</object-name>
+        <object-name>GPWS.inop</object-name>
+        <object-name>altnum100</object-name>
+        <object-name>GPWS.FlapOV</object-name>
+        <object-name>GPWS.flapOVRD</object-name>
+        <object-name>GPWS.APsteep</object-name>
+        <object-name>GPWS.stpapr</object-name>
+        <object-name>BaroKnob</object-name>
+        <object-name>Circle.282</object-name>
+        <object-name>Eng.gauges</object-name>
+        <object-name>Oil.needle2</object-name>
+        <object-name>RPM.needle</object-name>
+        <object-name>Torque.needle</object-name>
+        <object-name>Oil.needle1</object-name>
+        <object-name>TR.needle</object-name>
+        <object-name>PPH.needle</object-name>
+        <object-name>ITT.needle</object-name>
+        <object-name>Oil1.needle2</object-name>
+        <object-name>RPM1.needle</object-name>
+        <object-name>Torque1.needle</object-name>
+        <object-name>Oil1.needle1</object-name>
+        <object-name>TR1.needle</object-name>
+        <object-name>PPH1.needle</object-name>
+        <object-name>ITT1.needle</object-name>
+        <object-name>NAV2.knob1</object-name>
+        <object-name>NAV2.knob2</object-name>
+        <object-name>xmt.annun.002</object-name>
+        <object-name>Circle.127</object-name>
+        <object-name>Circle.128</object-name>
+        <object-name>NAV2.frq-high</object-name>
+        <object-name>NAV2.frq-low</object-name>
+        <object-name>Circle.129</object-name>
+        <object-name>NAV2.flipflop</object-name>
+        <object-name>XPDR.knob1</object-name>
+        <object-name>XPDR.knob2</object-name>
+        <object-name>COMM2.knob1</object-name>
+        <object-name>COMM2.knob2</object-name>
+        <object-name>xmt.annun.001</object-name>
+        <object-name>Circle.133</object-name>
+        <object-name>Circle.134</object-name>
+        <object-name>Circle.131</object-name>
+        <object-name>Circle.132</object-name>
+        <object-name>XPDR.frq-high</object-name>
+        <object-name>XPDR.frq-low</object-name>
+        <object-name>Circle.135</object-name>
+        <object-name>COMM2.frq-high</object-name>
+        <object-name>COMM2.frq-low</object-name>
+        <object-name>ATC.flipflop</object-name>
+        <object-name>Circle.130</object-name>
+        <object-name>COMM2.flipflop</object-name>
+        <object-name>RMI.btn1.002</object-name>
+        <object-name>RMI.adf1.002</object-name>
+        <object-name>RMI.vor1.002</object-name>
+        <object-name>RMI2.needle2adf</object-name>
+        <object-name>RMI2.needle2vor</object-name>
+        <object-name>ASI2.needle</object-name>
+        <object-name>ASI2.needle1</object-name>
+        <object-name>RMI2.needle1adf</object-name>
+        <object-name>RMI2.needle1vor</object-name>
+        <object-name>RMI.vor2.002</object-name>
+        <object-name>RMI.btn2.002</object-name>
+        <object-name>RMI.adf2.002</object-name>
+        <object-name>eadi2.off</object-name>
+        <object-name>ehsi2.off</object-name>
+        <object-name>CurveCircle.049</object-name>
+        <object-name>VSI2.needle</object-name>
+        <object-name>ALTneedle2</object-name>
+        <object-name>BaroKnob.001</object-name>
+        <object-name>EFIS84 EHSI-copilot</object-name>
+        <object-name>EFIS84 EADI-copilot</object-name>
         <condition>
             <not><property>sim/model/g1000/enabled</property></not>
         </condition>

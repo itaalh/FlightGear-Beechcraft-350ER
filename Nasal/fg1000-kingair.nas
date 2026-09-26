@@ -5,13 +5,14 @@
 # $FG_ROOT/Aircraft/Instruments-3d/FG1000 into the "fg1000" namespace, with King Air specific parts:
 # - interface controller with a twin turboprop engine/fuel publisher (Nasal/fg1000-kingair-interfaces.nas),
 # - twin turboprop EIS strip on the MFD (Nasal/fg1000-kingair-eis.nas, Models/Instruments/FG1000/EIS-KingAir.svg),
-# - PFD: King Air 350 V-speeds and airspeed tape markings, CAS messages in the annunciation window
+# - pilot and copilot PFDs (FG1000 displays 1 and 3) with the MFD in between, as in the G1000 NXi retrofits,
+# - PFDs: King Air 350 V-speeds and airspeed tape markings, CAS messages in the annunciation window
 #   (fed by Nasal/annunciators.nas).
 # Speeds and markings: FlightSafety King Air 300/350 Pilot Training Manual (airspeed limits, 350 airspeed
 # indicator markings) and the King Air 350 checklist (Vr).
 #
 # The displays are the GDU-1044B bezel models placed by Models/KingAir-G1000.xml.
-# Power: /systems/electrical/outputs/fg1000-pfd and fg1000-mfd (Nasal/electrical.nas, avionics bus).
+# Power: /systems/electrical/outputs/fg1000-pfd, fg1000-mfd and fg1000-pfd2 (Nasal/electrical.nas, avionics bus).
 #
 # License: GPL v2 or later
 #############################################################################
@@ -22,6 +23,10 @@ var aircraft_dir = getprop("/sim/aircraft-dir");
 var available = (io.stat(nasal_dir ~ "FG1000.nas") != nil);
 
 var fg1000system = nil;
+
+# FG1000 display index -> power output (Nasal/electrical.nas). Display 3 is the copilot PFD (GDU-1044B.3.xml).
+var PFDS = [1, 3];
+var POWER = {1: "fg1000-pfd", 2: "fg1000-mfd", 3: "fg1000-pfd2"};
 
 # ---------------------------------------------------------------------------
 # PFD airspeed tape (King Air 350 airspeed indicator markings)
@@ -73,15 +78,15 @@ var set_vspeeds = func(config) {
 var CAS_LINES = 5;
 var CAS_COLOURS = [[1, 0.1, 0.1], [1, 0.85, 0], [1, 1, 1]];
 
-var cas_lines = [];
-var cas_visible = -1;
+var cas = [];          # one entry per PFD: {pfd, lines, visible}
 var cas_blink = 0;
 var cas_timer = nil;
 
 var init_cas = func(pfd) {
     var win = pfd.PFDInstruments.getElement("Annunciation");
+    var lines = [];
     for (var i = 0; i < CAS_LINES; i += 1) {
-        append(cas_lines, win.createChild("text")
+        append(lines, win.createChild("text")
             .setFont("LiberationFonts/LiberationSansNarrow-Regular.ttf")
             .setFontSize(17, 1.0)
             .setAlignment("left-baseline")
@@ -90,32 +95,37 @@ var init_cas = func(pfd) {
             .setTranslation(882, 404 + 20 * i)
             .setText(""));
     }
-    cas_timer = maketimer(0.25, func { update_cas(pfd); });
-    cas_timer.start();
+    append(cas, {pfd: pfd, lines: lines, visible: -1});
+    if (cas_timer == nil) {
+        cas_timer = maketimer(0.25, update_cas);
+        cas_timer.start();
+    }
 };
 
-var update_cas = func(pfd) {
+var update_cas = func {
     var msgs = annunciators.messages;
     var show = size(msgs) > 0;
-    if (show != cas_visible) {
-        pfd.PFDInstruments.setAnnunciation(show);
-        cas_visible = show;
-    }
     cas_blink = !cas_blink;
     var unack = [getprop("instrumentation/annunciators/warning/Master"),
                  getprop("instrumentation/annunciators/caution/Master"), 0];
-    for (var i = 0; i < CAS_LINES; i += 1) {
-        var t = cas_lines[i];
-        if (i >= size(msgs)) {
-            t.setText("").setColorFill(0, 0, 0, 0);
-            continue;
+    foreach (var c; cas) {
+        if (show != c.visible) {
+            c.pfd.PFDInstruments.setAnnunciation(show);
+            c.visible = show;
         }
-        var colour = CAS_COLOURS[msgs[i].level];
-        t.setText(msgs[i].text);
-        if (unack[msgs[i].level] and cas_blink) {
-            t.setColor(0, 0, 0).setColorFill(colour);
-        } else {
-            t.setColor(colour).setColorFill(0, 0, 0, 0);
+        for (var i = 0; i < CAS_LINES; i += 1) {
+            var t = c.lines[i];
+            if (i >= size(msgs)) {
+                t.setText("").setColorFill(0, 0, 0, 0);
+                continue;
+            }
+            var colour = CAS_COLOURS[msgs[i].level];
+            t.setText(msgs[i].text);
+            if (unack[msgs[i].level] and cas_blink) {
+                t.setColor(0, 0, 0).setColorFill(colour);
+            } else {
+                t.setColor(colour).setColorFill(0, 0, 0, 0);
+            }
         }
     }
 };
@@ -144,28 +154,33 @@ var init = func {
     set_vspeeds(fg1000system.getConfigStore());
     fg1000system.addPFD(1);
     fg1000system.addMFD(2);
-    fg1000system.display(1);
-    fg1000system.display(2);
+    fg1000system.addPFD(3);
+    foreach (var i; [1, 2, 3])
+        fg1000system.display(i);
 
-    var pfd = fg1000system.getDisplay(1);
-    # the PFD also parses the EIS SVG (reversionary mode is not simulated): keep its frame hidden
-    pfd._svg.getElementById("EISGroup").hide();
-    draw_speed_tape(pfd);
-    init_cas(pfd);
+    foreach (var i; PFDS) {
+        var pfd = fg1000system.getDisplay(i);
+        # the PFD also parses the EIS SVG (reversionary mode is not simulated): keep its frame hidden
+        pfd._svg.getElementById("EISGroup").hide();
+        draw_speed_tape(pfd);
+        init_cas(pfd);
+    }
 
     # displays follow the avionics bus
-    setlistener("/systems/electrical/outputs/fg1000-pfd", func(n) {
-        if ((n.getValue() or 0) > 15) fg1000system.show(1); else fg1000system.hide(1);
-    }, 1, 0);
-    setlistener("/systems/electrical/outputs/fg1000-mfd", func(n) {
-        if ((n.getValue() or 0) > 15) fg1000system.show(2); else fg1000system.hide(2);
-    }, 1, 0);
+    foreach (var i; [1, 2, 3]) {
+        (func(index) {
+            setlistener("/systems/electrical/outputs/" ~ POWER[index], func(n) {
+                if ((n.getValue() or 0) > 15) fg1000system.show(index); else fg1000system.hide(index);
+            }, 1, 0);
+        })(i);
+    }
 
-    print("KingAir-350ER G1000: FG1000 PFD/MFD initialised");
+    print("KingAir-350ER G1000: FG1000 pilot PFD, MFD and copilot PFD initialised");
 };
 
 # pop-up windows (menu)
 var gui_pfd = func { if (fg1000system != nil) fg1000system.displayGUI(1, 0.66); };
 var gui_mfd = func { if (fg1000system != nil) fg1000system.displayGUI(2, 0.66); };
+var gui_pfd2 = func { if (fg1000system != nil) fg1000system.displayGUI(3, 0.66); };
 
 setlistener("/sim/signals/fdm-initialized", func { settimer(init, 2.0); }, 0, 0);

@@ -3,6 +3,19 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **G1000 : trois écrans alignés**, comme les King Air 350 modernisés G1000 NXi : un PFD copilote (troisième GDU
+  1044B, écran FG1000 n° 3) avec la même bande de vitesse et la même fenêtre CAS que le PFD pilote, et une plaque
+  qui recouvre les anciens instruments des deux places, les radios et la colonne des jauges moteur (les moteurs
+  sont sur l'EIS du MFD). Les objets recouverts sont masqués. Menu *copilot PFD pop-up window*.
+
+### Corrigé
+- **Index de cap** : le bouton HDG du G1000 et le dialogue du pilote automatique n'agissaient qu'en mode HDG (le
+  bouton du panneau FGC reprenait la main aussitôt dans les autres modes). Le dernier bouton tourné l'emporte
+  désormais, sur les trois variantes.
+
 ## [2.1.3] — 2026-09-26
 
 ### Corrigé

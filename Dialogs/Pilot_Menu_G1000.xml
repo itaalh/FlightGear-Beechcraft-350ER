@@ -91,6 +91,13 @@
         </binding>
       </item>
       <item>
+        <label>G1000: copilot PFD pop-up window</label>
+        <binding>
+          <command>nasal</command>
+          <script>fg1000ka.gui_pfd2();</script>
+        </binding>
+      </item>
+      <item>
         <label>Yokes visible</label>
         <binding>
           <command>property-toggle</command>
