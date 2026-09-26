@@ -88,8 +88,16 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
   `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
   Les propriétés `sim/model/g1000/pfd|mfd/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
-- Limites : pilote automatique = panneau FGC de l'avion (le GFC 700 du FG1000 n'est pas chargé), pas de mode
-  réversion (EIS sur le PFD). Si le dossier FG1000 est absent, la variante
+- Pilote automatique : celui de l'avion (boucles JSBSim), commandé au choix par le panneau FGC ou par les touches
+  des écrans GDU. Les touches AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC et NOSE UP / DN sont reprises ; VNV n'est
+  pas disponible.
+  - **Source de guidage :** la touche CDI du PFD pilote la choisit. En GPS, le mode NAV suit le plan de vol actif
+    du G1000 (NAV1 asservi au GPS) ; en NAV1 ou NAV2, il suit le VOR ou le LOC.
+  - **ALT SEL :** l'altitude choisie au bouton ALT du PFD est capturée depuis VS, FLC ou PIT (ALTS armé). Tourner
+    ALT SEL en ALT ne change pas l'altitude tenue.
+  - **Affichage :** les modes (GPS/VOR/LOC/HDG/ROL, ALT/VS/FLC/PIT/GS, ALTS, référence) et le directeur de vol
+    s'affichent en haut du PFD.
+- Limites : pas de mode réversion (EIS sur le PFD). VNV et approches GPS avec guidage vertical non simulés. Si le dossier FG1000 est absent, la variante
   démarre avec les instruments d'origine et affiche un message.
 
 ## Ce qui a été refait

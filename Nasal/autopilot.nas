@@ -9,7 +9,11 @@
 #     by the "Autopilot disconnect" joystick action (controls.autopilotDisconnect()), like the AP
 #     disconnect button of the control wheel; it never engages the autopilot,
 #   - feeds navigation data (heading bug, NAV1/LOC/GS) to the JSBSim loops,
-#   - trims the elevator while engaged and handles altitude pre-select capture.
+#   - trims the elevator while engaged and handles altitude pre-select capture,
+#   - G1000 variant: takes the GDU bezel keys (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP/DN, through the
+#     FGData GFC700Interface), follows the CDI source of the pilot PFD (GPS / NAV1 / NAV2; GPS = NAV1 slaved to the
+#     GPS, i.e. the active flight plan), captures the ALT SEL altitude and shows its modes on the PFD
+#     (/autopilot/annunciator/..., published to the FG1000 by the GFC700Publisher). See Nasal/fg1000-kingair.nas.
 #
 # License: GPL v2 or later
 #############################################################################
@@ -33,6 +37,41 @@ var updating_locks = 0;
 var target_pitch = 0.0;
 var target_vs = 0.0;
 var alt_offset = nil;    # true - indicated altitude, low-pass filtered (the altimeter lags)
+var bug_written = nil;   # heading bug value written at the last update
+var alt_hold = nil;      # altitude held in ALT (indicated ft)
+var nav_source = "NAV1"; # NAV1, NAV2 or GPS (G1000 CDI; the FGC GPS button slaves NAV1 to the GPS as well)
+var nav0 = props.globals.getNode("instrumentation/nav[0]", 1);
+var ann = props.globals.getNode("autopilot/annunciator", 1);
+
+var g1000 = func { getprop("sim/model/g1000/enabled") or 0; };
+
+# altitude pre-select (ALTS capture): the G1000 ALT SEL knob, otherwise the autopilot dialog value
+var preselect = func {
+    var g = getprop("autopilot/settings/target-alt-ft");
+    if (g1000() and g != nil) return g;
+    return set.getNode("target-altitude-ft", 1).getValue() or 0;
+};
+
+# pitch hold target, shared with the G1000 NOSE UP / NOSE DN keys (/autopilot/settings/target-pitch-deg)
+var set_target_pitch = func(v) {
+    target_pitch = v;
+    set.getNode("target-pitch-deg", 1).setDoubleValue(v);
+};
+
+var set_alt_hold = func(ft) {
+    alt_hold = ft;
+    set.getNode("target-altitude-ft", 1).setDoubleValue(ft);      # shown by the autopilot dialog
+};
+
+# lateral guidance source: G1000 CDI of the pilot PFD
+var set_nav_source = func(src) {
+    if (src != "GPS" and src != "NAV2") src = "NAV1";
+    nav_source = src;
+    nav = props.globals.getNode(src == "NAV2" ? "instrumentation/nav[1]" : "instrumentation/nav[0]", 1);
+    nav0.getNode("slaved-to-gps", 1).setBoolValue(src == "GPS");
+    annunciate();
+};
+var gps_guidance = func { nav_source != "NAV2" and nav0.getNode("slaved-to-gps", 1).getBoolValue(); };
 
 # standard FlightGear engage property: created here (FlightGear does not), so that the generic
 # "Autopilot disconnect" joystick action finds it; kept equal to the autopilot state by annunciate()
@@ -56,6 +95,25 @@ var annunciate = func {
     fgc.getNode("app-65a/YD", 1).setValue(getprop("controls/flight/yaw-damper") ? "YD" : "");
     fgc.getNode("app-65a/SR", 1).setValue(soft_ride ? "SR" : "");
     fgc.getNode("app-65a/BANK", 1).setValue(half_bank ? "1/2 BANK" : "");
+    # G1000 PFD (GFC700Publisher): status, active and armed modes, reference
+    var nav_name = func(m) {
+        if (m == "BC") return "BC";
+        if (gps_guidance()) return "GPS";
+        return (m == "APPR" or nav.getNode("nav-loc", 1).getBoolValue()) ? "LOC" : "VOR";
+    };
+    var on = engaged or fd_on;
+    ann.getNode("autopilot-enabled", 1).setBoolValue(engaged);
+    ann.getNode("flight-director-enabled", 1).setBoolValue(fd_on or engaged);
+    ann.getNode("lateral-mode", 1).setValue(!on ? "" : (lateral == "HDG" ? "HDG" : (lateral == "" ? "ROL" : nav_name(lateral))));
+    ann.getNode("lateral-mode-armed", 1).setValue(on and lat_armed != "" ? nav_name(lat_armed) : "");
+    var vm = {"ALT": "ALT", "VS": "VS", "IAS": "FLC", "GS": "GS", "PIT": "PIT", "": "PIT"}[vertical];
+    ann.getNode("vertical-mode", 1).setValue(on ? vm : "");
+    ann.getNode("vertical-mode-armed", 1).setValue(!on ? "" : (gs_armed ? "GS" : (alt_armed ? "ALTS" : "")));
+    var ref = "";
+    if (vertical == "VS") ref = sprintf("%+ifpm", set.getNode("vertical-speed-fpm", 1).getValue() or 0);
+    elsif (vertical == "IAS") ref = sprintf("%i kt", set.getNode("target-speed-kt", 1).getValue() or 0);
+    elsif (vertical == "ALT" and alt_hold != nil) ref = sprintf("%ift", alt_hold);
+    ann.getNode("vertical-mode-target", 1).setValue(on ? ref : "");
     # keep the FlightGear autopilot dialog in sync
     updating_locks = 1;
     var h = "";
@@ -83,7 +141,7 @@ var engage = func(on) {
         if (getprop("gear/gear[1]/wow")) { gui.popupTip("Autopilot cannot be engaged on the ground"); return; }
         if ((getprop("systems/electrical/outputs/fgc-65") or 0) < 20) { gui.popupTip("Autopilot: no electrical power"); return; }
         engaged = 1;
-        if (vertical == "") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        if (vertical == "") { vertical = "PIT"; set_target_pitch(getprop("orientation/pitch-deg") or 0); }
         gui.popupTip("Autopilot ENGAGED");
     } elsif (!on and engaged) {
         engaged = 0;
@@ -97,12 +155,13 @@ var engage = func(on) {
 var pitch_wheel = func(dir) {
     if (vertical == "VS" or vertical == "ALT" or vertical == "") {
         if (vertical != "VS") { target_vs = math.round((getprop("velocities/vertical-speed-fps") or 0) * 60 / 100) * 100; vertical = "VS"; alt_armed = 1; }
+        else target_vs = set.getNode("vertical-speed-fpm", 1).getValue() or 0;     # also moved by the G1000 keys
         target_vs = math.max(-3000, math.min(3000, target_vs + dir * 100));
         set.getNode("vertical-speed-fpm", 1).setDoubleValue(target_vs);
     } elsif (vertical == "IAS") {
         set.getNode("target-speed-kt", 1).setDoubleValue((set.getNode("target-speed-kt", 1).getValue() or 200) + dir);
     } elsif (vertical == "PIT") {
-        target_pitch = math.max(-10, math.min(20, target_pitch + dir * 0.5));
+        set_target_pitch(math.max(-10, math.min(20, target_pitch + dir * 0.5)));
     }
     annunciate();
 };
@@ -122,21 +181,21 @@ var btn_pressed = func(name, state, toggle = 0) {
         else { lateral = "HDG"; lat_armed = ""; }
     } elsif (name == "nav" or name == "appr" or name == "bc") {
         var m = (name == "nav") ? "NAV" : (name == "appr" ? "APPR" : "BC");
-        if (lateral == m or lat_armed == m) { lateral = (lateral == m) ? "" : lateral; lat_armed = ""; gs_armed = 0; if (vertical == "GS") vertical = "PIT"; }
+        if (lateral == m or lat_armed == m) { lateral = (lateral == m) ? "" : lateral; lat_armed = ""; gs_armed = 0; if (vertical == "GS") { vertical = "PIT"; set_target_pitch(getprop("orientation/pitch-deg") or 0); } }
         else {
             lat_armed = m;
             if (lateral == "") lateral = "HDG";       # fly the heading bug until capture
             gs_armed = (m == "APPR");
         }
     } elsif (name == "alt") {
-        if (vertical == "ALT") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        if (vertical == "ALT") { vertical = "PIT"; set_target_pitch(getprop("orientation/pitch-deg") or 0); }
         else {
             vertical = "ALT"; alt_armed = 0;
-            set.getNode("target-altitude-ft", 1).setDoubleValue(math.round((getprop("instrumentation/altimeter/indicated-altitude-ft") or 0) / 10) * 10);
+            set_alt_hold(math.round((getprop("instrumentation/altimeter/indicated-altitude-ft") or 0) / 10) * 10);
         }
     } elsif (name == "vs") {
         # VS: hold the current vertical speed (pitch wheel adjusts it), altitude pre-select armed
-        if (vertical == "VS") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        if (vertical == "VS") { vertical = "PIT"; set_target_pitch(getprop("orientation/pitch-deg") or 0); }
         else {
             target_vs = math.max(-3000, math.min(3000, math.round((getprop("velocities/vertical-speed-fps") or 0) * 60 / 100) * 100));
             set.getNode("vertical-speed-fpm", 1).setDoubleValue(target_vs);
@@ -144,7 +203,7 @@ var btn_pressed = func(name, state, toggle = 0) {
         }
     } elsif (name == "climb" or name == "ias") {
         # CLIMB / IAS: hold the current indicated airspeed with pitch, altitude pre-select armed
-        if (vertical == "IAS") { vertical = "PIT"; target_pitch = getprop("orientation/pitch-deg") or 0; }
+        if (vertical == "IAS") { vertical = "PIT"; set_target_pitch(getprop("orientation/pitch-deg") or 0); }
         else {
             set.getNode("target-speed-kt", 1).setDoubleValue(math.round(getprop("instrumentation/airspeed-indicator/indicated-speed-kt") or 150));
             vertical = "IAS"; alt_armed = 1;
@@ -155,6 +214,21 @@ var btn_pressed = func(name, state, toggle = 0) {
     }
     fd_on = 1;
     annunciate();
+};
+
+# G1000 bezel keys (FASCIA names written by the FGData GFC700Interface to /autopilot/lateral-mode-button);
+# NOSE UP / NOSE DN are applied by the GFC700Interface itself to the PIT / VS / FLC targets
+var gfc_key = func(k) {
+    if (k == "AP") return btn_pressed("ap", 1);
+    if (k == "FD") {
+        if (engaged) return gui.popupTip("FD: the flight director stays on with the autopilot engaged");
+        fd_on = !fd_on;
+        if (!fd_on) { lateral = ""; lat_armed = ""; vertical = ""; alt_armed = 0; gs_armed = 0; }
+        return annunciate();
+    }
+    var map = {"HDG": "hdg", "NAV": "nav", "APR": "appr", "BC": "bc", "ALT": "alt", "VS": "vs", "FLC": "ias"};
+    if (contains(map, k)) return btn_pressed(map[k], 1);
+    if (k == "VNV") return gui.popupTip("VNV: vertical navigation is not available on this autopilot");
 };
 
 # ---------------------------------------------------------------------------
@@ -169,11 +243,11 @@ var lock_changed = func {
     elsif (h == "nav1-hold") { if (lateral != "NAV" and lateral != "APPR" and lateral != "BC") { lat_armed = "NAV"; if (lateral == "") lateral = "HDG"; } }
     elsif (h == "wing-leveler") { lateral = ""; lat_armed = ""; }
     elsif (h == "") { lateral = ""; lat_armed = ""; }
-    if (a == "altitude-hold") { vertical = "ALT"; alt_armed = 0; }
+    if (a == "altitude-hold") { vertical = "ALT"; alt_armed = 0; alt_hold = set.getNode("target-altitude-ft", 1).getValue() or 0; }
     elsif (a == "vertical-speed-hold") { vertical = "VS"; target_vs = set.getNode("vertical-speed-fpm", 1).getValue() or 0; alt_armed = 1; }
     elsif (a == "pitch-hold") { vertical = "PIT"; target_pitch = set.getNode("target-pitch-deg", 1).getValue() or 0; }
     elsif (a == "gs1-hold") { gs_armed = 1; if (lat_armed == "") lat_armed = "APPR"; }
-    elsif (a == "agl-hold" or a == "aoa-hold") { vertical = "ALT"; }
+    elsif (a == "agl-hold" or a == "aoa-hold") { vertical = "ALT"; alt_hold = set.getNode("target-altitude-ft", 1).getValue() or 0; }
     elsif (s == "speed-with-pitch-trim") { vertical = "IAS"; alt_armed = 1; }
     elsif (a == "" and s == "") { if (vertical != "GS") vertical = engaged ? "PIT" : ""; }
     var want = (h != "" or a != "" or s != "");
@@ -189,11 +263,14 @@ var update = func {
     var dt = 0.1;
     var magvar = getprop("environment/magnetic-variation-deg") or 0;
     var heading_bug = fgc.getNode("settings/hdg", 1).getValue() or 0;
-    # heading bug: cockpit knob and dialog share the value
-    var dlg_bug = set.getNode("heading-bug-deg", 1).getValue() or 0;
-    if (math.abs(dlg_bug - heading_bug) > 0.5 and lateral == "HDG") heading_bug = dlg_bug;
+    # heading bug: the FGC-65 knob, the G1000 HDG knobs and the autopilot dialog share the value;
+    # the last one turned wins (the G1000 and the dialog write autopilot/settings/heading-bug-deg)
+    var ext_bug = set.getNode("heading-bug-deg", 1).getValue() or 0;
+    if (bug_written != nil and math.abs(ext_bug - bug_written) > 0.01 and math.abs(heading_bug - bug_written) < 0.01)
+        heading_bug = ext_bug;
     set.getNode("heading-bug-deg", 1).setDoubleValue(heading_bug);
     fgc.getNode("settings/hdg", 1).setDoubleValue(heading_bug);
+    bug_written = heading_bug;
 
     # NAV data
     var in_range = nav.getNode("in-range", 1).getBoolValue();
@@ -220,14 +297,20 @@ var update = func {
         gs_armed = 0; vertical = "GS"; alt_armed = 0; gui.popupTip("Glideslope captured"); annunciate();
     }
     # altitude pre-select capture
-    var alt_target = set.getNode("target-altitude-ft", 1).getValue() or 0;
+    var alt_sel = preselect();
     var alt_ind = getprop("instrumentation/altimeter/indicated-altitude-ft") or 0;
     var vs_now = (getprop("velocities/vertical-speed-fps") or 0) * 60;
     if (alt_armed and (vertical == "VS" or vertical == "IAS" or vertical == "PIT")) {
         var lead = math.max(150, math.abs(vs_now) * 0.12);
-        if (math.abs(alt_target - alt_ind) < lead and (alt_target - alt_ind) * vs_now >= 0) {
-            vertical = "ALT"; alt_armed = 0; gui.popupTip("Altitude captured"); annunciate();
+        if (math.abs(alt_sel - alt_ind) < lead and (alt_sel - alt_ind) * vs_now >= 0) {
+            vertical = "ALT"; alt_armed = 0; set_alt_hold(alt_sel); gui.popupTip("Altitude captured"); annunciate();
         }
+    }
+    if (alt_hold == nil) alt_hold = set.getNode("target-altitude-ft", 1).getValue() or 0;
+    # PIT: the target may also be moved by the G1000 NOSE UP / NOSE DN keys
+    if (vertical == "PIT") {
+        var tp = set.getNode("target-pitch-deg", 1).getValue();
+        if (tp != nil) target_pitch = tp;
     }
 
     # feed JSBSim
@@ -251,7 +334,7 @@ var update = func {
     # filtered (~10 s) so that the altimeter lag in climbs and descents does not move the target
     var off = (getprop("position/altitude-ft") or 0) - alt_ind;
     alt_offset = (alt_offset == nil) ? off : alt_offset + (off - alt_offset) * dt / 10.0;
-    ap.getNode("target-altitude-ft", 1).setDoubleValue(alt_target + alt_offset);
+    ap.getNode("target-altitude-ft", 1).setDoubleValue(alt_hold + alt_offset);
     ap.getNode("target-vs-fpm", 1).setDoubleValue(set.getNode("vertical-speed-fpm", 1).getValue() or 0);
     ap.getNode("target-ias-kt", 1).setDoubleValue(set.getNode("target-speed-kt", 1).getValue() or 200);
     ap.getNode("target-pitch-deg", 1).setDoubleValue(target_pitch);
@@ -287,6 +370,11 @@ var update = func {
     # flight director bars for the EADI
     fgc.getNode("fd/pitch-deg", 1).setDoubleValue(getprop("fdm/jsbsim/ap/fd-pitch-deg") or 0);
     fgc.getNode("fd/roll-deg", 1).setDoubleValue(getprop("fdm/jsbsim/ap/fd-roll-deg") or 0);
+    # and for the G1000 PFD (commanded attitude, GFC700Publisher)
+    set.getNode("target-roll-deg", 1).setDoubleValue(getprop("fdm/jsbsim/ap/roll-target-filt-deg") or 0);
+    if (vertical != "PIT") set.getNode("target-pitch-deg", 1).setDoubleValue(getprop("fdm/jsbsim/ap/pitch-target-deg") or 0);
+    # the lateral mode name follows the guidance source (GPS / VOR / LOC)
+    if (lateral != "" or lat_armed != "") annunciate();
 };
 
 var timer = maketimer(0.1, update);

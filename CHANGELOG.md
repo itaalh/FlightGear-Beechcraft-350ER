@@ -3,6 +3,18 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **G1000 : pilote automatique relié au G1000.**
+  - **Touches :** celles des écrans GDU (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP / DN) commandent le
+    pilote automatique du King Air, comme le panneau FGC.
+  - **Guidage :** la touche CDI du PFD pilote choisit la source. En GPS, le mode NAV suit le plan de vol actif du
+    G1000 : interception à 45°, puis convergence sur la branche sans dépassement.
+  - **ALT SEL :** l'altitude choisie est capturée depuis VS, FLC ou PIT, sans modifier l'altitude tenue en ALT.
+  - **Affichage :** les modes actifs et armés, la référence (vitesse verticale, vitesse, altitude) et le directeur
+    de vol s'affichent sur le PFD.
+
 ## [2.2.0] — 2026-09-26
 
 ### Ajouté
