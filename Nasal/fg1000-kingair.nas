@@ -7,7 +7,9 @@
 # - twin turboprop EIS strip on the MFD (Nasal/fg1000-kingair-eis.nas, Models/Instruments/FG1000/EIS-KingAir.svg),
 # - pilot and copilot PFDs (FG1000 displays 1 and 3) with the MFD in between, as in the G1000 NXi retrofits,
 # - PFDs: King Air 350 V-speeds and airspeed tape markings, CAS messages in the annunciation window
-#   (fed by Nasal/annunciators.nas).
+#   (fed by Nasal/annunciators.nas),
+# - autopilot: the GDU autopilot keys and the CDI source of the pilot PFD drive the King Air autopilot
+#   (Nasal/autopilot.nas, namespace FCS), whose modes are shown on the PFD.
 # Speeds and markings: FlightSafety King Air 300/350 Pilot Training Manual (airspeed limits, 350 airspeed
 # indicator markings) and the King Air 350 checklist (Vr).
 #
@@ -131,6 +133,32 @@ var update_cas = func {
 };
 
 # ---------------------------------------------------------------------------
+# Autopilot: the FGData GFC700Interface turns the GDU autopilot keys into /autopilot/lateral-mode-button
+# (written on every press) and applies NOSE UP / NOSE DN itself; the CDI key of the pilot PFD (device 1)
+# selects the lateral guidance source (GPS / NAV1 / NAV2).
+# ---------------------------------------------------------------------------
+var cdi_recipient = nil;
+
+var init_autopilot = func {
+    setlistener("/autopilot/lateral-mode-button", func(n) { FCS.gfc_key(n.getValue() or ""); }, 0, 1);
+    cdi_recipient = emesary.Recipient.new("KingAirCDISource");
+    cdi_recipient.Receive = func(notification) {
+        if (notification.NotificationType == notifications.PFDEventNotification.DefaultType
+            and notification.Event_Id == notifications.PFDEventNotification.FMSData
+            and notification.Device_Id == 1
+            and typeof(notification.EventParameter) == "hash"
+            and contains(notification.EventParameter, "AutopilotNAVSource"))
+            FCS.set_nav_source(notification.EventParameter["AutopilotNAVSource"]);
+        return emesary.Transmitter.ReceiptStatus_NotProcessed;     # also seen by the GFC700Interface
+    };
+    emesary.GlobalTransmitter.Register(cdi_recipient);
+    # the PFD starts with the CDI on GPS
+    FCS.set_nav_source("GPS");
+    # ALT SEL starts at 0 in the FG1000: start from the autopilot dialog value instead
+    var sel = getprop("/autopilot/settings/target-alt-ft");
+    if (sel == nil or sel == 0)
+        setprop("/autopilot/settings/target-alt-ft", getprop("/autopilot/settings/target-altitude-ft") or 10000);
+};
 
 var init = func {
     if (!available) {
@@ -181,6 +209,7 @@ var init = func {
         setprop("/instrumentation/FG1000/Lightmap", math.min(1, (n.getValue() or 0) / 28.0));
     }, 1, 0);
 
+    init_autopilot();
     print("KingAir-350ER G1000: FG1000 pilot PFD, MFD and copilot PFD initialised");
 };
 

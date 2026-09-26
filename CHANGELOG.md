@@ -12,6 +12,14 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   sont sur l'EIS du MFD). Les objets recouverts sont masqués. Menu *copilot PFD pop-up window*.
 - **G1000 : éclairage de nuit** des touches et boutons des trois écrans (rétroéclairage des cadres GDU), réglé par
   le rhéostat *Instruments* du dialogue *Lights* et alimenté par le bus DC.
+- **G1000 : pilote automatique relié au G1000.**
+  - **Touches :** celles des écrans GDU (AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC, NOSE UP / DN) commandent le
+    pilote automatique du King Air, comme le panneau FGC.
+  - **Guidage :** la touche CDI du PFD pilote choisit la source. En GPS, le mode NAV suit le plan de vol actif du
+    G1000 : interception à 45°, puis convergence sur la branche sans dépassement.
+  - **ALT SEL :** l'altitude choisie est capturée depuis VS, FLC ou PIT, sans modifier l'altitude tenue en ALT.
+  - **Affichage :** les modes actifs et armés, la référence (vitesse verticale, vitesse, altitude) et le directeur
+    de vol s'affichent sur le PFD.
 
 ### Corrigé
 - **Index de cap** : le bouton HDG du G1000 et le dialogue du pilote automatique n'agissaient qu'en mode HDG (le

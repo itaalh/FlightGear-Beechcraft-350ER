@@ -87,7 +87,7 @@ donne la liste des commandes clavier correspondantes).
 
 - Les moteurs sont affichés sur le bandeau EIS bimoteur du MFD (`Nasal/fg1000-kingair-eis.nas`) ; les jauges
   analogiques sont sous la plaque.
-- Le pilote automatique reste celui de l'avion (panneau FGC ou dialogue F11) ; le GFC 700 du FG1000 n'est pas chargé
+- Le pilote automatique reste celui de l'avion (panneau FGC, touches des GDU ou dialogue F11) ; le GFC 700 du FG1000 n'est pas chargé
   pour ne pas entrer en conflit avec les boucles JSBSim.
 - La page carburant du FG1000 lit les deux premiers réservoirs (`tank[0]`, `tank[1]`).
 - Nécessite FlightGear 2018.3 ou plus récent (présence du dossier FG1000) ; sinon la variante démarre avec les
