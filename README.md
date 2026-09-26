@@ -72,6 +72,8 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - PFD : fenêtre CAS (à droite de l'altimètre) alimentée par `Nasal/annunciators.nas` : alarmes en rouge, cautions
   en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
   MASTER CAUTION.
+- Heure : l'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h, comme les horloges analogiques du tableau
+  de bord (heure UTC du simulateur).
 - Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`) ;
   les écrans s'éteignent avec l'avionique. Rétroéclairage des touches des cadres réglé par le rhéostat
   *Instruments* (menu *King Air 350 › Lights*).

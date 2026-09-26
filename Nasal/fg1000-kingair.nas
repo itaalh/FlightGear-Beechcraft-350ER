@@ -133,6 +133,19 @@ var update_cas = func {
 };
 
 # ---------------------------------------------------------------------------
+# PFD time box: UTC (Z) in 24 h, as the cockpit clocks, instead of the FG1000 default local time in 12 h
+# ("LCL", /sim/time/local-day-seconds). The controller refreshes it every second.
+# ---------------------------------------------------------------------------
+var set_utc_time = func(pfd) {
+    var label = pfd._svg.getElementById("text6095");          # "LCL" in PFDInstruments.svg
+    if (label != nil) label.setText("UTC");
+    pfd.PFDInstruments.updateTime = func(time_sec) {
+        var t = int(getprop("/sim/time/utc/day-seconds") or 0);
+        me.setTextElement("TIME-text", sprintf("%02d:%02d:%02d", int(t / 3600), math.mod(int(t / 60), 60), math.mod(t, 60)));
+    };
+};
+
+# ---------------------------------------------------------------------------
 # Autopilot: the FGData GFC700Interface turns the GDU autopilot keys into /autopilot/lateral-mode-button
 # (written on every press) and applies NOSE UP / NOSE DN itself; the CDI key of the pilot PFD (device 1)
 # selects the lateral guidance source (GPS / NAV1 / NAV2).
@@ -192,6 +205,7 @@ var init = func {
         pfd._svg.getElementById("EISGroup").hide();
         draw_speed_tape(pfd);
         init_cas(pfd);
+        set_utc_time(pfd);
     }
 
     # displays follow the avionics bus
