@@ -65,11 +65,16 @@ var update_engines = func {
         eng[i].getNode("prop-feathered", 1).setBoolValue((getprop("fdm/jsbsim/fcs/feather-pos-norm[" ~ i ~ "]") or 0) > 0.5);
         eng[i].getNode("autofeather-active", 1).setBoolValue((getprop("fdm/jsbsim/systems/engines/autofeather-active[" ~ i ~ "]") or 0) > 0.5);
 
-        # simple oil model for the gauges
+        # simple oil model for the gauges: both are damped low-pass filters (10 Hz timer) so a
+        # tick-to-tick wobble in N1 or in the running/starting flags does not show up as needle jitter,
+        # same as the real gauges' own mechanical damping.
         var oilt = eng[i].getNode("oil-temperature-degf", 1).getValue() or 60;
-        var target = running ? (150 + 0.4 * n1) : 60;
-        eng[i].getNode("oil-temperature-degf", 1).setDoubleValue(oilt + (target - oilt) * 0.01);
-        eng[i].getNode("oil-pressure-psi", 1).setDoubleValue(running ? (60 + 0.5 * n1) : (starting ? 15 : 0));
+        var target_t = running ? (150 + 0.4 * n1) : 60;
+        eng[i].getNode("oil-temperature-degf", 1).setDoubleValue(oilt + (target_t - oilt) * 0.01);
+
+        var oilp = eng[i].getNode("oil-pressure-psi", 1).getValue() or 0;
+        var target_p = running ? (60 + 0.5 * n1) : (starting ? 15 : 0);
+        eng[i].getNode("oil-pressure-psi", 1).setDoubleValue(oilp + (target_p - oilp) * 0.15);
     }
 
     # aux tank transfer pumps (AUTO / OFF): priority 0 disables the tank in JSBSim
