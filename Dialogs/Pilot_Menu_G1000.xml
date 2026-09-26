@@ -115,6 +115,16 @@
         </binding>
       </item>
       <item>
+        <label>Pressurization</label>
+        <binding>
+          <command>nasal</command>
+          <script>
+            var press = gui.Dialog.new("sim/gui/dialogs/pressurization/dialog", "Aircraft/KingAir-350/Systems/pressurization-dlg.xml");
+            press.open();
+          </script>
+        </binding>
+      </item>
+      <item>
         <label>System failures</label>
         <binding>
           <command>nasal</command>

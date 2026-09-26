@@ -887,10 +887,13 @@
         <condition>
             <and>
                 <property>systems/electrical/volts</property>
-                <equals>
-                    <property>gear/gear[0]/position-norm</property>
-                    <value>1</value>
-                </equals>
+                <or>
+                    <equals>
+                        <property>gear/gear[0]/position-norm</property>
+                        <value>1</value>
+                    </equals>
+                    <property>controls/gear/lights-test</property>
+                </or>
             </and>
          </condition>
     </animation>
@@ -901,10 +904,13 @@
         <condition>
             <and>
                 <property>systems/electrical/volts</property>
-                <equals>
-                    <property>gear/gear[1]/position-norm</property>
-                    <value>1</value>
-                </equals>
+                <or>
+                    <equals>
+                        <property>gear/gear[1]/position-norm</property>
+                        <value>1</value>
+                    </equals>
+                    <property>controls/gear/lights-test</property>
+                </or>
             </and>
          </condition>
     </animation>
@@ -915,10 +921,13 @@
         <condition>
             <and>
                 <property>systems/electrical/volts</property>
-                <equals>
-                    <property>gear/gear[2]/position-norm</property>
-                    <value>1</value>
-                </equals>
+                <or>
+                    <equals>
+                        <property>gear/gear[2]/position-norm</property>
+                        <value>1</value>
+                    </equals>
+                    <property>controls/gear/lights-test</property>
+                </or>
             </and>
          </condition>
     </animation>
@@ -1646,13 +1655,11 @@
     </animation>
 
 
-    <!--animation>
+    <animation>
         <type>pick</type>
         <object-name>HDG.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("hdg",1,0);</script>
@@ -1671,8 +1678,6 @@
         <object-name>NAV.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("nav",1,0);</script>
@@ -1691,8 +1696,6 @@
         <object-name>APPR.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("appr",1,0);</script>
@@ -1711,8 +1714,6 @@
         <object-name>BC.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("bc",1,0);</script>
@@ -1731,8 +1732,6 @@
         <object-name>ALT.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("alt",1,0);</script>
@@ -1751,8 +1750,6 @@
         <object-name>VS.btn</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("vs",1,0);</script>
@@ -1764,7 +1761,7 @@
                 </binding>
             </mod-up>
         </action>
-    </animation-->
+    </animation>
 
     <!--animation>
         <type>pick</type>
@@ -1786,15 +1783,51 @@
         </action>
     </animation-->
 
-<!-- APP-65A Will be mapped to ITAF -->
+    <animation>
+        <type>pick</type>
+        <object-name>ALTS.btn</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>nasal</command>
+                <script>FCS.btn_pressed("alts",1,0);</script>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>fgc-alts</tooltip-id>
+                <label>ALTS: altitude pre-select arm</label>
+            </binding>
+        </hovered>
+    </animation>
 
-    <!--animation>
+    <animation>
+        <type>pick</type>
+        <object-name>CLIMB.btn</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>nasal</command>
+                <script>FCS.btn_pressed("climb",1,0);</script>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>fgc-climb</tooltip-id>
+                <label>CLIMB: IAS climb</label>
+            </binding>
+        </hovered>
+    </animation>
+
+<!-- FGC-65 mode selector and APP-65A autopilot panel: Nasal/autopilot.nas (FCS) -->
+
+    <animation>
         <type>pick</type>
         <object-name>AP-toggle</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("ap",1,1);</script>
@@ -1813,8 +1846,6 @@
         <object-name>YD-toggle</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("yd",1,1);</script>
@@ -1872,8 +1903,6 @@
         <object-name>SR-toggle</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("sr",1,1);</script>
@@ -1892,8 +1921,6 @@
         <object-name>BNK-toggle</object-name>
         <action>
             <button>0</button>
-            <repeatable>true</repeatable>
-            <interval-sec>0.05</interval-sec>
             <binding>
                 <command>nasal</command>
                 <script>FCS.btn_pressed("bnk",1,1);</script>
@@ -1969,7 +1996,7 @@
         <condition>
             <property>systems/electrical/outputs/fgc-65</property>
         </condition>
-    </animation-->
+    </animation>
 
 
 <!-- 
@@ -6059,6 +6086,1042 @@
         <condition>
             <not><property>sim/model/g1000/enabled</property></not>
         </condition>
+    </animation>
+
+
+<!-- ================================================================================
+     Ice protection panel, autofeather, generator ties, test switches, fire handles.
+     Levers: rotation fitted on the ignition switch (Lign.off -> Lign.on), Nasal/ice-protection.nas
+     ================================================================================ -->
+
+    <animation>
+        <type>pick</type>
+        <object-name>AUTOfthr.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/engines/autofeather</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>autofthr-sw</tooltip-id>
+                <label>Autofeather: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/engines/autofeather</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>AUTOfthr.sw</object-name>
+        <property>controls/engines/autofeather</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56444</x-m>
+            <y-m>-0.50774</y-m>
+            <z-m>-0.08406</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LENGice.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/engine[0]/inlet-heat</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lengice-sw</tooltip-id>
+                <label>Left engine anti-ice: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/engine[0]/inlet-heat</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>LENGice.sw</object-name>
+        <property>controls/anti-ice/engine[0]/inlet-heat</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61313</x-m>
+            <y-m>-0.53965</y-m>
+            <z-m>-0.01549</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>RENGice.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/engine[1]/inlet-heat</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>rengice-sw</tooltip-id>
+                <label>Right engine anti-ice: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/engine[1]/inlet-heat</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>RENGice.sw</object-name>
+        <property>controls/anti-ice/engine[1]/inlet-heat</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61313</x-m>
+            <y-m>-0.50380</y-m>
+            <z-m>-0.01549</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LACT.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/engine[0]/actuator-standby</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lact-sw</tooltip-id>
+                <label>Left anti-ice actuator standby: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/engine[0]/actuator-standby</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>LACT.sw</object-name>
+        <property>controls/anti-ice/engine[0]/actuator-standby</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58906</x-m>
+            <y-m>-0.53965</y-m>
+            <z-m>-0.04939</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>RACT.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/engine[1]/actuator-standby</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>ract-sw</tooltip-id>
+                <label>Right anti-ice actuator standby: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/engine[1]/actuator-standby</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>RACT.sw</object-name>
+        <property>controls/anti-ice/engine[1]/actuator-standby</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58906</x-m>
+            <y-m>-0.50380</y-m>
+            <z-m>-0.04939</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>Lpitot.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/pitot-heat[0]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lpitot-sw</tooltip-id>
+                <label>Left pitot heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/pitot-heat[0]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>Lpitot.sw</object-name>
+        <property>controls/anti-ice/pitot-heat[0]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56349</x-m>
+            <y-m>-0.31929</y-m>
+            <z-m>-0.08517</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>Rpitot.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/pitot-heat[1]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>rpitot-sw</tooltip-id>
+                <label>Right pitot heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/pitot-heat[1]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>Rpitot.sw</object-name>
+        <property>controls/anti-ice/pitot-heat[1]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56349</x-m>
+            <y-m>-0.29886</y-m>
+            <z-m>-0.08517</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>STALLwrn.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/stall-warn-heat</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>stallwrn-sw</tooltip-id>
+                <label>Stall warning heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/stall-warn-heat</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>STALLwrn.sw</object-name>
+        <property>controls/anti-ice/stall-warn-heat</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56349</x-m>
+            <y-m>-0.35977</y-m>
+            <z-m>-0.08517</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>WSHDheat1.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/window-heat[0]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>wshdheat1-sw</tooltip-id>
+                <label>Pilot windshield heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/window-heat[0]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>WSHDheat1.sw</object-name>
+        <property>controls/anti-ice/window-heat[0]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61245</x-m>
+            <y-m>-0.36086</y-m>
+            <z-m>-0.01637</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>WSHDheat2.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/window-heat[1]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>wshdheat2-sw</tooltip-id>
+                <label>Copilot windshield heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/window-heat[1]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>WSHDheat2.sw</object-name>
+        <property>controls/anti-ice/window-heat[1]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61245</x-m>
+            <y-m>-0.33864</y-m>
+            <z-m>-0.01637</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>PROPheatA.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/prop-heat</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>propheata-sw</tooltip-id>
+                <label>Propeller deice AUTO: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/prop-heat</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>PROPheatA.sw</object-name>
+        <property>controls/anti-ice/prop-heat</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61245</x-m>
+            <y-m>-0.31893</y-m>
+            <z-m>-0.01637</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>PROPheatM.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/anti-ice/prop-heat-manual</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/anti-ice/prop-heat-manual</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>propheatm-sw</tooltip-id>
+                <label>Propeller deice MANUAL (hold)</label>
+                <property>controls/anti-ice/prop-heat-manual</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>PROPheatM.sw</object-name>
+        <property>controls/anti-ice/prop-heat-manual</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.61245</x-m>
+            <y-m>-0.29850</y-m>
+            <z-m>-0.01637</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>DEICE.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/anti-ice/wing-deice-cycle</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/anti-ice/wing-deice-cycle</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>deice-sw</tooltip-id>
+                <label>Surface deice SINGLE cycle (click)</label>
+                <property>controls/anti-ice/wing-deice-cycle</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>DEICE.sw</object-name>
+        <property>controls/anti-ice/wing-deice-cycle</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58783</x-m>
+            <y-m>-0.33792</y-m>
+            <z-m>-0.05104</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LFvent.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/fuel-vent-heat[0]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lfvent-sw</tooltip-id>
+                <label>Left fuel vent heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/fuel-vent-heat[0]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>LFvent.sw</object-name>
+        <property>controls/anti-ice/fuel-vent-heat[0]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58783</x-m>
+            <y-m>-0.27773</y-m>
+            <z-m>-0.05104</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>RFvent.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/fuel-vent-heat[1]</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>rfvent-sw</tooltip-id>
+                <label>Right fuel vent heat: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/fuel-vent-heat[1]</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>RFvent.sw</object-name>
+        <property>controls/anti-ice/fuel-vent-heat[1]</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58783</x-m>
+            <y-m>-0.25731</y-m>
+            <z-m>-0.05104</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>BRKdeice.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/anti-ice/brake-deice</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>brkdeice-sw</tooltip-id>
+                <label>Brake deice: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/anti-ice/brake-deice</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>BRKdeice.sw</object-name>
+        <property>controls/anti-ice/brake-deice</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56349</x-m>
+            <y-m>-0.25731</y-m>
+            <z-m>-0.08517</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>ALTstatic.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/switches/alt-static</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>altstatic-sw</tooltip-id>
+                <label>Alternate static air: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/switches/alt-static</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>ALTstatic.sw</object-name>
+        <property>controls/switches/alt-static</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56349</x-m>
+            <y-m>-0.27844</y-m>
+            <z-m>-0.08517</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>GENtie.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/electric/gen-ties-man-close</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>gentie-sw</tooltip-id>
+                <label>Generator ties MAN CLOSE: %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/electric/gen-ties-man-close</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>GENtie.sw</object-name>
+        <property>controls/electric/gen-ties-man-close</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58906</x-m>
+            <y-m>-0.56939</y-m>
+            <z-m>-0.04939</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>BUS.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/electric/bus-sense-reset</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/electric/bus-sense-reset</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>bus-sw</tooltip-id>
+                <label>Bus sense RESET (hold)</label>
+                <property>controls/electric/bus-sense-reset</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>BUS.sw</object-name>
+        <property>controls/electric/bus-sense-reset</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.58906</x-m>
+            <y-m>-0.60091</y-m>
+            <z-m>-0.04939</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>PROPtest.sw</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/engines/prop-overspeed-test</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/engines/prop-overspeed-test</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>proptest-sw</tooltip-id>
+                <label>Propeller overspeed TEST (hold)</label>
+                <property>controls/engines/prop-overspeed-test</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>rotate</type>
+        <object-name>PROPtest.sw</object-name>
+        <property>controls/engines/prop-overspeed-test</property>
+        <factor>27.0</factor>
+        <center>
+            <x-m>-4.56444</x-m>
+            <y-m>-0.54394</y-m>
+            <z-m>-0.08406</z-m>
+        </center>
+        <axis>
+            <x>0</x>
+            <y>-1</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LHfirehandle</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/engines/engine[0]/fire-handle</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lhfirehandle</tooltip-id>
+                <label>Left engine fire handle (fuel shutoff): %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/engines/engine[0]/fire-handle</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>translate</type>
+        <object-name>LHfirehandle</object-name>
+        <property>controls/engines/engine[0]/fire-handle</property>
+        <factor>0.04</factor>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>RHfirehandle</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-toggle</command>
+                <property>controls/engines/engine[1]/fire-handle</property>
+            </binding>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>rhfirehandle</tooltip-id>
+                <label>Right engine fire handle (fuel shutoff): %s</label>
+                <mapping>on-off</mapping>
+                <property>controls/engines/engine[1]/fire-handle</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>translate</type>
+        <object-name>RHfirehandle</object-name>
+        <property>controls/engines/engine[1]/fire-handle</property>
+        <factor>0.04</factor>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LT.test.001</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/gear/lights-test</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/gear/lights-test</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lt-test-001</tooltip-id>
+                <label>Landing gear lights TEST (hold)</label>
+                <property>controls/gear/lights-test</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>translate</type>
+        <object-name>LT.test.001</object-name>
+        <property>controls/gear/lights-test</property>
+        <factor>-0.003</factor>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+    <animation>
+        <type>pick</type>
+        <object-name>LT.test</object-name>
+        <action>
+            <button>0</button>
+            <binding>
+                <command>property-assign</command>
+                <property>controls/gear/downlock-release</property>
+                <value>1</value>
+            </binding>
+            <mod-up>
+                <binding>
+                    <command>property-assign</command>
+                    <property>controls/gear/downlock-release</property>
+                    <value>0</value>
+                </binding>
+            </mod-up>
+            <binding>
+                <command>property-toggle</command>
+                <property>sim/sound/click</property>
+            </binding>
+        </action>
+        <hovered>
+            <binding>
+                <command>set-tooltip</command>
+                <tooltip-id>lt-test</tooltip-id>
+                <label>Down lock release (hold)</label>
+                <property>controls/gear/downlock-release</property>
+            </binding>
+        </hovered>
+    </animation>
+
+    <animation>
+        <type>translate</type>
+        <object-name>LT.test</object-name>
+        <property>controls/gear/downlock-release</property>
+        <factor>-0.003</factor>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
     </animation>
 
 </PropertyList>

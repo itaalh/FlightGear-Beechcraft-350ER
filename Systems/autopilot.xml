@@ -231,10 +231,12 @@
       <input> ap/vs-target-fpm </input>
       <input> -ap/vs-fpm </input>
     </summer>
+    <!-- ki 0.0012 -> 0.0006: with the heavier 350ER the ALT hold limit-cycled (+-3000 fpm, +-9 deg);
+         checked in JSBSim on the 350 and the 350ER (ALT steps and VS +1500 at 3000 and 10000 ft) -->
     <pid name="ap/vs-pid">
       <input> ap/vs-error-fpm </input>
       <kp> 0.0035 </kp>
-      <ki> 0.0012 </ki>
+      <ki> 0.0006 </ki>
       <kd> 0.0 </kd>
       <trigger> ap/integrator-trigger </trigger>
       <clipto> <min> -10 </min> <max> 15 </max> </clipto>

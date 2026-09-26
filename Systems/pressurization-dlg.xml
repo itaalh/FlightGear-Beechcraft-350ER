@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- King Air 350 pressurization controller and environmental switches (Nasal/pressurization.nas) -->
+<PropertyList>
+  <name>pressurization</name>
+  <layout>vbox</layout>
+  <text><label>King Air 350 - Pressurization</label></text>
+  <hrule/>
+
+  <group>
+    <layout>table</layout>
+    <text><row>0</row><col>0</col><halign>right</halign><label>CABIN ALT set (ft):</label></text>
+    <slider>
+      <row>0</row><col>1</col>
+      <property>controls/pressurization/cabin-alt-ft</property>
+      <min>-1000</min><max>12000</max><step>100</step>
+      <live>true</live>
+      <binding><command>dialog-apply</command></binding>
+    </slider>
+    <text><row>0</row><col>2</col><label>-00000</label><format>%5.0f</format><property>controls/pressurization/cabin-alt-ft</property><live>true</live></text>
+
+    <text><row>1</row><col>0</col><halign>right</halign><label>ACFT ALT scale (ft):</label></text>
+    <text><row>1</row><col>2</col><label>-00000</label><format>%5.0f</format><property>systems/pressurization/acft-alt-at-max-diff-ft</property><live>true</live></text>
+    <text><row>1</row><col>1</col><halign>left</halign><label>(set to cruise altitude + 500 ft)</label></text>
+
+    <text><row>2</row><col>0</col><halign>right</halign><label>RATE (ft/min):</label></text>
+    <slider>
+      <row>2</row><col>1</col>
+      <property>controls/pressurization/rate-fpm</property>
+      <min>100</min><max>2000</max><step>50</step>
+      <live>true</live>
+      <binding><command>dialog-apply</command></binding>
+    </slider>
+    <text><row>2</row><col>2</col><label>00000</label><format>%4.0f</format><property>controls/pressurization/rate-fpm</property><live>true</live></text>
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <text><label>CABIN PRESS:</label></text>
+    <combo>
+      <property>controls/pressurization/cabin-press</property>
+      <value>dump</value><value>press</value><value>test</value>
+      <binding><command>dialog-apply</command></binding>
+    </combo>
+    <checkbox><label>Bleed air L open</label><property>controls/pressurization/bleed-air[0]</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><label>Bleed air R open</label><property>controls/pressurization/bleed-air[1]</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><label>ENVIR BLEED AIR LOW</label><property>controls/pressurization/envir-low</property><binding><command>dialog-apply</command></binding></checkbox>
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <checkbox><label>CABIN ALT TEST</label><property>controls/pressurization/cabin-alt-test</property><binding><command>dialog-apply</command></binding></checkbox>
+    <checkbox><label>CABIN DIFF WARN TEST</label><property>controls/pressurization/diff-warn-test</property><binding><command>dialog-apply</command></binding></checkbox>
+  </group>
+
+  <hrule/>
+  <group>
+    <layout>table</layout>
+    <text><row>0</row><col>0</col><halign>right</halign><label>Cabin altitude (ft):</label></text>
+    <text><row>0</row><col>1</col><label>-00000</label><format>%5.0f</format><property>systems/pressurization/cabin-altitude-ft</property><live>true</live></text>
+    <text><row>1</row><col>0</col><halign>right</halign><label>Cabin rate (ft/min):</label></text>
+    <text><row>1</row><col>1</col><label>-00000</label><format>%+5.0f</format><property>systems/pressurization/cabin-rate-fpm</property><live>true</live></text>
+    <text><row>2</row><col>0</col><halign>right</halign><label>Differential (psi):</label></text>
+    <text><row>2</row><col>1</col><label>-00.0</label><format>%4.1f</format><property>systems/pressurization/diff-psi</property><live>true</live></text>
+  </group>
+  <hrule/>
+  <button><legend>Close</legend><default>true</default><binding><command>dialog-close</command></binding></button>
+</PropertyList>

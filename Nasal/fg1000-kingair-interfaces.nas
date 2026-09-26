@@ -64,6 +64,10 @@ var KingAirEISPublisher =
       Volts : getprop("/systems/electrical/volts") or 0,
       Amps : getprop("/systems/electrical/amps") or 0,
       GenLoad : [getprop("/systems/electrical/gen-load[0]") or 0, getprop("/systems/electrical/gen-load[1]") or 0],
+      PropAmps : getprop("/systems/anti-ice/prop-deice-amps") or 0,
+      CabinAlt : getprop("/systems/pressurization/cabin-altitude-ft") or 0,
+      CabinRate : getprop("/systems/pressurization/cabin-rate-fpm") or 0,
+      DiffPsi : getprop("/systems/pressurization/diff-psi") or 0,
     };
     var notification = notifications.PFDEventNotification.new(
       "MFD", 1, notifications.PFDEventNotification.EngineData,

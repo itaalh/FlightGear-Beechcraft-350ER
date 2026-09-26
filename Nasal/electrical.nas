@@ -21,19 +21,25 @@ var update = func {
     var batt_sw = elec.getNode("battery-switch", 1).getBoolValue();
     var ext_sw  = elec.getNode("external-power", 1).getBoolValue() and (getprop("gear/gear[1]/wow") or 0);
     var gen = [0, 0];
+    # heaters and deicers (Nasal/ice-protection.nas), shared by the generators on line
+    var extra = contains(globals, "iceprotection") ? iceprotection.load_amps() : 0;
+    var ngen_on = 0;
+    foreach (var i; [0, 1])
+        if ((getprop("engines/engine[" ~ i ~ "]/running") or 0) and elec.getNode("engine[" ~ i ~ "]/bus-tie", 1).getBoolValue()
+            and (getprop("engines/engine[" ~ i ~ "]/n1") or 0) > 52) ngen_on += 1;
     foreach (var i; [0, 1]) {
         var n1 = getprop("engines/engine[" ~ i ~ "]/n1") or 0;
         var running = getprop("engines/engine[" ~ i ~ "]/running") or 0;
         var sw = elec.getNode("engine[" ~ i ~ "]/bus-tie", 1).getBoolValue();
         gen[i] = (running and sw and n1 > 52) ? 1 : 0;
-        sys.getNode("gen-load[" ~ i ~ "]", 1).setDoubleValue(gen[i] ? (0.35 + 0.15 * (gen[0] and gen[1] ? 0 : 1)) : 0);
+        sys.getNode("gen-load[" ~ i ~ "]", 1).setDoubleValue(gen[i] ? (0.35 + 0.15 * (ngen_on > 1 ? 0 : 1) + extra / 300.0 / ngen_on) : 0);
     }
     var ngen = gen[0] + gen[1];
     var volts = 0.0;
     if (ngen > 0 or ext_sw) volts = 28.5;
     elsif (batt_sw) volts = 22.0 + 2.5 * battery_charge;
     # battery charge / discharge
-    if (batt_sw and ngen == 0 and !ext_sw) battery_charge -= dt / 3600.0 * (25.0 / BATTERY_AH);
+    if (batt_sw and ngen == 0 and !ext_sw) battery_charge -= dt / 3600.0 * ((25.0 + extra) / BATTERY_AH);
     elsif (ngen > 0 or ext_sw) battery_charge += dt / 3600.0 * (10.0 / BATTERY_AH);
     battery_charge = math.min(1.0, math.max(0.0, battery_charge));
     if (batt_sw and ngen == 0 and battery_charge < 0.05) volts = 18.0;
@@ -41,7 +47,7 @@ var update = func {
     var dc = (volts > 20) ? 1 : 0;
     sys.getNode("volts", 1).setDoubleValue(volts);
     sys.getNode("battery-charge", 1).setDoubleValue(battery_charge);
-    sys.getNode("amps", 1).setDoubleValue(ngen > 0 ? 40 : (batt_sw ? -25 : 0));
+    sys.getNode("amps", 1).setDoubleValue(ngen > 0 ? 40 : (batt_sw ? -25 - extra : 0));
 
     # AC (inverter)
     var inv = elec.getNode("inverter-switch", 1).getBoolValue();

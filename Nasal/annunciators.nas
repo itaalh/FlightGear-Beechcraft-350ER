@@ -9,8 +9,8 @@
 #
 # Messages and triggers follow the King Air 350 annunciator tables (FlightSafety King Air 300/350
 # Pilot Training Manual, tables 4-4 to 4-7). Only the conditions that the simulated systems can
-# produce are wired: there is no fire detection, bleed air, pressurization, hydraulic or autopilot
-# monitor model, so those lamps stay dark (they still light with the annunciator test).
+# produce are wired: there is no fire detection, bleed air leak, hydraulic or autopilot monitor model,
+# so those lamps stay dark (they still light with the annunciator test).
 #
 # License: GPL v2 or later
 #############################################################################
@@ -25,7 +25,7 @@ var ADVISORY = 2;     # advisory and status annunciators
 
 # panel lamps without a simulated source: forced on by the annunciator test only
 var UNWIRED_LAMPS = ["warning/AP-fail", "warning/AP-trim", "warning/L-bleed-air", "warning/R-bleed-air",
-                     "warning/L-env-fail", "warning/R-env-fail", "warning/cbn-alt", "warning/cbn-diff",
+                     "warning/L-env-fail", "warning/R-env-fail",
                      "warning/emer-lights", "caution/LFuelCol", "caution/RFuelCol"];
 
 var eng = func(i, p) { getprop("engines/engine[" ~ i ~ "]/" ~ p) or 0; };
@@ -48,6 +48,13 @@ var ALERTS = [
       cond: func { door_open("passenger") or door_open("crew") } },
     { text: nil,              level: WARNING, lamp: "warning/crg-door",
       cond: func { door_open("leftbagage") or door_open("rightbagage") } },
+    # pressurization (Nasal/pressurization.nas); CABIN ALT TEST / CABIN DIFF WARN TEST switch
+    { text: "CABIN ALT HI",   level: WARNING, lamp: "warning/cbn-alt",
+      cond: func { (getprop("systems/pressurization/cabin-altitude-ft") or 0) > 12000
+                   or getprop("controls/pressurization/cabin-alt-test") } },
+    { text: "CABIN DIFF HI",  level: WARNING, lamp: "warning/cbn-diff",
+      cond: func { (getprop("systems/pressurization/diff-psi") or 0) > 6.9
+                   or getprop("controls/pressurization/diff-warn-test") } },
     # boost pressure below ~10 psi: the engine-driven pump only delivers above ~12 % N1 (no standby pump model)
     { text: "L FUEL PRES LO", level: WARNING, lamp: "warning/L-fuel-psi",
       cond: func { eng(0, "n1") < 12 } },
@@ -83,6 +90,10 @@ var ALERTS = [
       cond: func { gear_down() and (ectl(0, "propeller-pitch") < 0.98 or ectl(1, "propeller-pitch") < 0.98) } },
     { text: "AUTOFTHER OFF",  level: CAUTION, lamp: nil,
       cond: func { gear_down() and !getprop("controls/engines/autofeather") } },
+    { text: "L BL AIR OFF",   level: CAUTION, lamp: nil,
+      cond: func { getprop("controls/pressurization/bleed-air[0]") == 0 } },   # nil before init
+    { text: "R BL AIR OFF",   level: CAUTION, lamp: nil,
+      cond: func { getprop("controls/pressurization/bleed-air[1]") == 0 } },   # nil before init
     { text: "RUD BOOST OFF",  level: CAUTION, lamp: nil,
       cond: func { !getprop("controls/flight/rudder-boost") } },
 
@@ -92,6 +103,21 @@ var ALERTS = [
       cond: func { ectl(0, "ignition") } },
     { text: "R IGNITION ON",  level: ADVISORY, lamp: "caution/Rignition",
       cond: func { ectl(1, "ignition") } },
+    # inertial separator vanes in the icing position (Nasal/ice-protection.nas)
+    { text: "L ENG ANTI-ICE", level: ADVISORY, lamp: nil,
+      cond: func { (getprop("systems/anti-ice/engine[0]/vane-pos-norm") or 0) > 0.99 } },
+    { text: "R ENG ANTI-ICE", level: ADVISORY, lamp: nil,
+      cond: func { (getprop("systems/anti-ice/engine[1]/vane-pos-norm") or 0) > 0.99 } },
+    { text: "WING DEICE",     level: ADVISORY, lamp: nil,
+      cond: func { getprop("systems/anti-ice/wing-boots") } },
+    { text: "TAIL DEICE",     level: ADVISORY, lamp: nil,
+      cond: func { getprop("systems/anti-ice/tail-boots") } },
+    { text: "L BK DEICE ON",  level: ADVISORY, lamp: nil,
+      cond: func { getprop("systems/anti-ice/brake-deice") } },
+    { text: "R BK DEICE ON",  level: ADVISORY, lamp: nil,
+      cond: func { getprop("systems/anti-ice/brake-deice") } },
+    { text: "MAN TIES CLOSE", level: ADVISORY, lamp: nil,
+      cond: func { getprop("controls/electric/gen-ties-man-close") } },
     { text: "FUEL CROSSFEED", level: ADVISORY, lamp: "caution/FXfer",
       cond: func { (getprop("controls/fuel/crossfeed") or 0) != 0 } },
     # armed with the power levers above ~88 % N1
@@ -103,6 +129,9 @@ var ALERTS = [
       cond: func { ectl(0, "reverser") } },
     { text: "R PROP PITCH",   level: ADVISORY, lamp: nil,
       cond: func { ectl(1, "reverser") } },
+    { text: "CABIN ALTITUDE", level: ADVISORY, lamp: nil,
+      cond: func { (getprop("systems/pressurization/cabin-altitude-ft") or 0) > 10000
+                   or getprop("controls/pressurization/cabin-alt-test") } },
     { text: "LDG/TAXI LIGHT", level: ADVISORY, lamp: "caution/Taxi",
       cond: func { !gear_down() and (getprop("controls/lighting/taxi-lights") or getprop("controls/lighting/landing-lights")
                                      or getprop("controls/lighting/landing-lights[1]")) } },

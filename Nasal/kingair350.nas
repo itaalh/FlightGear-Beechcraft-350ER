@@ -45,8 +45,8 @@ var update_engines = func {
 
     foreach (var i; ENGINES) {
         var cond = ctl[i].getNode("condition", 1).getValue() or 0.0;
-        # condition lever in CUT-OFF closes the fuel valve (JSBSim cutoff)
-        ctl[i].getNode("cutoff", 1).setBoolValue(cond < 0.05);
+        # condition lever in CUT-OFF, or fire handle pulled (firewall fuel shutoff valve), closes the fuel (JSBSim cutoff)
+        ctl[i].getNode("cutoff", 1).setBoolValue(cond < 0.05 or ctl[i].getNode("fire-handle", 1).getBoolValue());
 
         # the JSBSim starter needs "generator power": electrical power available for the starter/generator
         elec.getNode("engine[" ~ i ~ "]/generator", 1).setBoolValue(power_for_start);

@@ -86,8 +86,16 @@
     <!-- instruments -->
     <instrumentation include="Systems/instrumentation.xml"/>
 
-    <!-- no <systems> entry: the electrical system is handled by Nasal/electrical.nas and the autopilot
-         loops run inside JSBSim (Systems/autopilot.xml, bridged by Nasal/autopilot.nas) -->
+    <!-- the electrical system is handled by Nasal/electrical.nas and the autopilot loops run inside JSBSim
+         (Systems/autopilot.xml, bridged by Nasal/autopilot.nas): the generic FlightGear autopilot is replaced
+         by an empty one, otherwise it also flies the aircraft from /autopilot/locks. The generic systems
+         and autopilot helpers (autopilot[1]) are kept. -->
+    <systems>
+      <autopilot n="0">
+        <name>generic autopilot</name>
+        <path>Aircraft/KingAir-350/Systems/no-generic-autopilot.xml</path>
+      </autopilot>
+    </systems>
 
     <flaps>
       <setting>0.0</setting>   <!-- UP -->
@@ -120,6 +128,8 @@
       <line>Cruise: 1500-1700 rpm, ITT below 820 C. Landing: flaps DOWN, Vref ~105 kt at 15000 lb.</line>
       <line>Reverse: with the power levers at idle press Delete, then advance the power levers (beta then reverse).</line>
     </help>
+
+    <checklists include="Checklists/KingAir-350-checklists.xml"/>
 
     <menubar include="Dialogs/Pilot_Menu_G1000.xml"/>
 
@@ -478,6 +488,12 @@
     <annunciators>
       <file>Aircraft/KingAir-350/Nasal/annunciators.nas</file>
     </annunciators>
+    <iceprotection>
+      <file>Aircraft/KingAir-350/Nasal/ice-protection.nas</file>
+    </iceprotection>
+    <pressurization>
+      <file>Aircraft/KingAir-350/Nasal/pressurization.nas</file>
+    </pressurization>
     <fg1000ka>
       <file>Aircraft/KingAir-350/Nasal/fg1000-kingair.nas</file>
     </fg1000ka>
