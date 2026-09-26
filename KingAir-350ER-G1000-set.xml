@@ -475,6 +475,9 @@
     <doors>
       <file>Aircraft/KingAir-350/Nasal/doors.nas</file>
     </doors>
+    <annunciators>
+      <file>Aircraft/KingAir-350/Nasal/annunciators.nas</file>
+    </annunciators>
     <fg1000ka>
       <file>Aircraft/KingAir-350/Nasal/fg1000-kingair.nas</file>
     </fg1000ka>

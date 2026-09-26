@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- King Air 350 EIS strip for the FG1000 MFD (1024x768 canvas, strip on the left, same frame as the
+     FGData EIS-C182T). Only the frame is here: the gauges are drawn into EISGroup by
+     Nasal/fg1000-kingair-eis.nas from its table of limits. License: GPL v2 or later -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768" viewBox="0 0 1024 768" version="1.1" id="svgEISKingAir">
+  <g id="EISGroup">
+    <rect id="EISBackground" x="-0.3" y="56.4" width="149.5" height="686.9"
+          style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-opacity:1" />
+  </g>
+</svg>

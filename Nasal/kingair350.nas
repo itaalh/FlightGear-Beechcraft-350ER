@@ -67,14 +67,16 @@ var update_engines = func {
 
         # simple oil model for the gauges: both are damped low-pass filters (10 Hz timer) so a
         # tick-to-tick wobble in N1 or in the running/starting flags does not show up as needle jitter,
-        # same as the real gauges' own mechanical damping.
-        var oilt = eng[i].getNode("oil-temperature-degf", 1).getValue() or 60;
+        # same as the real gauges' own mechanical damping. Written to their own "-ind" properties:
+        # JSBSim rewrites oil-pressure-psi / oil-temperature-degf every frame with its own (low) values,
+        # and sharing them made the needles jump between the two models.
+        var oilt = eng[i].getNode("oil-temperature-ind-degf", 1).getValue() or 60;
         var target_t = running ? (150 + 0.4 * n1) : 60;
-        eng[i].getNode("oil-temperature-degf", 1).setDoubleValue(oilt + (target_t - oilt) * 0.01);
+        eng[i].getNode("oil-temperature-ind-degf", 1).setDoubleValue(oilt + (target_t - oilt) * 0.01);
 
-        var oilp = eng[i].getNode("oil-pressure-psi", 1).getValue() or 0;
+        var oilp = eng[i].getNode("oil-pressure-ind-psi", 1).getValue() or 0;
         var target_p = running ? (60 + 0.5 * n1) : (starting ? 15 : 0);
-        eng[i].getNode("oil-pressure-psi", 1).setDoubleValue(oilp + (target_p - oilp) * 0.15);
+        eng[i].getNode("oil-pressure-ind-psi", 1).setDoubleValue(oilp + (target_p - oilp) * 0.15);
     }
 
     # aux tank transfer pumps (AUTO / OFF): priority 0 disables the tank in JSBSim

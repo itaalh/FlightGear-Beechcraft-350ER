@@ -2512,11 +2512,18 @@
     <animation>
         <type>rotate</type>
         <object-name>Oil.needle1</object-name>
-        <property>engines/engine[0]/oil-pressure-psi</property>
+        <property>engines/engine[0]/oil-pressure-ind-psi</property>
+        <!-- dial calibrated on the gauge face: 0 / 60 / 100 / 150 / 200 psi -->
         <interpolation>
             <entry><ind>0.0</ind><dep>0.0</dep></entry>
-            <entry><ind>65.0</ind><dep>52.0</dep></entry>
-            <entry><ind>100.0</ind><dep>70</dep></entry>
+            <entry><ind>20.0</ind><dep>13.0</dep></entry>
+            <entry><ind>40.0</ind><dep>20.0</dep></entry>
+            <entry><ind>60.0</ind><dep>30.0</dep></entry>
+            <entry><ind>80.0</ind><dep>40.0</dep></entry>
+            <entry><ind>100.0</ind><dep>52.0</dep></entry>
+            <entry><ind>120.0</ind><dep>61.0</dep></entry>
+            <entry><ind>150.0</ind><dep>70.0</dep></entry>
+            <entry><ind>200.0</ind><dep>87.0</dep></entry>
         </interpolation>
         <center>
             <x-m>-4.920</x-m>
@@ -2533,8 +2540,18 @@
     <animation>
         <type>rotate</type>
         <object-name>Oil.needle2</object-name>
-        <property>engines/engine[0]/oil-temperature-degf</property>
-        <factor>30</factor>
+        <property>engines/engine[0]/oil-temperature-ind-degf</property>
+        <!-- dial in deg C (-20..140), property in deg F: -20 / 0 / 20 / 60 / 100 / 110 / 140 / 160 C -->
+        <interpolation>
+            <entry><ind>-4.0</ind><dep>-3.0</dep></entry>
+            <entry><ind>32.0</ind><dep>-12.0</dep></entry>
+            <entry><ind>68.0</ind><dep>-21.0</dep></entry>
+            <entry><ind>140.0</ind><dep>-41.0</dep></entry>
+            <entry><ind>212.0</ind><dep>-68.0</dep></entry>
+            <entry><ind>230.0</ind><dep>-75.0</dep></entry>
+            <entry><ind>284.0</ind><dep>-90.0</dep></entry>
+            <entry><ind>320.0</ind><dep>-104.0</dep></entry>
+        </interpolation>
         <center>
             <x-m>-4.920</x-m>
             <y-m>-0.22449</y-m>
@@ -2550,8 +2567,18 @@
     <animation>
         <type>rotate</type>
         <object-name>Oil1.needle2</object-name>
-        <property>engines/engine[1]/oil-temperature-degf</property>
-        <factor>30</factor>
+        <property>engines/engine[1]/oil-temperature-ind-degf</property>
+        <!-- dial in deg C (-20..140), property in deg F: -20 / 0 / 20 / 60 / 100 / 110 / 140 / 160 C -->
+        <interpolation>
+            <entry><ind>-4.0</ind><dep>3.0</dep></entry>
+            <entry><ind>32.0</ind><dep>12.0</dep></entry>
+            <entry><ind>68.0</ind><dep>21.0</dep></entry>
+            <entry><ind>140.0</ind><dep>41.0</dep></entry>
+            <entry><ind>212.0</ind><dep>68.0</dep></entry>
+            <entry><ind>230.0</ind><dep>75.0</dep></entry>
+            <entry><ind>284.0</ind><dep>90.0</dep></entry>
+            <entry><ind>320.0</ind><dep>104.0</dep></entry>
+        </interpolation>
         <center>
             <x-m>-4.920</x-m>
             <y-m>-0.16111</y-m>
@@ -2567,11 +2594,18 @@
     <animation>
         <type>rotate</type>
         <object-name>Oil1.needle1</object-name>
-        <property>engines/engine[1]/oil-pressure-psi</property>
+        <property>engines/engine[1]/oil-pressure-ind-psi</property>
+        <!-- dial calibrated on the gauge face: 0 / 60 / 100 / 150 / 200 psi -->
         <interpolation>
             <entry><ind>0.0</ind><dep>0.0</dep></entry>
-            <entry><ind>65.0</ind><dep>52.0</dep></entry>
-            <entry><ind>100.0</ind><dep>70</dep></entry>
+            <entry><ind>20.0</ind><dep>13.0</dep></entry>
+            <entry><ind>40.0</ind><dep>20.0</dep></entry>
+            <entry><ind>60.0</ind><dep>30.0</dep></entry>
+            <entry><ind>80.0</ind><dep>40.0</dep></entry>
+            <entry><ind>100.0</ind><dep>52.0</dep></entry>
+            <entry><ind>120.0</ind><dep>61.0</dep></entry>
+            <entry><ind>150.0</ind><dep>70.0</dep></entry>
+            <entry><ind>200.0</ind><dep>87.0</dep></entry>
         </interpolation>
         <center>
             <x-m>-4.920</x-m>
