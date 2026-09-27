@@ -28,6 +28,7 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 | Volets | `[` `]` ou levier du piédestal : UP / APPROACH 40 % (14°) / DOWN 35° |
 | Essuie-glaces | sélecteur du panneau supérieur (clic gauche / molette) : PARK / OFF / SLOW / FAST ; PARK ramène les balais en butée puis revient sur OFF |
 | Volants | menu *King Air 350 › Yokes visible* (réglage conservé d'une session à l'autre) |
+| Départ en vol | `--in-air --altitude=… --vc=…` avec `--prop:/sim/presets/running=true` : moteurs en marche, puissance, pas d'hélice et trims réglés pour le palier, train rentré au-dessus de 150 kt ; l'avion est tenu 4 s, le temps que les hélices se stabilisent. Sans cette option, les moteurs sont arrêtés |
 | Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
 | Amortisseur de lacet | bouton YD ou `Ctrl-Y` (obligatoire au-dessus de 5 000 ft sur l'avion réel) |
 | Porte / escalier | `D` |
@@ -121,6 +122,10 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - Dérivées de stabilité et de commande estimées par méthodes classiques puis ajustées sur les chiffres publiés
   (Vmca, taux de roulis, roulis hollandais). Débattements TCDS : profondeur 20°/14°, ailerons 25°/15°
   (différentiels), direction 25°, volets 35°.
+- Couple des hélices : les deux hélices tournent dans le sens horaire vu de l'arrière. Leur couple de réaction fait
+  rouler l'avion à gauche ; la rotation du souffle sur l'aile en compense 85 % (ligne portante, `Tools/swirl_ll.py`).
+  Il reste une légère tendance à gauche avec la puissance : environ 3 % d'aileron en montée initiale plein gaz et
+  moins de 1 % en croisière, pilote seul à gauche compris.
 - Centrage : plage réelle 7,8–31,7 % CMA ; masse à vide 9 650 lb, inerties estimées (Roskam), 4 masses
   ponctuelles (pilote, copilote, cabine, soute) modifiables par le dialogue *Fuel and Payload*.
 - Train : géométrie du modèle 3D, roulette de nez orientable (autorité 48° au taxi, réduite en vitesse),
@@ -210,5 +215,6 @@ la traînée en configuration lisse a été réglée en priorité sur les vitess
 
 ## Outils (`Tools/`)
 `bemt2.py`/`gen_prop2.py` (hélice), `pkg_engine.py` (moteur), `gen_aero.py` (avion) régénèrent les fichiers
-JSBSim ; `t_*.py` sont les scripts de validation (nécessitent `pip install jsbsim`). Lancer depuis `Tools/`
+JSBSim ; `t_*.py` sont les scripts de validation (nécessitent `pip install jsbsim`) ; `t_level.py` calcule les tables
+de vol en palier du départ en vol et `swirl_ll.py` le moment de roulis dû à la rotation du souffle. Lancer depuis `Tools/`
 avec un dossier `aircraft/KingAir-350` + `engine/` recopié comme dans les scripts, ou adapter les chemins.

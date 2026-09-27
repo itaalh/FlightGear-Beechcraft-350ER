@@ -247,6 +247,95 @@ var autostart_step = func {
 };
 var autostart_timer = maketimer(0.5, autostart_step);
 
+# start in the air with the engines running. The JSBSim start-up trim cannot converge with these governed
+# propellers (it steps the engines by 0.5 s and the governor then swings from stop to stop): it fails and
+# leaves the propellers nearly feathered below 200 rpm, where the governor cannot move the blades (no thrust),
+# or at two different speeds (strong yaw, then roll), the power levers at idle and no trim. A level-flight state
+# is set instead: both propellers at the blade angle of level flight, the power for level flight, the pitch trim
+# for the airspeed and the gear up above 150 KCAS (cruise start; below, an approach start keeps it down). The
+# airframe is then held for 4 s (JSBSim velocity integrators off: same speed and attitude, straight flight)
+# while the engines run and the governors bring both propellers on speed; the aileron trim is set on release.
+# The propeller rpm itself cannot be set from FlightGear. Tables from JSBSim level-flight runs (clean,
+# 1700 rpm, 13 500 lb).
+var LEVEL_KCAS  = [110, 120, 130, 150, 170, 190, 210, 230, 250];
+var LEVEL_TRIM  = [-0.163, -0.109, -0.067, -0.005, 0.054, 0.099, 0.129, 0.152, 0.170];
+var LEVEL_ALT   = [1000, 10000, 20000, 28000];
+var LEVEL_POWER = [[0.30, 0.29, 0.31, 0.33, 0.39, 0.44, 0.52, 0.60, 0.69],
+                   [0.33, 0.33, 0.34, 0.38, 0.43, 0.50, 0.59, 0.70, 1.00],
+                   [0.39, 0.39, 0.41, 0.46, 0.53, 0.62, 0.76, 1.00, 1.00],
+                   [0.50, 0.50, 0.52, 0.58, 0.68, 0.86, 1.00, 1.00, 1.00]];
+var LEVEL_BLADE = [[18.2, 19.7, 21.2, 24.2, 27.2, 30.2, 33.1, 35.9, 38.5],
+                   [21.3, 22.9, 24.4, 27.7, 30.9, 34.0, 37.2, 40.1, 42.7],
+                   [25.5, 27.1, 28.7, 32.2, 35.7, 39.0, 42.3, 45.1, 45.1],
+                   [29.4, 31.0, 32.8, 36.4, 40.0, 43.3, 44.2, 44.3, 44.3]];
+
+# position of x in the ascending list xs, clamped at both ends: [interval index, fraction]
+var lookup = func(xs, x) {
+    var n = size(xs) - 1;
+    if (x <= xs[0]) return [0, 0];
+    if (x >= xs[n]) return [n - 1, 1];
+    var i = 0;
+    while (x > xs[i + 1]) i += 1;
+    return [i, (x - xs[i]) / (xs[i + 1] - xs[i])];
+};
+var interp = func(xs, ys, x) {
+    var k = lookup(xs, x);
+    return ys[k[0]] + (ys[k[0] + 1] - ys[k[0]]) * k[1];
+};
+var interp_level = func(table, alt, kcas) {
+    var k = lookup(LEVEL_ALT, alt);
+    var lo = interp(LEVEL_KCAS, table[k[0]], kcas);
+    return lo + (interp(LEVEL_KCAS, table[k[0] + 1], kcas) - lo) * k[1];
+};
+
+var init_in_air = func {
+    if (getprop("sim/presets/onground") or (getprop("position/altitude-agl-ft") or 0) < 50) return;
+    var kcas = getprop("velocities/airspeed-kt") or 0;
+    var alt = getprop("position/altitude-ft") or 0;
+    var weight = getprop("fdm/jsbsim/inertia/weight-lbs") or 13500;
+    var power = interp_level(LEVEL_POWER, alt, kcas);
+    var blade = interp_level(LEVEL_BLADE, alt, kcas);
+    foreach (var i; ENGINES) {
+        ctl[i].getNode("throttle", 1).setDoubleValue(power);
+        jsb[i].getNode("blade-angle", 1).setDoubleValue(blade);
+    }
+    # the pitch trim follows the lift coefficient: airspeed scaled to the table weight
+    setprop("controls/flight/elevator-trim", interp(LEVEL_KCAS, LEVEL_TRIM, kcas * math.sqrt(13500 / weight)));
+    if (kcas > 150) setprop("controls/gear/gear-down", 0);
+    hold_airframe(4);
+};
+
+var HOLD_PROPS = ["fdm/jsbsim/simulation/integrator/rate/rotational", "fdm/jsbsim/simulation/integrator/rate/translational"];
+var hold_saved = nil;
+var hold_airframe = func(t) {
+    if (hold_saved == nil) {
+        hold_saved = [];
+        foreach (var p; HOLD_PROPS) {
+            var v = getprop(p);
+            append(hold_saved, v);
+            if (v != nil) setprop(p, 0);
+        }
+    }
+    settimer(release_airframe, t);
+};
+var release_airframe = func {
+    if (hold_saved == nil) return;
+    forindex (var k; HOLD_PROPS)
+        if (hold_saved[k] != nil) setprop(HOLD_PROPS[k], hold_saved[k]);
+    hold_saved = nil;
+    trim_roll();
+};
+
+# aileron trim for the steady roll moments: residual propeller torque and lateral CG offset (pilot seat, lift
+# acting on the centre line). Ailerons: Cl 0.10 per radian of average deflection, 0.349 rad of average
+# deflection per unit of command (Aero/KingAir-350*.xml).
+var trim_roll = func {
+    var l = (getprop("fdm/jsbsim/moments/l-prop-lbsft") or 0) + (getprop("fdm/jsbsim/aero/moment/Roll_prop_swirl") or 0)
+          + (getprop("fdm/jsbsim/inertia/weight-lbs") or 0) * (getprop("fdm/jsbsim/inertia/cg-y-in") or 0) / 12;
+    var qsb = (getprop("fdm/jsbsim/aero/qbar-psf") or 0) * 310 * 57.92;
+    if (qsb > 1000) setprop("controls/flight/aileron-trim", math.clamp(-l / (qsb * 0.10 * 0.349), -0.2, 0.2));
+};
+
 # automatic start when FlightGear starts with running engines (--prop:/sim/presets/running=true or
 # the "start with engines running" option): set the levers accordingly
 var init_running = func {
@@ -258,6 +347,7 @@ var init_running = func {
         }
         elec.getNode("battery-switch", 1).setBoolValue(1);
         elec.getNode("avionics-switch", 1).setBoolValue(1);
+        init_in_air();
     }
 };
 
