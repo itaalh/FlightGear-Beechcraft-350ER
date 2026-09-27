@@ -17,6 +17,31 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   intérieur / extérieur remis dans le bon sens ; son d'arrêt avec une hauteur normale ; toussotements de moteur
   à pistons supprimés ; boucle intérieure `eng_run_int_1340.wav` recoupée sans clic.
 
+## [2.4.2] — 2026-09-27
+
+### Corrigé
+- **Roulis à gauche avec la puissance** (350, 350ER, G1000). Les deux hélices tournent dans le même sens (horaire vu
+  de l'arrière). Le modèle appliquait tout leur couple de réaction, qui fait rouler l'avion à gauche, sans l'effet
+  inverse : la rotation du souffle sur l'aile placée derrière chaque hélice le fait rouler à droite. Ce terme est
+  ajouté, à 85 % du couple (estimation par ligne portante, `Tools/swirl_ll.py`). Aileron nécessaire pour garder les
+  ailes à plat, pilote seul à gauche compris :
+  - montée initiale plein gaz : environ 3 % (18 % auparavant) ;
+  - croisière : moins de 1 % (4,5 % auparavant).
+- **Départ en vol moteurs en marche** (`--in-air` avec `--prop:/sim/presets/running=true`). L'équilibrage
+  automatique de JSBSim n'aboutit pas avec les hélices régulées. Il laissait :
+  - les hélices presque en drapeau sous 200 tr/min, donc sans poussée, ou tournant à deux régimes différents,
+    d'où un fort lacet puis un roulis (−44° en 13 s) ;
+  - les manettes au ralenti et aucun trim.
+
+  L'avion part désormais en palier :
+  - puissance, pas d'hélice et trim de profondeur tirés de tables de vol en palier (`Tools/t_level.py`) ;
+  - train rentré au-dessus de 150 kt ;
+  - avion maintenu 4 s à vitesse et attitude constantes, le temps que les hélices se calent à 1 700 tr/min,
+    puis trim d'ailerons réglé.
+
+  Avec du vent en altitude, FlightGear n'applique le vent qu'après l'initialisation : l'avion subit alors une
+  courte rafale au départ, comme tous les avions.
+
 ## [2.4.1] — 2026-09-26
 
 ### Modifié
@@ -171,8 +196,8 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
-[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.1.3...main
-
+[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.2...engine-sound
+[2.4.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.3.0...v2.4.0
 [2.3.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.2.0...v2.3.0

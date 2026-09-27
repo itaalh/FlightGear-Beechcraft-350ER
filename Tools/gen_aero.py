@@ -87,8 +87,8 @@ xml=f'''<?xml version="1.0"?>
       Wing: S = 310 ft2, b = 57.92 ft, MAC = 5.83 ft (70 in), MAC leading edge at x = {MAC_LE_x:.1f} in,
       dihedral 6 deg, aspect ratio 10.8, NASA winglets. T-tail: 68 ft2, 17 deg sweep; fin 52.3 ft2.
       Aerodynamic reference point at 25 % MAC. CG envelope: 7.8 % (to 11800 lb) / 19.3 % (15000 lb) fwd, 31.7 % aft.
-      Weights: BEW ~ {EMPTY_W:.0f} lb here (payload dialog adds crew/pax/baggage).
-      Fuel: 2 x {MAIN_GAL:.1f} gal main + 2 x 79.5 gal aux (aux transfers first).
+      Weights: BEW ~ {EMPTY_W:.0f} lb here (payload dialog adds crew/pax/baggage){"" if ER else ", MTOW 15000, MLW 15000, MZFW 12500"}.
+      Fuel: {"" if ER else "539 US gal usable (3611 lb): "}2 x {MAIN_GAL:g} gal main + 2 x 79.5 gal aux (aux transfers first).
       Sources: Beechcraft King Air 350i Specification and Description, TCDS A24CE, operator limitation
       sheets (Vmo 263 KIAS / M 0.58, Vfe 202/158, Vle 184, Vs 96 / Vso 81 KCAS at 15000 lb, Vmca 94),
       published performance (ROC 2731 fpm, 312 KTAS max cruise FL240, 1572 nm), ICAS 2002 paper 783 (flight test envelope).
@@ -647,6 +647,19 @@ xml=f'''<?xml version="1.0"?>
                0.50  0.040
             </tableData>
           </table>
+        </product>
+      </function>
+      <function name="aero/moment/Roll_prop_swirl">
+        <description> Propeller slipstream swirl on the wing. Both propellers turn clockwise seen from behind: the
+          reaction torque (propulsion moment) rolls the airframe left, while the swirl raises the lift on the left
+          of each disc and lowers it on the right, rolling it right. A lifting-line estimate gives a wing moment
+          of the order of the propeller torque; 85 % is taken, leaving a slight left tendency with power. </description>
+        <product>
+          <value> -0.85 </value>
+          <sum>
+            <property> propulsion/engine[0]/propeller-torque-ftlb </property>
+            <property> propulsion/engine[1]/propeller-torque-ftlb </property>
+          </sum>
         </product>
       </function>
       <function name="aero/moment/Roll_rudder">

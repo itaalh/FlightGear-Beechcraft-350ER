@@ -662,6 +662,19 @@
           </table>
         </product>
       </function>
+      <function name="aero/moment/Roll_prop_swirl">
+        <description> Propeller slipstream swirl on the wing. Both propellers turn clockwise seen from behind: the
+          reaction torque (propulsion moment) rolls the airframe left, while the swirl raises the lift on the left
+          of each disc and lowers it on the right, rolling it right. A lifting-line estimate gives a wing moment
+          of the order of the propeller torque; 85 % is taken, leaving a slight left tendency with power. </description>
+        <product>
+          <value> -0.85 </value>
+          <sum>
+            <property> propulsion/engine[0]/propeller-torque-ftlb </property>
+            <property> propulsion/engine[1]/propeller-torque-ftlb </property>
+          </sum>
+        </product>
+      </function>
       <function name="aero/moment/Roll_rudder">
         <description> Roll due to rudder (fin above CG) </description>
         <product>
