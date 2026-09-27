@@ -3,6 +3,31 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+- **Roulis à gauche avec la puissance** (350, 350ER, G1000). Les deux hélices tournent dans le même sens (horaire vu
+  de l'arrière). Le modèle appliquait tout leur couple de réaction, qui fait rouler l'avion à gauche, sans l'effet
+  inverse : la rotation du souffle sur l'aile placée derrière chaque hélice le fait rouler à droite. Ce terme est
+  ajouté, à 85 % du couple (estimation par ligne portante, `Tools/swirl_ll.py`). Aileron nécessaire pour garder les
+  ailes à plat, pilote seul à gauche compris :
+  - montée initiale plein gaz : environ 3 % (18 % auparavant) ;
+  - croisière : moins de 1 % (4,5 % auparavant).
+- **Départ en vol moteurs en marche** (`--in-air` avec `--prop:/sim/presets/running=true`). L'équilibrage
+  automatique de JSBSim n'aboutit pas avec les hélices régulées. Il laissait :
+  - les hélices presque en drapeau sous 200 tr/min, donc sans poussée, ou tournant à deux régimes différents,
+    d'où un fort lacet puis un roulis (−44° en 13 s) ;
+  - les manettes au ralenti et aucun trim.
+
+  L'avion part désormais en palier :
+  - puissance, pas d'hélice et trim de profondeur tirés de tables de vol en palier (`Tools/t_level.py`) ;
+  - train rentré au-dessus de 150 kt ;
+  - avion maintenu 4 s à vitesse et attitude constantes, le temps que les hélices se calent à 1 700 tr/min,
+    puis trim d'ailerons réglé.
+
+  Avec du vent en altitude, FlightGear n'applique le vent qu'après l'initialisation : l'avion subit alors une
+  courte rafale au départ, comme tous les avions.
+
 ## [2.4.1] — 2026-09-26
 
 ### Modifié
