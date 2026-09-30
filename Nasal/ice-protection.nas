@@ -25,6 +25,8 @@ var boot_t = -1;          # time into the surface deice cycle, -1 = idle
 var prop_t = 0;
 
 var dc_ok = func { (getprop("systems/electrical/volts") or 0) > 20; };
+# circuit breakers of the Pro Line Fusion cockpit (1 = pulled, absent = in)
+var cb = func(id) { !getprop("controls/fusion/cb/" ~ id); };
 
 var update = func {
     var dc = dc_ok();
@@ -34,7 +36,7 @@ var update = func {
         var n = sys.getNode("engine[" ~ i ~ "]/vane-pos-norm", 1);
         var pos = n.getValue() or 0;
         var target = ctl.getNode("engine[" ~ i ~ "]/inlet-heat", 1).getBoolValue() ? 1 : 0;
-        if (dc) pos += math.clamp(target - pos, -dt / VANE_TRAVEL_S, dt / VANE_TRAVEL_S);
+        if (dc and cb("eng-ice[" ~ i ~ "]")) pos += math.clamp(target - pos, -dt / VANE_TRAVEL_S, dt / VANE_TRAVEL_S);
         n.setDoubleValue(pos);
     }
 
@@ -42,7 +44,7 @@ var update = func {
     # cockpit bleed valves can shut the pneumatic supply: controls/pressurization/pneumatic[i], on by default)
     var pneu = func(i) { var p = getprop("controls/pressurization/pneumatic[" ~ i ~ "]"); return p == nil or p; };
     var bleed = (getprop("engines/engine[0]/running") and pneu(0)) or (getprop("engines/engine[1]/running") and pneu(1));
-    if (boot_t < 0 and ctl.getNode("wing-deice-cycle", 1).getBoolValue() and dc and bleed) boot_t = 0;
+    if (boot_t < 0 and ctl.getNode("wing-deice-cycle", 1).getBoolValue() and dc and bleed and cb("surface-deice")) boot_t = 0;
     if (boot_t >= 0) {
         boot_t += dt;
         if (boot_t > WING_BOOTS_S + TAIL_BOOTS_S) boot_t = -1;
@@ -55,13 +57,13 @@ var update = func {
     var prop_man = ctl.getNode("prop-heat-manual", 1).getBoolValue();
     prop_t += dt;
     var amps = 0;
-    if (dc and (prop_auto or prop_man)) amps = 29 + 3 * math.sin(prop_t * 0.07);
+    if (dc and (prop_auto or prop_man) and cb("prop-heat")) amps = 29 + 3 * math.sin(prop_t * 0.07);
     sys.getNode("prop-deice-amps", 1).setDoubleValue(amps);
 
     # heaters: on when switched and powered
     foreach (var h; ["window-heat[0]", "window-heat[1]", "pitot-heat[0]", "pitot-heat[1]", "stall-warn-heat",
                      "fuel-vent-heat[0]", "fuel-vent-heat[1]", "brake-deice"])
-        sys.getNode(h, 1).setBoolValue(dc and ctl.getNode(h, 1).getBoolValue());
+        sys.getNode(h, 1).setBoolValue(dc and ctl.getNode(h, 1).getBoolValue() and cb(h));
 };
 
 # extra DC load for the electrical system (A)

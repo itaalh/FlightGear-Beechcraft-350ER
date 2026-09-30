@@ -146,6 +146,8 @@ def build_spec(coll):
     controls3d.build_yokes(ctx)
     import pedestal3d
     pedestal3d.build_pedestal(ctx)
+    import misc3d
+    misc3d.build_misc(ctx)
     anim = {k: {kk: list(vv) if isinstance(vv, (tuple, list)) else vv for kk, vv in v.items()}
             for k, v in ctx.anim.items()}
     with open(os.path.join(HERE, "_build", "pivots.json"), "w") as fh:
@@ -177,6 +179,10 @@ VIEWS = {
     "pedestal": ((-3.92, Y0 + 0.22, 0.12), 32, -32, 62, (1600, 900)),
     "quad": ((-3.95, Y0 - 0.30, 0.20), -32, -30, 55, (1600, 900)),
     "aft": ((-3.70, Y0, 0.20), 0, -62, 60, (1600, 900)),
+    "ovh": ((-3.95, Y0 - 0.20, 0.55), -25, 45, 70, (1600, 900)),
+    "leftwall": ((-3.95, Y0 - 0.10, 0.35), 70, -30, 70, (1600, 900)),
+    "rightwall": ((-3.95, Y0 + 0.10, 0.35), -70, -30, 70, (1600, 900)),
+    "cabin": ((-3.20, Y0, 0.45), 0, -18, 80, (1600, 900)),
 }
 
 

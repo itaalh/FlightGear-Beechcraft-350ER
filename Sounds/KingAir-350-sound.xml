@@ -1037,6 +1037,7 @@
 			<mode>looped</mode>
 			<path>Aircraft/KingAir-350/Sounds/stall.wav</path>
 			<condition>
+			  <and>
 			    <or>
 				<greater-than>
 				    <property>orientation/alpha-deg</property>
@@ -1047,6 +1048,9 @@
 				    <value>-6.5</value>
 				</less-than>
 			    </or>
+			    <!-- STALL WARN breaker of the Pro Line Fusion cockpit -->
+			    <not><property>controls/fusion/cb/stall-warn</property></not>
+			  </and>
 			</condition>
 			<volume>
 			    <property>velocities/airspeed-kt</property>
@@ -1079,12 +1083,25 @@
 			</volume>
 		</gear-warning-horn>
 
+		<cabin-chime>
+			<name>cabin-chime</name>
+			<mode>once</mode>
+			<path>Aircraft/KingAir-350/Sounds/cabinalert.wav</path>
+			<condition>
+				<property>sim/sound/cabin-chime</property>
+			</condition>
+			<volume>
+				<factor>0.5</factor>
+			</volume>
+		</cabin-chime>
+
 		<stall-warning-test>
 			<name>stall-warning-test</name>
 			<mode>looped</mode>
 			<path>Sounds/stall.wav</path>
 			<condition>
 				<and>
+					<not><property>controls/fusion/cb/stall-warn</property></not>
 					<property>controls/fusion/stall-test</property>
 					<greater-than>
 						<property>systems/electrical/volts</property>

@@ -48,7 +48,7 @@ var update = func {
     if (p_cabin == nil) p_cabin = p_amb;
     var mode = ctl.getNode("cabin-press", 1).getValue() or "press";
     var wow = getprop("gear/gear[1]/wow");
-    var dc = (getprop("systems/electrical/volts") or 0) > 20;
+    var dc = (getprop("systems/electrical/volts") or 0) > 20 and !getprop("controls/fusion/cb/press-control");
 
     # bleed air inflow from each running engine with its valve open
     var inflow = 0;

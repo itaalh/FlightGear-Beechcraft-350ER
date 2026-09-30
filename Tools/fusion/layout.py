@@ -84,10 +84,11 @@ def tilted_frame(origin, tilt_back_deg, yaw_deg=0.0):
 
 def rounded_rect(w, h, r, seg=6, cx=0.0, cy=0.0):
     """Counter-clockwise outline (list of 2D points) of a w x h rectangle with corner radius r."""
-    r = max(0.0, min(r, w / 2.0, h / 2.0))
     pts = []
-    if r <= 1e-9:
+    if r <= 0.0 and seg <= 0:
         return [(cx - w / 2, cy - h / 2), (cx + w / 2, cy - h / 2), (cx + w / 2, cy + h / 2), (cx - w / 2, cy + h / 2)]
+    # keep the point count constant (bevelled prisms loft rings of decreasing radius)
+    r = max(1e-6, min(r, w / 2.0, h / 2.0))
     corners = [(cx + w / 2 - r, cy - h / 2 + r, -90), (cx + w / 2 - r, cy + h / 2 - r, 0),
                (cx - w / 2 + r, cy + h / 2 - r, 90), (cx - w / 2 + r, cy - h / 2 + r, 180)]
     for (ox, oy, a0) in corners:

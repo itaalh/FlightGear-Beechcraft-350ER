@@ -9681,7 +9681,7 @@
   <animation>
     <type>translate</type>
     <object-name>F.GEARRELAY.knob</object-name>
-    <property>controls/fusion/cb/landing-gear-relay</property>
+    <property>controls/fusion/cb/gear-relay</property>
     <factor>0.004</factor>
     <axis>
       <x>0.81915</x>
@@ -9697,7 +9697,7 @@
       <repeatable>false</repeatable>
       <binding>
         <command>property-toggle</command>
-        <property>controls/fusion/cb/landing-gear-relay</property>
+        <property>controls/fusion/cb/gear-relay</property>
       </binding>
       <binding>
         <command>property-toggle</command>
@@ -9709,7 +9709,7 @@
         <command>set-tooltip</command>
         <tooltip-id>F.GEARRELAY</tooltip-id>
         <label>Landing gear relay circuit breaker: %s</label>
-        <property>controls/fusion/cb/landing-gear-relay</property>
+        <property>controls/fusion/cb/gear-relay</property>
         <mapping>nasal</mapping>
         <script>return arg[0] ? "PULLED" : "IN";</script>
       </binding>
@@ -16102,10 +16102,5062 @@
 
   <!-- ===== panel PED.BLANK -->
 
+  <!-- ===== panel OVH -->
+
+  <!-- switch MSTRPANEL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.MSTRPANEL.lever</object-name>
+    <property>controls/lighting/master-panel</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-24</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>24</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.00874</x-m>
+      <y-m>-0.145</y-m>
+      <z-m>0.8537</z-m>
+    </center>
+    <axis>
+      <x>-0</x>
+      <y>-1</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.MSTRPANEL.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], 1, "bool", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], 1, "bool", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], -1, "bool", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.MSTRPANEL</tooltip-id>
+        <label>Master panel lights: %s</label>
+        <property>controls/lighting/master-panel</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.MSTRPANEL.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], -1, "bool", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], 1, "bool", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/lighting/master-panel", [0, 1], -1, "bool", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.MSTRPANEL</tooltip-id>
+        <label>Master panel lights: %s</label>
+        <property>controls/lighting/master-panel</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.PANELLTS -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.PANELLTS.knob</object-name>
+    <property>controls/lighting/instruments-norm</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.00982</x-m>
+      <y-m>-0.09</y-m>
+      <z-m>0.85879</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>controls/lighting/instruments-norm</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.PANELLTS</tooltip-id>
+        <label>Panel back lighting: %.0f %%</label>
+        <property>controls/lighting/instruments-norm</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.DSPL1 -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.DSPL1.knob</object-name>
+    <property>sim/model/fusion/display-brightness[0]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.00982</x-m>
+      <y-m>-0.03</y-m>
+      <z-m>0.85879</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/display-brightness[0]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.DSPL1</tooltip-id>
+        <label>Pilot PFD and standby brightness: %.0f %%</label>
+        <property>sim/model/fusion/display-brightness[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.DSPL2 -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.DSPL2.knob</object-name>
+    <property>sim/model/fusion/display-brightness[1]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.00982</x-m>
+      <y-m>0.03</y-m>
+      <z-m>0.85879</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/display-brightness[1]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.DSPL2</tooltip-id>
+        <label>MFD brightness: %.0f %%</label>
+        <property>sim/model/fusion/display-brightness[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.DSPL3 -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.DSPL3.knob</object-name>
+    <property>sim/model/fusion/display-brightness[2]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.00982</x-m>
+      <y-m>0.09</y-m>
+      <z-m>0.85879</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/display-brightness[2]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.DSPL3</tooltip-id>
+        <label>Copilot PFD brightness: %.0f %%</label>
+        <property>sim/model/fusion/display-brightness[2]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.FLOODP -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.FLOODP.knob</object-name>
+    <property>sim/model/fusion/flood[0]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.06851</x-m>
+      <y-m>-0.065</y-m>
+      <z-m>0.84631</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/flood[0]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.FLOODP</tooltip-id>
+        <label>Instrument panel flood lights: %.0f %%</label>
+        <property>sim/model/fusion/flood[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.FLOODD -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.FLOODD.knob</object-name>
+    <property>sim/model/fusion/flood[1]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.06851</x-m>
+      <y-m>-0.005</y-m>
+      <z-m>0.84631</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/flood[1]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.FLOODD</tooltip-id>
+        <label>Pedestal flood lights: %.0f %%</label>
+        <property>sim/model/fusion/flood[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.FLOODO -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.FLOODO.knob</object-name>
+    <property>sim/model/fusion/flood[2]</property>
+    <factor>270</factor>
+    <offset-deg>-135</offset-deg>
+    <center>
+      <x-m>-4.06851</x-m>
+      <y-m>0.055</y-m>
+      <z-m>0.84631</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>sim/model/fusion/flood[2]</property>
+        <factor>0.05</factor>
+        <min>0</min>
+        <max>1</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.FLOODO</tooltip-id>
+        <label>Overhead and side panel flood lights: %.0f %%</label>
+        <property>sim/model/fusion/flood[2]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] * 100;</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch ANNDIM -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.ANNDIM.lever</object-name>
+    <property>controls/fusion/annun-dim</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-24</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>24</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.00874</x-m>
+      <y-m>0.165</y-m>
+      <z-m>0.8537</z-m>
+    </center>
+    <axis>
+      <x>-0</x>
+      <y>-1</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.ANNDIM.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.ANNDIM</tooltip-id>
+        <label>Annunciators: %s</label>
+        <property>controls/fusion/annun-dim</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "DIM" : "BRIGHT";</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.ANNDIM.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/annun-dim", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.ANNDIM</tooltip-id>
+        <label>Annunciators: %s</label>
+        <property>controls/fusion/annun-dim</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "DIM" : "BRIGHT";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob OVH.WIPER -->
+  <animation>
+    <type>knob</type>
+    <object-name>F.OVH.WIPER.knob</object-name>
+    <property>controls/electric/wipers/switch-pos</property>
+    <factor>40</factor>
+    <offset-deg>-20</offset-deg>
+    <center>
+      <x-m>-4.06851</x-m>
+      <y-m>-0.137</y-m>
+      <z-m>0.84631</z-m>
+    </center>
+    <axis>
+      <x>-0.20791</x>
+      <y>-0</y>
+      <z>0.97815</z>
+    </axis>
+    <action>
+      <binding>
+        <command>property-adjust</command>
+        <property>controls/electric/wipers/switch-pos</property>
+        <factor>1</factor>
+        <min>-1</min>
+        <max>2</max>
+        <wrap>false</wrap>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.OVH.WIPER</tooltip-id>
+        <label>Windshield wiper: %s</label>
+        <property>controls/electric/wipers/switch-pos</property>
+        <mapping>nasal</mapping>
+        <script>return ["PARK", "OFF", "SLOW", "FAST"][math.min(3, math.max(0, int(arg[0] or 0) + 1))];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch SIGNS -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.SIGNS.lever</object-name>
+    <property>controls/fusion/cabin-signs</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>2</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.06743</x-m>
+      <y-m>0.125</y-m>
+      <z-m>0.84123</z-m>
+    </center>
+    <axis>
+      <x>-0</x>
+      <y>-1</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.SIGNS.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.SIGNS</tooltip-id>
+        <label>Cabin signs: %s</label>
+        <property>controls/fusion/cabin-signs</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "FASTEN SEAT BELTS", "NO SMOKING &amp; FSB"][int(arg[0] or 0)];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.SIGNS.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-signs", [0, 1, 2], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.SIGNS</tooltip-id>
+        <label>Cabin signs: %s</label>
+        <property>controls/fusion/cabin-signs</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "FASTEN SEAT BELTS", "NO SMOKING &amp; FSB"][int(arg[0] or 0)];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch CABLIGHTS -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.CABLIGHTS.lever</object-name>
+    <property>controls/fusion/cabin-lights</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>2</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.06743</x-m>
+      <y-m>0.175</y-m>
+      <z-m>0.84123</z-m>
+    </center>
+    <axis>
+      <x>-0</x>
+      <y>-1</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CABLIGHTS.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CABLIGHTS</tooltip-id>
+        <label>Cabin lights: %s</label>
+        <property>controls/fusion/cabin-lights</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "DIM", "BRIGHT"][int(arg[0] or 0)];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CABLIGHTS.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/cabin-lights", [0, 1, 2], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CABLIGHTS</tooltip-id>
+        <label>Cabin lights: %s</label>
+        <property>controls/fusion/cabin-lights</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "DIM", "BRIGHT"][int(arg[0] or 0)];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- ===== panel OVHG -->
+
+  <!-- gauge OVHG.DCLOADL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.DCLOADL.needle0</object-name>
+    <property>systems/electrical/gen-load[0]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-135</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>135</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>-0.1225</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- gauge OVHG.DCLOADR -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.DCLOADR.needle0</object-name>
+    <property>systems/electrical/gen-load[1]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-135</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>135</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>-0.0675</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- gauge OVHG.BATTAMP -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.BATTAMP.needle0</object-name>
+    <property>systems/electrical/ammeter</property>
+    <interpolation>
+      <entry>
+        <ind>-100</ind>
+        <dep>-120</dep>
+      </entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>100</ind>
+        <dep>120</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>-0.0125</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- gauge OVHG.VOLTS -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.VOLTS.needle0</object-name>
+    <property>systems/electrical/volts</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-135</dep>
+      </entry>
+      <entry>
+        <ind>30</ind>
+        <dep>135</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>0.0425</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- gauge OVHG.PROPAMP -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.PROPAMP.needle0</object-name>
+    <property>systems/anti-ice/prop-deice-amps</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-135</dep>
+      </entry>
+      <entry>
+        <ind>40</ind>
+        <dep>135</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>0.0975</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- gauge OVHG.OAT -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.OVHG.OAT.needle0</object-name>
+    <property>environment/temperature-degc</property>
+    <interpolation>
+      <entry>
+        <ind>-50</ind>
+        <dep>-135</dep>
+      </entry>
+      <entry>
+        <ind>50</ind>
+        <dep>135</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.22446</x-m>
+      <y-m>0.1525</y-m>
+      <z-m>0.79146</z-m>
+    </center>
+    <axis>
+      <x>-0.70711</x>
+      <y>-0</y>
+      <z>0.70711</z>
+    </axis>
+  </animation>
+
+  <!-- ===== panel FUEL -->
+
+  <!-- gauge FQTYL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.FQTYL.needle0</object-name>
+    <property>sim/model/fusion/fuel-qty-ind[0]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-120</dep>
+      </entry>
+      <entry>
+        <ind>2000</ind>
+        <dep>120</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.21473</x-m>
+      <y-m>-0.72653</y-m>
+      <z-m>0.03321</z-m>
+    </center>
+    <axis>
+      <x>-0.05971</x>
+      <y>-0.97632</y>
+      <z>-0.20791</z>
+    </axis>
+  </animation>
+
+  <!-- gauge FQTYR -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.FQTYR.needle0</object-name>
+    <property>sim/model/fusion/fuel-qty-ind[1]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-120</dep>
+      </entry>
+      <entry>
+        <ind>2000</ind>
+        <dep>120</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.35447</x-m>
+      <y-m>-0.71798</y-m>
+      <z-m>0.03321</z-m>
+    </center>
+    <axis>
+      <x>-0.05971</x>
+      <y>-0.97632</y>
+      <z>-0.20791</z>
+    </axis>
+  </animation>
+
+  <!-- switch XFEED -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.XFEED.lever</object-name>
+    <property>controls/fusion/crossfeed</property>
+    <interpolation>
+      <entry>
+        <ind>-1</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.28492</x-m>
+      <y-m>-0.72743</y-m>
+      <z-m>0.07301</z-m>
+    </center>
+    <axis>
+      <x>-0.01269</x>
+      <y>-0.20752</y>
+      <z>0.97815</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.XFEED.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.XFEED</tooltip-id>
+        <label>Fuel crossfeed: %s</label>
+        <property>controls/fusion/crossfeed</property>
+        <mapping>nasal</mapping>
+        <script>return ["LEFT (right main feeds left engine)", "OFF", "RIGHT (left main feeds right engine)"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.XFEED.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/crossfeed", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.XFEED</tooltip-id>
+        <label>Fuel crossfeed: %s</label>
+        <property>controls/fusion/crossfeed</property>
+        <mapping>nasal</mapping>
+        <script>return ["LEFT (right main feeds left engine)", "OFF", "RIGHT (left main feeds right engine)"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch FQSEL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.FQSEL.lever</object-name>
+    <property>controls/fusion/fuel-qty-select</property>
+    <interpolation>
+      <entry>
+        <ind>-1</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.28413</x-m>
+      <y-m>-0.71457</y-m>
+      <z-m>0.01236</z-m>
+    </center>
+    <axis>
+      <x>0.99813</x>
+      <y>-0.06105</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.FQSEL.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], 1, "int", nil, [-1]);</script>
+      </binding>
+      <mod-up>
+        <binding>
+          <command>nasal</command>
+          <script>fusion.switch_release("controls/fusion/fuel-qty-select", 0, [-1], "int");</script>
+        </binding>
+      </mod-up>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], 1, "int", nil, [-1], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], -1, "int", nil, [-1], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.FQSEL</tooltip-id>
+        <label>Fuel quantity gauges: %s</label>
+        <property>controls/fusion/fuel-qty-select</property>
+        <mapping>nasal</mapping>
+        <script>return ["TEST", "MAIN tanks", "AUXILIARY tanks"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.FQSEL.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], -1, "int", nil, [-1]);</script>
+      </binding>
+      <mod-up>
+        <binding>
+          <command>nasal</command>
+          <script>fusion.switch_release("controls/fusion/fuel-qty-select", 0, [-1], "int");</script>
+        </binding>
+      </mod-up>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], 1, "int", nil, [-1], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/fuel-qty-select", [-1, 0, 1], -1, "int", nil, [-1], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.FQSEL</tooltip-id>
+        <label>Fuel quantity gauges: %s</label>
+        <property>controls/fusion/fuel-qty-select</property>
+        <mapping>nasal</mapping>
+        <script>return ["TEST", "MAIN tanks", "AUXILIARY tanks"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch STBYPUMPL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.STBYPUMPL.lever</object-name>
+    <property>controls/fusion/stby-pump[0]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-24</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>24</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.14316</x-m>
+      <y-m>-0.73569</y-m>
+      <z-m>0.07105</z-m>
+    </center>
+    <axis>
+      <x>0.99813</x>
+      <y>-0.06105</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.STBYPUMPL.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.STBYPUMPL</tooltip-id>
+        <label>Left standby fuel pump: %s</label>
+        <property>controls/fusion/stby-pump[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.STBYPUMPL.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[0]", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.STBYPUMPL</tooltip-id>
+        <label>Left standby fuel pump: %s</label>
+        <property>controls/fusion/stby-pump[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch AUXXFERL -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.AUXXFERL.lever</object-name>
+    <property>controls/fusion/aux-xfer[0]</property>
+    <interpolation>
+      <entry>
+        <ind>-1</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.14247</x-m>
+      <y-m>-0.72448</y-m>
+      <z-m>0.01823</z-m>
+    </center>
+    <axis>
+      <x>0.99813</x>
+      <y>-0.06105</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.AUXXFERL.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.AUXXFERL</tooltip-id>
+        <label>Left aux transfer: %s</label>
+        <property>controls/fusion/aux-xfer[0]</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "AUTO", "OVERRIDE"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.AUXXFERL.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[0]", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.AUXXFERL</tooltip-id>
+        <label>Left aux transfer: %s</label>
+        <property>controls/fusion/aux-xfer[0]</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "AUTO", "OVERRIDE"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch STBYPUMPR -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.STBYPUMPR.lever</object-name>
+    <property>controls/fusion/stby-pump[1]</property>
+    <interpolation>
+      <entry>
+        <ind>0</ind>
+        <dep>-24</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>24</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.42663</x-m>
+      <y-m>-0.71835</y-m>
+      <z-m>0.07105</z-m>
+    </center>
+    <axis>
+      <x>0.99813</x>
+      <y>-0.06105</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.STBYPUMPR.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.STBYPUMPR</tooltip-id>
+        <label>Right standby fuel pump: %s</label>
+        <property>controls/fusion/stby-pump[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.STBYPUMPR.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/stby-pump[1]", [0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.STBYPUMPR</tooltip-id>
+        <label>Right standby fuel pump: %s</label>
+        <property>controls/fusion/stby-pump[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "ON" : "OFF";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- switch AUXXFERR -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.AUXXFERR.lever</object-name>
+    <property>controls/fusion/aux-xfer[1]</property>
+    <interpolation>
+      <entry>
+        <ind>-1</ind>
+        <dep>-26</dep>
+      </entry>
+      <entry>
+        <ind>0</ind>
+        <dep>0</dep>
+      </entry>
+      <entry>
+        <ind>1</ind>
+        <dep>26</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>-4.42594</x-m>
+      <y-m>-0.70714</y-m>
+      <z-m>0.01823</z-m>
+    </center>
+    <axis>
+      <x>0.99813</x>
+      <y>-0.06105</y>
+      <z>-0</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.AUXXFERR.hs.up</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], 1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.AUXXFERR</tooltip-id>
+        <label>Right aux transfer: %s</label>
+        <property>controls/fusion/aux-xfer[1]</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "AUTO", "OVERRIDE"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.AUXXFERR.hs.dn</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], -1, "int", nil, []);</script>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], 1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.switch("controls/fusion/aux-xfer[1]", [-1, 0, 1], -1, "int", nil, [], 1);</script>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.AUXXFERR</tooltip-id>
+        <label>Right aux transfer: %s</label>
+        <property>controls/fusion/aux-xfer[1]</property>
+        <mapping>nasal</mapping>
+        <script>return ["OFF", "AUTO", "OVERRIDE"][int(arg[0] or 0) + 1];</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- ===== panel CBL -->
+
+  <!-- knob CB.stby-pump0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.stby-pump0.knob</object-name>
+    <property>controls/fusion/cb/stby-pump[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.stby-pump0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/stby-pump[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.stby-pump0</tooltip-id>
+        <label>Circuit breaker STBY PUMP LEFT (10 A): %s</label>
+        <property>controls/fusion/cb/stby-pump[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.stby-pump1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.stby-pump1.knob</object-name>
+    <property>controls/fusion/cb/stby-pump[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.stby-pump1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/stby-pump[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.stby-pump1</tooltip-id>
+        <label>Circuit breaker STBY PUMP RIGHT (10 A): %s</label>
+        <property>controls/fusion/cb/stby-pump[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.aux-xfer0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.aux-xfer0.knob</object-name>
+    <property>controls/fusion/cb/aux-xfer[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.aux-xfer0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/aux-xfer[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.aux-xfer0</tooltip-id>
+        <label>Circuit breaker AUX XFER LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/aux-xfer[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.aux-xfer1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.aux-xfer1.knob</object-name>
+    <property>controls/fusion/cb/aux-xfer[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.aux-xfer1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/aux-xfer[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.aux-xfer1</tooltip-id>
+        <label>Circuit breaker AUX XFER RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/aux-xfer[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.crossfeed -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.crossfeed.knob</object-name>
+    <property>controls/fusion/cb/crossfeed</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.crossfeed.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/crossfeed</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.crossfeed</tooltip-id>
+        <label>Circuit breaker CROSS FEED (5 A): %s</label>
+        <property>controls/fusion/cb/crossfeed</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fuel-qty-main -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fuel-qty-main.knob</object-name>
+    <property>controls/fusion/cb/fuel-qty-main</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fuel-qty-main.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fuel-qty-main</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fuel-qty-main</tooltip-id>
+        <label>Circuit breaker QTY IND MAIN (5 A): %s</label>
+        <property>controls/fusion/cb/fuel-qty-main</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fuel-qty-aux -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fuel-qty-aux.knob</object-name>
+    <property>controls/fusion/cb/fuel-qty-aux</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fuel-qty-aux.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fuel-qty-aux</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fuel-qty-aux</tooltip-id>
+        <label>Circuit breaker QTY IND AUX (5 A): %s</label>
+        <property>controls/fusion/cb/fuel-qty-aux</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fw-valve0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fw-valve0.knob</object-name>
+    <property>controls/fusion/cb/fw-valve[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fw-valve0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fw-valve[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fw-valve0</tooltip-id>
+        <label>Circuit breaker F/W VALVE LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/fw-valve[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fw-valve1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fw-valve1.knob</object-name>
+    <property>controls/fusion/cb/fw-valve[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fw-valve1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fw-valve[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fw-valve1</tooltip-id>
+        <label>Circuit breaker F/W VALVE RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/fw-valve[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fuel-press-warn -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fuel-press-warn.knob</object-name>
+    <property>controls/fusion/cb/fuel-press-warn</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fuel-press-warn.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fuel-press-warn</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fuel-press-warn</tooltip-id>
+        <label>Circuit breaker FUEL PRESS WARN (5 A): %s</label>
+        <property>controls/fusion/cb/fuel-press-warn</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.start0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.start0.knob</object-name>
+    <property>controls/fusion/cb/start[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.start0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/start[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.start0</tooltip-id>
+        <label>Circuit breaker IGN START LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/start[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.start1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.start1.knob</object-name>
+    <property>controls/fusion/cb/start[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.start1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/start[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.start1</tooltip-id>
+        <label>Circuit breaker IGN START RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/start[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.auto-ign0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.auto-ign0.knob</object-name>
+    <property>controls/fusion/cb/auto-ign[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.auto-ign0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/auto-ign[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.auto-ign0</tooltip-id>
+        <label>Circuit breaker AUTO IGN LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/auto-ign[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.auto-ign1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.auto-ign1.knob</object-name>
+    <property>controls/fusion/cb/auto-ign[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.auto-ign1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/auto-ign[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.auto-ign1</tooltip-id>
+        <label>Circuit breaker AUTO IGN RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/auto-ign[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.autofeather -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.autofeather.knob</object-name>
+    <property>controls/fusion/cb/autofeather</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.autofeather.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/autofeather</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.autofeather</tooltip-id>
+        <label>Circuit breaker AUTO FEATHER (5 A): %s</label>
+        <property>controls/fusion/cb/autofeather</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.prop-sync -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.prop-sync.knob</object-name>
+    <property>controls/fusion/cb/prop-sync</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.prop-sync.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/prop-sync</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.prop-sync</tooltip-id>
+        <label>Circuit breaker PROP SYNC (5 A): %s</label>
+        <property>controls/fusion/cb/prop-sync</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.prop-gov-test -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.prop-gov-test.knob</object-name>
+    <property>controls/fusion/cb/prop-gov-test</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.prop-gov-test.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/prop-gov-test</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.prop-gov-test</tooltip-id>
+        <label>Circuit breaker PROP GOV TEST (5 A): %s</label>
+        <property>controls/fusion/cb/prop-gov-test</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.eng-ice0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.eng-ice0.knob</object-name>
+    <property>controls/fusion/cb/eng-ice[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.eng-ice0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/eng-ice[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.eng-ice0</tooltip-id>
+        <label>Circuit breaker ENG ANTI ICE LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/eng-ice[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.eng-ice1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.eng-ice1.knob</object-name>
+    <property>controls/fusion/cb/eng-ice[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.eng-ice1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/eng-ice[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.eng-ice1</tooltip-id>
+        <label>Circuit breaker ENG ANTI ICE RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/eng-ice[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fire-det -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fire-det.knob</object-name>
+    <property>controls/fusion/cb/fire-det</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fire-det.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fire-det</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fire-det</tooltip-id>
+        <label>Circuit breaker FIRE DETECT (5 A): %s</label>
+        <property>controls/fusion/cb/fire-det</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.landing-lights0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.landing-lights0.knob</object-name>
+    <property>controls/fusion/cb/landing-lights[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.landing-lights0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/landing-lights[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.landing-lights0</tooltip-id>
+        <label>Circuit breaker LANDING LEFT (15 A): %s</label>
+        <property>controls/fusion/cb/landing-lights[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.landing-lights1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.landing-lights1.knob</object-name>
+    <property>controls/fusion/cb/landing-lights[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.landing-lights1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/landing-lights[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.landing-lights1</tooltip-id>
+        <label>Circuit breaker LANDING RIGHT (15 A): %s</label>
+        <property>controls/fusion/cb/landing-lights[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.taxi-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.taxi-lights.knob</object-name>
+    <property>controls/fusion/cb/taxi-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.taxi-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/taxi-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.taxi-lights</tooltip-id>
+        <label>Circuit breaker TAXI (10 A): %s</label>
+        <property>controls/fusion/cb/taxi-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.nav-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.nav-lights.knob</object-name>
+    <property>controls/fusion/cb/nav-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.nav-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/nav-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.nav-lights</tooltip-id>
+        <label>Circuit breaker NAV (5 A): %s</label>
+        <property>controls/fusion/cb/nav-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.beacon -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.beacon.knob</object-name>
+    <property>controls/fusion/cb/beacon</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.beacon.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/beacon</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.beacon</tooltip-id>
+        <label>Circuit breaker BEACON (5 A): %s</label>
+        <property>controls/fusion/cb/beacon</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.strobe -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.strobe.knob</object-name>
+    <property>controls/fusion/cb/strobe</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.strobe.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/strobe</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.strobe</tooltip-id>
+        <label>Circuit breaker STROBE (10 A): %s</label>
+        <property>controls/fusion/cb/strobe</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.recog-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.recog-lights.knob</object-name>
+    <property>controls/fusion/cb/recog-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.recog-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/recog-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.recog-lights</tooltip-id>
+        <label>Circuit breaker RECOG (10 A): %s</label>
+        <property>controls/fusion/cb/recog-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.ice-light -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.ice-light.knob</object-name>
+    <property>controls/fusion/cb/ice-light</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.ice-light.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/ice-light</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.ice-light</tooltip-id>
+        <label>Circuit breaker ICE (5 A): %s</label>
+        <property>controls/fusion/cb/ice-light</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.logo-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.logo-lights.knob</object-name>
+    <property>controls/fusion/cb/logo-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.logo-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/logo-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.logo-lights</tooltip-id>
+        <label>Circuit breaker TAIL FLOOD (5 A): %s</label>
+        <property>controls/fusion/cb/logo-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.cabin-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.cabin-lights.knob</object-name>
+    <property>controls/fusion/cb/cabin-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.cabin-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/cabin-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.cabin-lights</tooltip-id>
+        <label>Circuit breaker CABIN (10 A): %s</label>
+        <property>controls/fusion/cb/cabin-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.instrument-lights -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.instrument-lights.knob</object-name>
+    <property>controls/fusion/cb/instrument-lights</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.instrument-lights.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/instrument-lights</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.instrument-lights</tooltip-id>
+        <label>Circuit breaker PANEL LIGHTS (5 A): %s</label>
+        <property>controls/fusion/cb/instrument-lights</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.flood -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.flood.knob</object-name>
+    <property>controls/fusion/cb/flood</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.flood.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/flood</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.flood</tooltip-id>
+        <label>Circuit breaker FLOOD LIGHTS (5 A): %s</label>
+        <property>controls/fusion/cb/flood</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.wipers -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.wipers.knob</object-name>
+    <property>controls/fusion/cb/wipers</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.wipers.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/wipers</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.wipers</tooltip-id>
+        <label>Circuit breaker WSHLD WIPER (10 A): %s</label>
+        <property>controls/fusion/cb/wipers</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.hobbs -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.hobbs.knob</object-name>
+    <property>controls/fusion/cb/hobbs</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.hobbs.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/hobbs</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.hobbs</tooltip-id>
+        <label>Circuit breaker HOUR METER (2 A): %s</label>
+        <property>controls/fusion/cb/hobbs</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.cvr -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.cvr.knob</object-name>
+    <property>controls/fusion/cb/cvr</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.cvr.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/cvr</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.cvr</tooltip-id>
+        <label>Circuit breaker CVR (5 A): %s</label>
+        <property>controls/fusion/cb/cvr</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.annunciators -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.annunciators.knob</object-name>
+    <property>controls/fusion/cb/annunciators</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.annunciators.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/annunciators</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.annunciators</tooltip-id>
+        <label>Circuit breaker ANNUN POWER (5 A): %s</label>
+        <property>controls/fusion/cb/annunciators</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.gear-warn -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.gear-warn.knob</object-name>
+    <property>controls/fusion/cb/gear-warn</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.gear-warn.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/gear-warn</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.gear-warn</tooltip-id>
+        <label>Circuit breaker GEAR WARN (5 A): %s</label>
+        <property>controls/fusion/cb/gear-warn</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.stall-warn -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.stall-warn.knob</object-name>
+    <property>controls/fusion/cb/stall-warn</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.stall-warn.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/stall-warn</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.stall-warn</tooltip-id>
+        <label>Circuit breaker STALL WARN (5 A): %s</label>
+        <property>controls/fusion/cb/stall-warn</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.oxygen -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.oxygen.knob</object-name>
+    <property>controls/fusion/cb/oxygen</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.oxygen.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/oxygen</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.oxygen</tooltip-id>
+        <label>Circuit breaker OXYGEN IND (2 A): %s</label>
+        <property>controls/fusion/cb/oxygen</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.cabin-signs -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.cabin-signs.knob</object-name>
+    <property>controls/fusion/cb/cabin-signs</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.cabin-signs.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/cabin-signs</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.cabin-signs</tooltip-id>
+        <label>Circuit breaker CABIN SIGNS (5 A): %s</label>
+        <property>controls/fusion/cb/cabin-signs</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- ===== panel CBR -->
+
+  <!-- knob CB.fg1000-pfd -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fg1000-pfd.knob</object-name>
+    <property>controls/fusion/cb/fg1000-pfd</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fg1000-pfd.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fg1000-pfd</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fg1000-pfd</tooltip-id>
+        <label>Circuit breaker PFD 1 (7 A): %s</label>
+        <property>controls/fusion/cb/fg1000-pfd</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fg1000-mfd -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fg1000-mfd.knob</object-name>
+    <property>controls/fusion/cb/fg1000-mfd</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fg1000-mfd.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fg1000-mfd</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fg1000-mfd</tooltip-id>
+        <label>Circuit breaker MFD (7 A): %s</label>
+        <property>controls/fusion/cb/fg1000-mfd</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fg1000-pfd2 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fg1000-pfd2.knob</object-name>
+    <property>controls/fusion/cb/fg1000-pfd2</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fg1000-pfd2.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fg1000-pfd2</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fg1000-pfd2</tooltip-id>
+        <label>Circuit breaker PFD 2 (7 A): %s</label>
+        <property>controls/fusion/cb/fg1000-pfd2</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.stby-display -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.stby-display.knob</object-name>
+    <property>controls/fusion/cb/stby-display</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.stby-display.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/stby-display</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.stby-display</tooltip-id>
+        <label>Circuit breaker STBY DSPL (5 A): %s</label>
+        <property>controls/fusion/cb/stby-display</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.comm -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.comm.knob</object-name>
+    <property>controls/fusion/cb/comm</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.comm.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/comm</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.comm</tooltip-id>
+        <label>Circuit breaker COM 1 (5 A): %s</label>
+        <property>controls/fusion/cb/comm</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.comm1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.comm1.knob</object-name>
+    <property>controls/fusion/cb/comm[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.comm1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/comm[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.comm1</tooltip-id>
+        <label>Circuit breaker COM 2 (5 A): %s</label>
+        <property>controls/fusion/cb/comm[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.nav -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.nav.knob</object-name>
+    <property>controls/fusion/cb/nav</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.nav.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/nav</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.nav</tooltip-id>
+        <label>Circuit breaker NAV 1 (3 A): %s</label>
+        <property>controls/fusion/cb/nav</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.nav1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.nav1.knob</object-name>
+    <property>controls/fusion/cb/nav[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.nav1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/nav[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.nav1</tooltip-id>
+        <label>Circuit breaker NAV 2 (3 A): %s</label>
+        <property>controls/fusion/cb/nav[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.dme -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.dme.knob</object-name>
+    <property>controls/fusion/cb/dme</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.dme.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/dme</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.dme</tooltip-id>
+        <label>Circuit breaker DME (3 A): %s</label>
+        <property>controls/fusion/cb/dme</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.adf -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.adf.knob</object-name>
+    <property>controls/fusion/cb/adf</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.adf.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/adf</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.adf</tooltip-id>
+        <label>Circuit breaker ADF (3 A): %s</label>
+        <property>controls/fusion/cb/adf</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.transponder -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.transponder.knob</object-name>
+    <property>controls/fusion/cb/transponder</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.transponder.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/transponder</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.transponder</tooltip-id>
+        <label>Circuit breaker XPDR (3 A): %s</label>
+        <property>controls/fusion/cb/transponder</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.audio-panel -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.audio-panel.knob</object-name>
+    <property>controls/fusion/cb/audio-panel</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.audio-panel.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/audio-panel</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.audio-panel</tooltip-id>
+        <label>Circuit breaker AUDIO 1 (5 A): %s</label>
+        <property>controls/fusion/cb/audio-panel</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.audio-panel1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.audio-panel1.knob</object-name>
+    <property>controls/fusion/cb/audio-panel[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.audio-panel1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/audio-panel[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.audio-panel1</tooltip-id>
+        <label>Circuit breaker AUDIO 2 (5 A): %s</label>
+        <property>controls/fusion/cb/audio-panel[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.gps -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.gps.knob</object-name>
+    <property>controls/fusion/cb/gps</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.gps.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/gps</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.gps</tooltip-id>
+        <label>Circuit breaker FMS GPS (5 A): %s</label>
+        <property>controls/fusion/cb/gps</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fgc-65 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fgc-65.knob</object-name>
+    <property>controls/fusion/cb/fgc-65</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fgc-65.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fgc-65</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fgc-65</tooltip-id>
+        <label>Circuit breaker FLT GUID PANEL (5 A): %s</label>
+        <property>controls/fusion/cb/fgc-65</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.autopilot -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.autopilot.knob</object-name>
+    <property>controls/fusion/cb/autopilot</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.autopilot.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/autopilot</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.autopilot</tooltip-id>
+        <label>Circuit breaker AP SERVOS (5 A): %s</label>
+        <property>controls/fusion/cb/autopilot</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.mk-viii -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.mk-viii.knob</object-name>
+    <property>controls/fusion/cb/mk-viii</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.mk-viii.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/mk-viii</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.mk-viii</tooltip-id>
+        <label>Circuit breaker TAWS (3 A): %s</label>
+        <property>controls/fusion/cb/mk-viii</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.turn-coordinator -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.turn-coordinator.knob</object-name>
+    <property>controls/fusion/cb/turn-coordinator</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.turn-coordinator.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/turn-coordinator</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.turn-coordinator</tooltip-id>
+        <label>Circuit breaker AHRS (5 A): %s</label>
+        <property>controls/fusion/cb/turn-coordinator</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.ccp -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.ccp.knob</object-name>
+    <property>controls/fusion/cb/ccp</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.ccp.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/ccp</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.ccp</tooltip-id>
+        <label>Circuit breaker CCP MKP (3 A): %s</label>
+        <property>controls/fusion/cb/ccp</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.avionics -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.avionics.knob</object-name>
+    <property>controls/fusion/cb/avionics</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.avionics.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/avionics</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.avionics</tooltip-id>
+        <label>Circuit breaker AVIONICS MASTER (5 A): %s</label>
+        <property>controls/fusion/cb/avionics</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.ext-power -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.ext-power.knob</object-name>
+    <property>controls/fusion/cb/ext-power</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.ext-power.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/ext-power</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.ext-power</tooltip-id>
+        <label>Circuit breaker EXT PWR (5 A): %s</label>
+        <property>controls/fusion/cb/ext-power</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.gen0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.gen0.knob</object-name>
+    <property>controls/fusion/cb/gen[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.gen0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/gen[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.gen0</tooltip-id>
+        <label>Circuit breaker GEN CONT LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/gen[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.gen1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.gen1.knob</object-name>
+    <property>controls/fusion/cb/gen[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.gen1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/gen[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.gen1</tooltip-id>
+        <label>Circuit breaker GEN CONT RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/gen[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.flap-motor -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.flap-motor.knob</object-name>
+    <property>controls/fusion/cb/flap-motor</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.flap-motor.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/flap-motor</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.flap-motor</tooltip-id>
+        <label>Circuit breaker FLAP MOTOR (20 A): %s</label>
+        <property>controls/fusion/cb/flap-motor</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.flap-control -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.flap-control.knob</object-name>
+    <property>controls/fusion/cb/flap-control</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.flap-control.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/flap-control</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.flap-control</tooltip-id>
+        <label>Circuit breaker FLAP CONTROL (5 A): %s</label>
+        <property>controls/fusion/cb/flap-control</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.gear-control -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.gear-control.knob</object-name>
+    <property>controls/fusion/cb/gear-control</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.gear-control.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/gear-control</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.gear-control</tooltip-id>
+        <label>Circuit breaker GEAR CONTROL (5 A): %s</label>
+        <property>controls/fusion/cb/gear-control</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.elec-trim -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.elec-trim.knob</object-name>
+    <property>controls/fusion/cb/elec-trim</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.elec-trim.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/elec-trim</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.elec-trim</tooltip-id>
+        <label>Circuit breaker PITCH TRIM (5 A): %s</label>
+        <property>controls/fusion/cb/elec-trim</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.rudder-boost -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.rudder-boost.knob</object-name>
+    <property>controls/fusion/cb/rudder-boost</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.rudder-boost.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/rudder-boost</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.rudder-boost</tooltip-id>
+        <label>Circuit breaker RUDDER BOOST (5 A): %s</label>
+        <property>controls/fusion/cb/rudder-boost</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.yaw-damper -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.yaw-damper.knob</object-name>
+    <property>controls/fusion/cb/yaw-damper</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.yaw-damper.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/yaw-damper</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.yaw-damper</tooltip-id>
+        <label>Circuit breaker YAW DAMP (5 A): %s</label>
+        <property>controls/fusion/cb/yaw-damper</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.press-control -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.press-control.knob</object-name>
+    <property>controls/fusion/cb/press-control</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.press-control.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/press-control</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.press-control</tooltip-id>
+        <label>Circuit breaker PRESS CONTROL (5 A): %s</label>
+        <property>controls/fusion/cb/press-control</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.temp-control -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.temp-control.knob</object-name>
+    <property>controls/fusion/cb/temp-control</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.temp-control.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/temp-control</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.temp-control</tooltip-id>
+        <label>Circuit breaker TEMP CONTROL (5 A): %s</label>
+        <property>controls/fusion/cb/temp-control</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.blower0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.blower0.knob</object-name>
+    <property>controls/fusion/cb/blower[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.blower0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/blower[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.blower0</tooltip-id>
+        <label>Circuit breaker BLOWER CKPT (15 A): %s</label>
+        <property>controls/fusion/cb/blower[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.blower1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.blower1.knob</object-name>
+    <property>controls/fusion/cb/blower[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.blower1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/blower[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.blower1</tooltip-id>
+        <label>Circuit breaker BLOWER CABIN (20 A): %s</label>
+        <property>controls/fusion/cb/blower[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.window-heat0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.window-heat0.knob</object-name>
+    <property>controls/fusion/cb/window-heat[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.window-heat0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/window-heat[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.window-heat0</tooltip-id>
+        <label>Circuit breaker WSHLD PILOT (25 A): %s</label>
+        <property>controls/fusion/cb/window-heat[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.window-heat1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.window-heat1.knob</object-name>
+    <property>controls/fusion/cb/window-heat[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.window-heat1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/window-heat[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.window-heat1</tooltip-id>
+        <label>Circuit breaker WSHLD COPILOT (25 A): %s</label>
+        <property>controls/fusion/cb/window-heat[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.pitot-heat0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.pitot-heat0.knob</object-name>
+    <property>controls/fusion/cb/pitot-heat[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.pitot-heat0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/pitot-heat[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.pitot-heat0</tooltip-id>
+        <label>Circuit breaker PITOT LEFT (7 A): %s</label>
+        <property>controls/fusion/cb/pitot-heat[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.pitot-heat1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.pitot-heat1.knob</object-name>
+    <property>controls/fusion/cb/pitot-heat[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.pitot-heat1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/pitot-heat[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.pitot-heat1</tooltip-id>
+        <label>Circuit breaker PITOT RIGHT (7 A): %s</label>
+        <property>controls/fusion/cb/pitot-heat[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.stall-warn-heat -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.stall-warn-heat.knob</object-name>
+    <property>controls/fusion/cb/stall-warn-heat</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.stall-warn-heat.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/stall-warn-heat</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.stall-warn-heat</tooltip-id>
+        <label>Circuit breaker STALL HEAT (7 A): %s</label>
+        <property>controls/fusion/cb/stall-warn-heat</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.prop-heat -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.prop-heat.knob</object-name>
+    <property>controls/fusion/cb/prop-heat</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.prop-heat.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/prop-heat</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.prop-heat</tooltip-id>
+        <label>Circuit breaker PROP DEICE (25 A): %s</label>
+        <property>controls/fusion/cb/prop-heat</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.surface-deice -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.surface-deice.knob</object-name>
+    <property>controls/fusion/cb/surface-deice</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.surface-deice.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/surface-deice</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.surface-deice</tooltip-id>
+        <label>Circuit breaker SURF DEICE (5 A): %s</label>
+        <property>controls/fusion/cb/surface-deice</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fuel-vent-heat0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fuel-vent-heat0.knob</object-name>
+    <property>controls/fusion/cb/fuel-vent-heat[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fuel-vent-heat0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fuel-vent-heat[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fuel-vent-heat0</tooltip-id>
+        <label>Circuit breaker FUEL VENT LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/fuel-vent-heat[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.fuel-vent-heat1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.fuel-vent-heat1.knob</object-name>
+    <property>controls/fusion/cb/fuel-vent-heat[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.fuel-vent-heat1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/fuel-vent-heat[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.fuel-vent-heat1</tooltip-id>
+        <label>Circuit breaker FUEL VENT RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/fuel-vent-heat[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.brake-deice -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.brake-deice.knob</object-name>
+    <property>controls/fusion/cb/brake-deice</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.brake-deice.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/brake-deice</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.brake-deice</tooltip-id>
+        <label>Circuit breaker BRAKE DEICE (10 A): %s</label>
+        <property>controls/fusion/cb/brake-deice</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.window-defog -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.window-defog.knob</object-name>
+    <property>controls/fusion/cb/window-defog</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.window-defog.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/window-defog</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.window-defog</tooltip-id>
+        <label>Circuit breaker WINDOW DEFOG (7 A): %s</label>
+        <property>controls/fusion/cb/window-defog</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.bleed0 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.bleed0.knob</object-name>
+    <property>controls/fusion/cb/bleed[0]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.bleed0.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/bleed[0]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.bleed0</tooltip-id>
+        <label>Circuit breaker BLEED VLV LEFT (5 A): %s</label>
+        <property>controls/fusion/cb/bleed[0]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.bleed1 -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.bleed1.knob</object-name>
+    <property>controls/fusion/cb/bleed[1]</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.bleed1.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/bleed[1]</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.bleed1</tooltip-id>
+        <label>Circuit breaker BLEED VLV RIGHT (5 A): %s</label>
+        <property>controls/fusion/cb/bleed[1]</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
+  <!-- knob CB.elec-heat -->
+  <animation>
+    <type>translate</type>
+    <object-name>F.CB.elec-heat.knob</object-name>
+    <property>controls/fusion/cb/elec-heat</property>
+    <factor>0.004</factor>
+    <axis>
+      <x>0.06966</x>
+      <y>-0.9962</y>
+      <z>0.05234</z>
+    </axis>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>F.CB.elec-heat.knob</object-name>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/fusion/cb/elec-heat</property>
+      </binding>
+      <binding>
+        <command>property-toggle</command>
+        <property>sim/sound/click</property>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.CB.elec-heat</tooltip-id>
+        <label>Circuit breaker ELEC HEAT (5 A): %s</label>
+        <property>controls/fusion/cb/elec-heat</property>
+        <mapping>nasal</mapping>
+        <script>return arg[0] ? "PULLED" : "IN";</script>
+      </binding>
+    </hovered>
+  </animation>
+
   <!-- ===== back lighting of the markings (lightmaps), one effect per texture page -->
   <effect>
     <inherits-from>Aircraft/KingAir-350/Models/Fusion/Effects/fusion-panel-0</inherits-from>
+    <object-name>F.CBL</object-name>
+    <object-name>F.CBR</object-name>
     <object-name>F.CSUB</object-name>
+    <object-name>F.CTR</object-name>
+    <object-name>F.CVR</object-name>
+    <object-name>F.DISCHL.lamp</object-name>
+    <object-name>F.FIREL.cap</object-name>
+    <object-name>F.FWL.cap</object-name>
+    <object-name>F.GEAR</object-name>
+    <object-name>F.GLEFT.lamp</object-name>
+    <object-name>F.GNOSE.lamp</object-name>
+    <object-name>F.GRIGHT.lamp</object-name>
+    <object-name>F.GS.fireL</object-name>
+    <object-name>F.GS.marker</object-name>
+    <object-name>F.GS.masterL</object-name>
+    <object-name>F.GS.radiocall</object-name>
+    <object-name>F.MCL.cap</object-name>
+    <object-name>F.MKRI.lamp</object-name>
+    <object-name>F.MKRM.lamp</object-name>
+    <object-name>F.MKRO.lamp</object-name>
+    <object-name>F.MWL.cap</object-name>
+    <object-name>F.OVH</object-name>
+    <object-name>F.OVHG</object-name>
+    <object-name>F.PED.BLANK</object-name>
+    <object-name>F.RADIOCALL.cap</object-name>
+    <object-name>F.TAWS.lamp</object-name>
+  </effect>
+  <effect>
+    <inherits-from>Aircraft/KingAir-350/Models/Fusion/Effects/fusion-panel-1</inherits-from>
+    <object-name>F.AUDIOL</object-name>
+    <object-name>F.AUDIOR</object-name>
+    <object-name>F.EMERFREQ.cap</object-name>
     <object-name>F.FGP</object-name>
     <object-name>F.FGP.ALT.cap</object-name>
     <object-name>F.FGP.AP.cap</object-name>
@@ -16123,6 +21175,7 @@
     <object-name>F.FGP.VNAV.cap</object-name>
     <object-name>F.FGP.VS.cap</object-name>
     <object-name>F.FGP.YD.cap</object-name>
+    <object-name>F.FUEL</object-name>
     <object-name>F.MKP</object-name>
     <object-name>F.MKP.0.cap</object-name>
     <object-name>F.MKP.1.cap</object-name>
@@ -16169,74 +21222,14 @@
     <object-name>F.MKP.X.cap</object-name>
     <object-name>F.MKP.Y.cap</object-name>
     <object-name>F.MKP.Z.cap</object-name>
+    <object-name>F.PBRAKE</object-name>
     <object-name>F.PED.quadrant</object-name>
-  </effect>
-  <effect>
-    <inherits-from>Aircraft/KingAir-350/Models/Fusion/Effects/fusion-panel-1</inherits-from>
-    <object-name>F.CTR</object-name>
-    <object-name>F.CVR</object-name>
-    <object-name>F.DISCHL.lamp</object-name>
-    <object-name>F.DISCHR.lamp</object-name>
-    <object-name>F.EMERFREQ.cap</object-name>
-    <object-name>F.FIREL.cap</object-name>
-    <object-name>F.FIRER.cap</object-name>
-    <object-name>F.FWL.cap</object-name>
-    <object-name>F.FWR.cap</object-name>
-    <object-name>F.GS.fireL</object-name>
-    <object-name>F.GS.fireR</object-name>
-    <object-name>F.GS.marker</object-name>
-    <object-name>F.GS.masterL</object-name>
-    <object-name>F.GS.radiocall</object-name>
-    <object-name>F.MCL.cap</object-name>
-    <object-name>F.MKRI.lamp</object-name>
-    <object-name>F.MKRM.lamp</object-name>
-    <object-name>F.MKRO.lamp</object-name>
-    <object-name>F.MWL.cap</object-name>
-    <object-name>F.PED.TRIM</object-name>
-    <object-name>F.PRESS</object-name>
     <object-name>F.PSUB</object-name>
     <object-name>F.PSYNC.cap</object-name>
-    <object-name>F.RADIOCALL.cap</object-name>
-    <object-name>F.STBY</object-name>
-    <object-name>F.STBY.BARO.cap</object-name>
-    <object-name>F.STBY.MENU.cap</object-name>
     <object-name>F.STRIP</object-name>
-    <object-name>F.TAWS.lamp</object-name>
   </effect>
   <effect>
     <inherits-from>Aircraft/KingAir-350/Models/Fusion/Effects/fusion-panel-2</inherits-from>
-    <object-name>F.AUDIOL</object-name>
-    <object-name>F.AUDIOR</object-name>
-    <object-name>F.CCPL</object-name>
-    <object-name>F.CCPL.CLR.cap</object-name>
-    <object-name>F.CCPL.COMXFR.cap</object-name>
-    <object-name>F.CCPL.DTO.cap</object-name>
-    <object-name>F.CCPL.ENT.cap</object-name>
-    <object-name>F.CCPL.FPL.cap</object-name>
-    <object-name>F.CCPL.MENU.cap</object-name>
-    <object-name>F.CCPL.NAVXFR.cap</object-name>
-    <object-name>F.CCPL.PROC.cap</object-name>
-    <object-name>F.CCPR</object-name>
-    <object-name>F.CCPR.CLR.cap</object-name>
-    <object-name>F.CCPR.COMXFR.cap</object-name>
-    <object-name>F.CCPR.DTO.cap</object-name>
-    <object-name>F.CCPR.ENT.cap</object-name>
-    <object-name>F.CCPR.FPL.cap</object-name>
-    <object-name>F.CCPR.MENU.cap</object-name>
-    <object-name>F.CCPR.NAVXFR.cap</object-name>
-    <object-name>F.CCPR.PROC.cap</object-name>
-    <object-name>F.ENV</object-name>
-    <object-name>F.GEAR</object-name>
-    <object-name>F.GLEFT.lamp</object-name>
-    <object-name>F.GNOSE.lamp</object-name>
-    <object-name>F.GRIGHT.lamp</object-name>
-    <object-name>F.GS.masterR</object-name>
-    <object-name>F.MCR.cap</object-name>
-    <object-name>F.MWR.cap</object-name>
-    <object-name>F.PED.BLANK</object-name>
-  </effect>
-  <effect>
-    <inherits-from>Aircraft/KingAir-350/Models/Fusion/Effects/fusion-panel-3</inherits-from>
     <object-name>F.ATRIM.knob</object-name>
     <object-name>F.AUDL.ADF.knob</object-name>
     <object-name>F.AUDL.BARO.knob</object-name>
@@ -16266,51 +21259,195 @@
     <object-name>F.BLOWERCOC.knob</object-name>
     <object-name>F.CABALTSEL.knob</object-name>
     <object-name>F.CABRATE.knob</object-name>
+    <object-name>F.CB.adf.knob</object-name>
+    <object-name>F.CB.annunciators.knob</object-name>
+    <object-name>F.CB.audio-panel.knob</object-name>
+    <object-name>F.CB.audio-panel1.knob</object-name>
+    <object-name>F.CB.auto-ign0.knob</object-name>
+    <object-name>F.CB.auto-ign1.knob</object-name>
+    <object-name>F.CB.autofeather.knob</object-name>
+    <object-name>F.CB.autopilot.knob</object-name>
+    <object-name>F.CB.aux-xfer0.knob</object-name>
+    <object-name>F.CB.aux-xfer1.knob</object-name>
+    <object-name>F.CB.avionics.knob</object-name>
+    <object-name>F.CB.beacon.knob</object-name>
+    <object-name>F.CB.bleed0.knob</object-name>
+    <object-name>F.CB.bleed1.knob</object-name>
+    <object-name>F.CB.blower0.knob</object-name>
+    <object-name>F.CB.blower1.knob</object-name>
+    <object-name>F.CB.brake-deice.knob</object-name>
+    <object-name>F.CB.cabin-lights.knob</object-name>
+    <object-name>F.CB.cabin-signs.knob</object-name>
+    <object-name>F.CB.ccp.knob</object-name>
+    <object-name>F.CB.comm.knob</object-name>
+    <object-name>F.CB.comm1.knob</object-name>
+    <object-name>F.CB.crossfeed.knob</object-name>
+    <object-name>F.CB.cvr.knob</object-name>
+    <object-name>F.CB.dme.knob</object-name>
+    <object-name>F.CB.elec-heat.knob</object-name>
+    <object-name>F.CB.elec-trim.knob</object-name>
+    <object-name>F.CB.eng-ice0.knob</object-name>
+    <object-name>F.CB.eng-ice1.knob</object-name>
+    <object-name>F.CB.ext-power.knob</object-name>
+    <object-name>F.CB.fg1000-mfd.knob</object-name>
+    <object-name>F.CB.fg1000-pfd.knob</object-name>
+    <object-name>F.CB.fg1000-pfd2.knob</object-name>
+    <object-name>F.CB.fgc-65.knob</object-name>
+    <object-name>F.CB.fire-det.knob</object-name>
+    <object-name>F.CB.flap-control.knob</object-name>
+    <object-name>F.CB.flap-motor.knob</object-name>
+    <object-name>F.CB.flood.knob</object-name>
+    <object-name>F.CB.fuel-press-warn.knob</object-name>
+    <object-name>F.CB.fuel-qty-aux.knob</object-name>
+    <object-name>F.CB.fuel-qty-main.knob</object-name>
+    <object-name>F.CB.fuel-vent-heat0.knob</object-name>
+    <object-name>F.CB.fuel-vent-heat1.knob</object-name>
+    <object-name>F.CB.fw-valve0.knob</object-name>
+    <object-name>F.CB.fw-valve1.knob</object-name>
+    <object-name>F.CB.gear-control.knob</object-name>
+    <object-name>F.CB.gear-warn.knob</object-name>
+    <object-name>F.CB.gen0.knob</object-name>
+    <object-name>F.CB.gen1.knob</object-name>
+    <object-name>F.CB.gps.knob</object-name>
+    <object-name>F.CB.hobbs.knob</object-name>
+    <object-name>F.CB.ice-light.knob</object-name>
+    <object-name>F.CB.instrument-lights.knob</object-name>
+    <object-name>F.CB.landing-lights0.knob</object-name>
+    <object-name>F.CB.landing-lights1.knob</object-name>
+    <object-name>F.CB.logo-lights.knob</object-name>
+    <object-name>F.CB.mk-viii.knob</object-name>
+    <object-name>F.CB.nav-lights.knob</object-name>
+    <object-name>F.CB.nav.knob</object-name>
+    <object-name>F.CB.nav1.knob</object-name>
+    <object-name>F.CB.oxygen.knob</object-name>
+    <object-name>F.CB.pitot-heat0.knob</object-name>
+    <object-name>F.CB.pitot-heat1.knob</object-name>
+    <object-name>F.CB.press-control.knob</object-name>
+    <object-name>F.CB.prop-gov-test.knob</object-name>
+    <object-name>F.CB.prop-heat.knob</object-name>
+    <object-name>F.CB.prop-sync.knob</object-name>
+    <object-name>F.CB.recog-lights.knob</object-name>
+    <object-name>F.CB.rudder-boost.knob</object-name>
+    <object-name>F.CB.stall-warn-heat.knob</object-name>
+    <object-name>F.CB.stall-warn.knob</object-name>
+    <object-name>F.CB.start0.knob</object-name>
+    <object-name>F.CB.start1.knob</object-name>
+    <object-name>F.CB.stby-display.knob</object-name>
+    <object-name>F.CB.stby-pump0.knob</object-name>
+    <object-name>F.CB.stby-pump1.knob</object-name>
+    <object-name>F.CB.strobe.knob</object-name>
+    <object-name>F.CB.surface-deice.knob</object-name>
+    <object-name>F.CB.taxi-lights.knob</object-name>
+    <object-name>F.CB.temp-control.knob</object-name>
+    <object-name>F.CB.transponder.knob</object-name>
+    <object-name>F.CB.turn-coordinator.knob</object-name>
+    <object-name>F.CB.window-defog.knob</object-name>
+    <object-name>F.CB.window-heat0.knob</object-name>
+    <object-name>F.CB.window-heat1.knob</object-name>
+    <object-name>F.CB.wipers.knob</object-name>
+    <object-name>F.CB.yaw-damper.knob</object-name>
+    <object-name>F.CCPL</object-name>
+    <object-name>F.CCPL.CLR.cap</object-name>
     <object-name>F.CCPL.COM.inner</object-name>
+    <object-name>F.CCPL.COMXFR.cap</object-name>
+    <object-name>F.CCPL.DTO.cap</object-name>
+    <object-name>F.CCPL.ENT.cap</object-name>
     <object-name>F.CCPL.FMS.inner</object-name>
+    <object-name>F.CCPL.FPL.cap</object-name>
+    <object-name>F.CCPL.MENU.cap</object-name>
     <object-name>F.CCPL.NAV.inner</object-name>
+    <object-name>F.CCPL.NAVXFR.cap</object-name>
+    <object-name>F.CCPL.PROC.cap</object-name>
     <object-name>F.CCPL.RANGE.knob</object-name>
+    <object-name>F.CCPR</object-name>
+    <object-name>F.CCPR.CLR.cap</object-name>
     <object-name>F.CCPR.COM.inner</object-name>
+    <object-name>F.CCPR.COMXFR.cap</object-name>
+    <object-name>F.CCPR.DTO.cap</object-name>
+    <object-name>F.CCPR.ENT.cap</object-name>
     <object-name>F.CCPR.FMS.inner</object-name>
+    <object-name>F.CCPR.FPL.cap</object-name>
+    <object-name>F.CCPR.MENU.cap</object-name>
     <object-name>F.CCPR.NAV.inner</object-name>
+    <object-name>F.CCPR.NAVXFR.cap</object-name>
+    <object-name>F.CCPR.PROC.cap</object-name>
     <object-name>F.CCPR.RANGE.knob</object-name>
+    <object-name>F.COMPASS.card</object-name>
+    <object-name>F.DISCHR.lamp</object-name>
+    <object-name>F.ENV</object-name>
     <object-name>F.ENVMODE.knob</object-name>
     <object-name>F.FGP.ALTK.knob</object-name>
     <object-name>F.FGP.CRS1.knob</object-name>
     <object-name>F.FGP.CRS2.knob</object-name>
     <object-name>F.FGP.HDGK.knob</object-name>
     <object-name>F.FGP.SPD.knob</object-name>
+    <object-name>F.FIRER.cap</object-name>
     <object-name>F.FRICPC.knob</object-name>
     <object-name>F.FRICPWR.knob</object-name>
+    <object-name>F.FWR.cap</object-name>
     <object-name>F.GEARRELAY.knob</object-name>
+    <object-name>F.GS.fireR</object-name>
+    <object-name>F.GS.masterR</object-name>
     <object-name>F.HOURS.d0</object-name>
     <object-name>F.HOURS.d1</object-name>
     <object-name>F.HOURS.d2</object-name>
     <object-name>F.HOURS.d3</object-name>
     <object-name>F.HOURS.d4</object-name>
     <object-name>F.LTS</object-name>
-    <object-name>F.PBRAKE</object-name>
+    <object-name>F.MCR.cap</object-name>
+    <object-name>F.MWR.cap</object-name>
+    <object-name>F.OVH.DSPL1.knob</object-name>
+    <object-name>F.OVH.DSPL2.knob</object-name>
+    <object-name>F.OVH.DSPL3.knob</object-name>
+    <object-name>F.OVH.FLOODD.knob</object-name>
+    <object-name>F.OVH.FLOODO.knob</object-name>
+    <object-name>F.OVH.FLOODP.knob</object-name>
+    <object-name>F.OVH.PANELLTS.knob</object-name>
+    <object-name>F.OVH.WIPER.knob</object-name>
     <object-name>F.PED.ETRIM</object-name>
+    <object-name>F.PED.TRIM</object-name>
+    <object-name>F.PRESS</object-name>
     <object-name>F.RTRIM.knob</object-name>
+    <object-name>F.STBY</object-name>
+    <object-name>F.STBY.BARO.cap</object-name>
     <object-name>F.STBY.KNOB.knob</object-name>
+    <object-name>F.STBY.MENU.cap</object-name>
     <object-name>F.TEMPCAB.knob</object-name>
     <object-name>F.TEMPCOC.knob</object-name>
     <object-name>F.YOKEL.wheel</object-name>
     <object-name>F.YOKER.wheel</object-name>
   </effect>
 
-  <!-- self-lit displays (the canvas replaces the texture, the emission keeps them readable at night) -->
+  <!-- self-lit displays (the canvas replaces the texture, the emission keeps them readable at night); brightness from the overhead rheostats -->
   <animation>
     <type>material</type>
     <object-name>Fusion.Screen1</object-name>
-    <object-name>Fusion.Screen2</object-name>
-    <object-name>Fusion.Screen3</object-name>
     <object-name>Fusion.Stby.screen</object-name>
     <emission>
       <red>1</red>
       <green>1</green>
       <blue>1</blue>
-      <factor-prop>sim/model/fusion/display-brightness</factor-prop>
+      <factor-prop>sim/model/fusion/display-brightness[0]</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>Fusion.Screen2</object-name>
+    <emission>
+      <red>1</red>
+      <green>1</green>
+      <blue>1</blue>
+      <factor-prop>sim/model/fusion/display-brightness[1]</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>Fusion.Screen3</object-name>
+    <emission>
+      <red>1</red>
+      <green>1</green>
+      <blue>1</blue>
+      <factor-prop>sim/model/fusion/display-brightness[2]</factor-prop>
     </emission>
   </animation>
 
@@ -18202,5 +23339,462 @@
       <y>0</y>
       <z>1</z>
     </axis>
+  </animation>
+
+  <!-- standby magnetic compass (the card reads backwards, like a real one) -->
+  <animation>
+    <type>rotate</type>
+    <object-name>F.COMPASS.card</object-name>
+    <property>instrumentation/magnetic-compass/indicated-heading-deg</property>
+    <factor>1</factor>
+    <center>
+      <x-m>-4.339</x-m>
+      <y-m>0.033</y-m>
+      <z-m>0.715</z-m>
+    </center>
+    <axis>
+      <x>0</x>
+      <y>0</y>
+      <z>1</z>
+    </axis>
+  </animation>
+
+  <!-- ===== flood lights (overhead rheostats PANEL / PEDESTAL / OVERHEAD FLOOD) -->
+  <animation>
+    <type>material</type>
+    <object-name>Display1.bezel</object-name>
+    <object-name>Display2.bezel</object-name>
+    <object-name>Display3.bezel</object-name>
+    <object-name>F.ACTL.lever</object-name>
+    <object-name>F.ACTR.lever</object-name>
+    <object-name>F.ADSSRC.lever</object-name>
+    <object-name>F.AHSSRC.lever</object-name>
+    <object-name>F.ALTSTATIC.lever</object-name>
+    <object-name>F.AUDIOL</object-name>
+    <object-name>F.AUDIOR</object-name>
+    <object-name>F.AUDL.ADF.knob</object-name>
+    <object-name>F.AUDL.BARO.knob</object-name>
+    <object-name>F.AUDL.COMM1.knob</object-name>
+    <object-name>F.AUDL.COMM2.knob</object-name>
+    <object-name>F.AUDL.DME1.knob</object-name>
+    <object-name>F.AUDL.DME2.knob</object-name>
+    <object-name>F.AUDL.EMER.lever</object-name>
+    <object-name>F.AUDL.IDENT.lever</object-name>
+    <object-name>F.AUDL.MIC.lever</object-name>
+    <object-name>F.AUDL.MKR.knob</object-name>
+    <object-name>F.AUDL.MKRHI.lever</object-name>
+    <object-name>F.AUDL.NAV1.knob</object-name>
+    <object-name>F.AUDL.NAV2.knob</object-name>
+    <object-name>F.AUDL.PA.knob</object-name>
+    <object-name>F.AUDL.VOL.knob</object-name>
+    <object-name>F.AUDL.XMT.knob</object-name>
+    <object-name>F.AUDR.ADF.knob</object-name>
+    <object-name>F.AUDR.BARO.knob</object-name>
+    <object-name>F.AUDR.COMM1.knob</object-name>
+    <object-name>F.AUDR.COMM2.knob</object-name>
+    <object-name>F.AUDR.DME1.knob</object-name>
+    <object-name>F.AUDR.DME2.knob</object-name>
+    <object-name>F.AUDR.EMER.lever</object-name>
+    <object-name>F.AUDR.IDENT.lever</object-name>
+    <object-name>F.AUDR.MIC.lever</object-name>
+    <object-name>F.AUDR.MKR.knob</object-name>
+    <object-name>F.AUDR.MKRHI.lever</object-name>
+    <object-name>F.AUDR.NAV1.knob</object-name>
+    <object-name>F.AUDR.NAV2.knob</object-name>
+    <object-name>F.AUDR.PA.knob</object-name>
+    <object-name>F.AUDR.VOL.knob</object-name>
+    <object-name>F.AUDR.XMT.knob</object-name>
+    <object-name>F.AUTOFTHR.lever</object-name>
+    <object-name>F.AUTOIGNL.lever</object-name>
+    <object-name>F.AUTOIGNR.lever</object-name>
+    <object-name>F.AVMASTER.lever</object-name>
+    <object-name>F.BAT.lever</object-name>
+    <object-name>F.BEACON.lever</object-name>
+    <object-name>F.BLEEDL.lever</object-name>
+    <object-name>F.BLEEDR.lever</object-name>
+    <object-name>F.BLOWERCAB.knob</object-name>
+    <object-name>F.BLOWERCOC.knob</object-name>
+    <object-name>F.BRKDEICE.lever</object-name>
+    <object-name>F.BUSSENSE.lever</object-name>
+    <object-name>F.CABALT.needle0</object-name>
+    <object-name>F.CABALT.needle1</object-name>
+    <object-name>F.CABCLIMB.needle0</object-name>
+    <object-name>F.CABTEMP.needle0</object-name>
+    <object-name>F.CABTEST.lever</object-name>
+    <object-name>F.CSUB</object-name>
+    <object-name>F.CTR</object-name>
+    <object-name>F.DGFREEL.lever</object-name>
+    <object-name>F.DGFREER.lever</object-name>
+    <object-name>F.DNLOCKREL.cap</object-name>
+    <object-name>F.EMERFREQ.cap</object-name>
+    <object-name>F.ENGICEL.lever</object-name>
+    <object-name>F.ENGICER.lever</object-name>
+    <object-name>F.ENV</object-name>
+    <object-name>F.ENVBLEED.lever</object-name>
+    <object-name>F.ENVMODE.knob</object-name>
+    <object-name>F.FGP</object-name>
+    <object-name>F.FGP.ALT.cap</object-name>
+    <object-name>F.FGP.ALTK.knob</object-name>
+    <object-name>F.FGP.AP.cap</object-name>
+    <object-name>F.FGP.APPR.cap</object-name>
+    <object-name>F.FGP.BANK.cap</object-name>
+    <object-name>F.FGP.CPL.cap</object-name>
+    <object-name>F.FGP.CRS1.knob</object-name>
+    <object-name>F.FGP.CRS2.knob</object-name>
+    <object-name>F.FGP.DISC.cap</object-name>
+    <object-name>F.FGP.FDL.cap</object-name>
+    <object-name>F.FGP.FDR.cap</object-name>
+    <object-name>F.FGP.FLC.cap</object-name>
+    <object-name>F.FGP.HDG.cap</object-name>
+    <object-name>F.FGP.HDGK.knob</object-name>
+    <object-name>F.FGP.NAV.cap</object-name>
+    <object-name>F.FGP.SPD.knob</object-name>
+    <object-name>F.FGP.VNAV.cap</object-name>
+    <object-name>F.FGP.VS.cap</object-name>
+    <object-name>F.FGP.WHEEL.wheel</object-name>
+    <object-name>F.FGP.YD.cap</object-name>
+    <object-name>F.FLAPIND.needle0</object-name>
+    <object-name>F.FTESTL.lever</object-name>
+    <object-name>F.FTESTR.lever</object-name>
+    <object-name>F.FVENTL.lever</object-name>
+    <object-name>F.FVENTR.lever</object-name>
+    <object-name>F.GEAR</object-name>
+    <object-name>F.GEAR.handle</object-name>
+    <object-name>F.GEARRELAY.knob</object-name>
+    <object-name>F.GENTIES.lever</object-name>
+    <object-name>F.GS.fireL</object-name>
+    <object-name>F.GS.fireR</object-name>
+    <object-name>F.GS.marker</object-name>
+    <object-name>F.GS.masterL</object-name>
+    <object-name>F.GS.masterR</object-name>
+    <object-name>F.GS.radiocall</object-name>
+    <object-name>F.HDLTEST.cap</object-name>
+    <object-name>F.HOURS.d0</object-name>
+    <object-name>F.HOURS.d1</object-name>
+    <object-name>F.HOURS.d2</object-name>
+    <object-name>F.HOURS.d3</object-name>
+    <object-name>F.HOURS.d4</object-name>
+    <object-name>F.ICEL.lever</object-name>
+    <object-name>F.INHMFD.lever</object-name>
+    <object-name>F.INHPFD1.lever</object-name>
+    <object-name>F.INHPFD2.lever</object-name>
+    <object-name>F.LDGL.lever</object-name>
+    <object-name>F.LDGR.lever</object-name>
+    <object-name>F.LGEN.lever</object-name>
+    <object-name>F.LTS</object-name>
+    <object-name>F.MANTEMP.lever</object-name>
+    <object-name>F.MASTER.guard</object-name>
+    <object-name>F.MASTER.lever</object-name>
+    <object-name>F.NAVL.lever</object-name>
+    <object-name>F.OXY.needle0</object-name>
+    <object-name>F.PBRAKE</object-name>
+    <object-name>F.PITOTL.lever</object-name>
+    <object-name>F.PITOTR.lever</object-name>
+    <object-name>F.PROPAUTO.lever</object-name>
+    <object-name>F.PROPMAN.lever</object-name>
+    <object-name>F.PROPTEST.lever</object-name>
+    <object-name>F.PSUB</object-name>
+    <object-name>F.RECOG.lever</object-name>
+    <object-name>F.REVMFD.lever</object-name>
+    <object-name>F.REVPFD1.lever</object-name>
+    <object-name>F.REVPFD2.lever</object-name>
+    <object-name>F.RGEN.lever</object-name>
+    <object-name>F.SLEWL.lever</object-name>
+    <object-name>F.SLEWR.lever</object-name>
+    <object-name>F.STALLHEAT.lever</object-name>
+    <object-name>F.STARTL.lever</object-name>
+    <object-name>F.STARTR.lever</object-name>
+    <object-name>F.STBY</object-name>
+    <object-name>F.STBY.BARO.cap</object-name>
+    <object-name>F.STBY.KNOB.knob</object-name>
+    <object-name>F.STBY.MENU.cap</object-name>
+    <object-name>F.STBYDSP.lever</object-name>
+    <object-name>F.STRIP</object-name>
+    <object-name>F.STROBE.lever</object-name>
+    <object-name>F.SURFDEICE.lever</object-name>
+    <object-name>F.TAILFLOOD.lever</object-name>
+    <object-name>F.TAXI.lever</object-name>
+    <object-name>F.TEMPCAB.knob</object-name>
+    <object-name>F.TEMPCOC.knob</object-name>
+    <object-name>F.WDEFOG.lever</object-name>
+    <object-name>F.WSHLDC.lever</object-name>
+    <object-name>F.WSHLDP.lever</object-name>
+    <object-name>F.YOKEL.apdisc</object-name>
+    <object-name>F.YOKEL.column</object-name>
+    <object-name>F.YOKEL.ptt</object-name>
+    <object-name>F.YOKEL.trimdn</object-name>
+    <object-name>F.YOKEL.trimup</object-name>
+    <object-name>F.YOKEL.wheel</object-name>
+    <object-name>F.YOKER.apdisc</object-name>
+    <object-name>F.YOKER.column</object-name>
+    <object-name>F.YOKER.ptt</object-name>
+    <object-name>F.YOKER.trimdn</object-name>
+    <object-name>F.YOKER.trimup</object-name>
+    <object-name>F.YOKER.wheel</object-name>
+    <object-name>GS.shell</object-name>
+    <object-name>LP.shell</object-name>
+    <object-name>MP.shell</object-name>
+    <emission>
+      <red>0.15</red>
+      <green>0.14</green>
+      <blue>0.12</blue>
+      <factor-prop>sim/model/fusion/flood-norm[0]</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>F.ATRIM.knob</object-name>
+    <object-name>F.CABALTSEL.knob</object-name>
+    <object-name>F.CABPRESS.lever</object-name>
+    <object-name>F.CABRATE.knob</object-name>
+    <object-name>F.CCPL</object-name>
+    <object-name>F.CCPL.CLR.cap</object-name>
+    <object-name>F.CCPL.COM.inner</object-name>
+    <object-name>F.CCPL.COM.outer</object-name>
+    <object-name>F.CCPL.COMXFR.cap</object-name>
+    <object-name>F.CCPL.DSPL.lever</object-name>
+    <object-name>F.CCPL.DTO.cap</object-name>
+    <object-name>F.CCPL.ENT.cap</object-name>
+    <object-name>F.CCPL.FMS.inner</object-name>
+    <object-name>F.CCPL.FMS.outer</object-name>
+    <object-name>F.CCPL.FPL.cap</object-name>
+    <object-name>F.CCPL.MENU.cap</object-name>
+    <object-name>F.CCPL.NAV.inner</object-name>
+    <object-name>F.CCPL.NAV.outer</object-name>
+    <object-name>F.CCPL.NAVXFR.cap</object-name>
+    <object-name>F.CCPL.PROC.cap</object-name>
+    <object-name>F.CCPL.RANGE.knob</object-name>
+    <object-name>F.CCPR</object-name>
+    <object-name>F.CCPR.CLR.cap</object-name>
+    <object-name>F.CCPR.COM.inner</object-name>
+    <object-name>F.CCPR.COM.outer</object-name>
+    <object-name>F.CCPR.COMXFR.cap</object-name>
+    <object-name>F.CCPR.DSPL.lever</object-name>
+    <object-name>F.CCPR.DTO.cap</object-name>
+    <object-name>F.CCPR.ENT.cap</object-name>
+    <object-name>F.CCPR.FMS.inner</object-name>
+    <object-name>F.CCPR.FMS.outer</object-name>
+    <object-name>F.CCPR.FPL.cap</object-name>
+    <object-name>F.CCPR.MENU.cap</object-name>
+    <object-name>F.CCPR.NAV.inner</object-name>
+    <object-name>F.CCPR.NAV.outer</object-name>
+    <object-name>F.CCPR.NAVXFR.cap</object-name>
+    <object-name>F.CCPR.PROC.cap</object-name>
+    <object-name>F.CCPR.RANGE.knob</object-name>
+    <object-name>F.COND0.lever</object-name>
+    <object-name>F.COND1.lever</object-name>
+    <object-name>F.CVR</object-name>
+    <object-name>F.CVR.ERASE.cap</object-name>
+    <object-name>F.CVR.TEST.cap</object-name>
+    <object-name>F.ELECTRIM.lever</object-name>
+    <object-name>F.ETRIM.pointer</object-name>
+    <object-name>F.FLAP.handle</object-name>
+    <object-name>F.FLAP.slot</object-name>
+    <object-name>F.FRICPC.knob</object-name>
+    <object-name>F.FRICPWR.knob</object-name>
+    <object-name>F.GEARWARN.lever</object-name>
+    <object-name>F.MKP</object-name>
+    <object-name>F.MKP.0.cap</object-name>
+    <object-name>F.MKP.1.cap</object-name>
+    <object-name>F.MKP.2.cap</object-name>
+    <object-name>F.MKP.3.cap</object-name>
+    <object-name>F.MKP.4.cap</object-name>
+    <object-name>F.MKP.5.cap</object-name>
+    <object-name>F.MKP.6.cap</object-name>
+    <object-name>F.MKP.7.cap</object-name>
+    <object-name>F.MKP.8.cap</object-name>
+    <object-name>F.MKP.9.cap</object-name>
+    <object-name>F.MKP.A.cap</object-name>
+    <object-name>F.MKP.B.cap</object-name>
+    <object-name>F.MKP.C.cap</object-name>
+    <object-name>F.MKP.CLR.cap</object-name>
+    <object-name>F.MKP.CRSR.cap</object-name>
+    <object-name>F.MKP.D.cap</object-name>
+    <object-name>F.MKP.E.cap</object-name>
+    <object-name>F.MKP.ENT.cap</object-name>
+    <object-name>F.MKP.F.cap</object-name>
+    <object-name>F.MKP.F0.cap</object-name>
+    <object-name>F.MKP.F1.cap</object-name>
+    <object-name>F.MKP.F2.cap</object-name>
+    <object-name>F.MKP.F3.cap</object-name>
+    <object-name>F.MKP.G.cap</object-name>
+    <object-name>F.MKP.H.cap</object-name>
+    <object-name>F.MKP.I.cap</object-name>
+    <object-name>F.MKP.J.cap</object-name>
+    <object-name>F.MKP.K.cap</object-name>
+    <object-name>F.MKP.L.cap</object-name>
+    <object-name>F.MKP.M.cap</object-name>
+    <object-name>F.MKP.N.cap</object-name>
+    <object-name>F.MKP.O.cap</object-name>
+    <object-name>F.MKP.P.cap</object-name>
+    <object-name>F.MKP.PAGE0.cap</object-name>
+    <object-name>F.MKP.PAGE1.cap</object-name>
+    <object-name>F.MKP.Q.cap</object-name>
+    <object-name>F.MKP.R.cap</object-name>
+    <object-name>F.MKP.S.cap</object-name>
+    <object-name>F.MKP.T.cap</object-name>
+    <object-name>F.MKP.U.cap</object-name>
+    <object-name>F.MKP.V.cap</object-name>
+    <object-name>F.MKP.W.cap</object-name>
+    <object-name>F.MKP.X.cap</object-name>
+    <object-name>F.MKP.Y.cap</object-name>
+    <object-name>F.MKP.Z.cap</object-name>
+    <object-name>F.PED.BLANK</object-name>
+    <object-name>F.PED.ETRIM</object-name>
+    <object-name>F.PED.TRIM</object-name>
+    <object-name>F.PED.body</object-name>
+    <object-name>F.PED.quadrant</object-name>
+    <object-name>F.PED.rails</object-name>
+    <object-name>F.PRESS</object-name>
+    <object-name>F.PROP0.lever</object-name>
+    <object-name>F.PROP1.lever</object-name>
+    <object-name>F.PROPAUTO.lever</object-name>
+    <object-name>F.PROPMAN.lever</object-name>
+    <object-name>F.PROPTEST.lever</object-name>
+    <object-name>F.PWR0.ga</object-name>
+    <object-name>F.PWR0.ghs</object-name>
+    <object-name>F.PWR0.lever</object-name>
+    <object-name>F.PWR1.lever</object-name>
+    <object-name>F.RTRIM.knob</object-name>
+    <object-name>F.RUDBOOST.lever</object-name>
+    <object-name>F.STALLTEST.lever</object-name>
+    <object-name>F.TRIMWHEEL</object-name>
+    <emission>
+      <red>0.15</red>
+      <green>0.14</green>
+      <blue>0.12</blue>
+      <factor-prop>sim/model/fusion/flood-norm[1]</factor-prop>
+    </emission>
+  </animation>
+  <animation>
+    <type>material</type>
+    <object-name>F.ANNDIM.lever</object-name>
+    <object-name>F.AUXXFERL.lever</object-name>
+    <object-name>F.AUXXFERR.lever</object-name>
+    <object-name>F.CABLIGHTS.lever</object-name>
+    <object-name>F.CB.adf.knob</object-name>
+    <object-name>F.CB.annunciators.knob</object-name>
+    <object-name>F.CB.audio-panel.knob</object-name>
+    <object-name>F.CB.audio-panel1.knob</object-name>
+    <object-name>F.CB.auto-ign0.knob</object-name>
+    <object-name>F.CB.auto-ign1.knob</object-name>
+    <object-name>F.CB.autofeather.knob</object-name>
+    <object-name>F.CB.autopilot.knob</object-name>
+    <object-name>F.CB.aux-xfer0.knob</object-name>
+    <object-name>F.CB.aux-xfer1.knob</object-name>
+    <object-name>F.CB.avionics.knob</object-name>
+    <object-name>F.CB.beacon.knob</object-name>
+    <object-name>F.CB.bleed0.knob</object-name>
+    <object-name>F.CB.bleed1.knob</object-name>
+    <object-name>F.CB.blower0.knob</object-name>
+    <object-name>F.CB.blower1.knob</object-name>
+    <object-name>F.CB.brake-deice.knob</object-name>
+    <object-name>F.CB.cabin-lights.knob</object-name>
+    <object-name>F.CB.cabin-signs.knob</object-name>
+    <object-name>F.CB.ccp.knob</object-name>
+    <object-name>F.CB.comm.knob</object-name>
+    <object-name>F.CB.comm1.knob</object-name>
+    <object-name>F.CB.crossfeed.knob</object-name>
+    <object-name>F.CB.cvr.knob</object-name>
+    <object-name>F.CB.dme.knob</object-name>
+    <object-name>F.CB.elec-heat.knob</object-name>
+    <object-name>F.CB.elec-trim.knob</object-name>
+    <object-name>F.CB.eng-ice0.knob</object-name>
+    <object-name>F.CB.eng-ice1.knob</object-name>
+    <object-name>F.CB.ext-power.knob</object-name>
+    <object-name>F.CB.fg1000-mfd.knob</object-name>
+    <object-name>F.CB.fg1000-pfd.knob</object-name>
+    <object-name>F.CB.fg1000-pfd2.knob</object-name>
+    <object-name>F.CB.fgc-65.knob</object-name>
+    <object-name>F.CB.fire-det.knob</object-name>
+    <object-name>F.CB.flap-control.knob</object-name>
+    <object-name>F.CB.flap-motor.knob</object-name>
+    <object-name>F.CB.flood.knob</object-name>
+    <object-name>F.CB.fuel-press-warn.knob</object-name>
+    <object-name>F.CB.fuel-qty-aux.knob</object-name>
+    <object-name>F.CB.fuel-qty-main.knob</object-name>
+    <object-name>F.CB.fuel-vent-heat0.knob</object-name>
+    <object-name>F.CB.fuel-vent-heat1.knob</object-name>
+    <object-name>F.CB.fw-valve0.knob</object-name>
+    <object-name>F.CB.fw-valve1.knob</object-name>
+    <object-name>F.CB.gear-control.knob</object-name>
+    <object-name>F.CB.gear-warn.knob</object-name>
+    <object-name>F.CB.gen0.knob</object-name>
+    <object-name>F.CB.gen1.knob</object-name>
+    <object-name>F.CB.gps.knob</object-name>
+    <object-name>F.CB.hobbs.knob</object-name>
+    <object-name>F.CB.ice-light.knob</object-name>
+    <object-name>F.CB.instrument-lights.knob</object-name>
+    <object-name>F.CB.landing-lights0.knob</object-name>
+    <object-name>F.CB.landing-lights1.knob</object-name>
+    <object-name>F.CB.logo-lights.knob</object-name>
+    <object-name>F.CB.mk-viii.knob</object-name>
+    <object-name>F.CB.nav-lights.knob</object-name>
+    <object-name>F.CB.nav.knob</object-name>
+    <object-name>F.CB.nav1.knob</object-name>
+    <object-name>F.CB.oxygen.knob</object-name>
+    <object-name>F.CB.pitot-heat0.knob</object-name>
+    <object-name>F.CB.pitot-heat1.knob</object-name>
+    <object-name>F.CB.press-control.knob</object-name>
+    <object-name>F.CB.prop-gov-test.knob</object-name>
+    <object-name>F.CB.prop-heat.knob</object-name>
+    <object-name>F.CB.prop-sync.knob</object-name>
+    <object-name>F.CB.recog-lights.knob</object-name>
+    <object-name>F.CB.rudder-boost.knob</object-name>
+    <object-name>F.CB.stall-warn-heat.knob</object-name>
+    <object-name>F.CB.stall-warn.knob</object-name>
+    <object-name>F.CB.start0.knob</object-name>
+    <object-name>F.CB.start1.knob</object-name>
+    <object-name>F.CB.stby-display.knob</object-name>
+    <object-name>F.CB.stby-pump0.knob</object-name>
+    <object-name>F.CB.stby-pump1.knob</object-name>
+    <object-name>F.CB.strobe.knob</object-name>
+    <object-name>F.CB.surface-deice.knob</object-name>
+    <object-name>F.CB.taxi-lights.knob</object-name>
+    <object-name>F.CB.temp-control.knob</object-name>
+    <object-name>F.CB.transponder.knob</object-name>
+    <object-name>F.CB.turn-coordinator.knob</object-name>
+    <object-name>F.CB.window-defog.knob</object-name>
+    <object-name>F.CB.window-heat0.knob</object-name>
+    <object-name>F.CB.window-heat1.knob</object-name>
+    <object-name>F.CB.wipers.knob</object-name>
+    <object-name>F.CB.yaw-damper.knob</object-name>
+    <object-name>F.CBL</object-name>
+    <object-name>F.CBR</object-name>
+    <object-name>F.COMPASS</object-name>
+    <object-name>F.COMPASS.card</object-name>
+    <object-name>F.COMPASS.lubber</object-name>
+    <object-name>F.FQSEL.lever</object-name>
+    <object-name>F.FQTYL.needle0</object-name>
+    <object-name>F.FQTYR.needle0</object-name>
+    <object-name>F.FUEL</object-name>
+    <object-name>F.MSTRPANEL.lever</object-name>
+    <object-name>F.OVH</object-name>
+    <object-name>F.OVH.DSPL1.knob</object-name>
+    <object-name>F.OVH.DSPL2.knob</object-name>
+    <object-name>F.OVH.DSPL3.knob</object-name>
+    <object-name>F.OVH.FLOODD.knob</object-name>
+    <object-name>F.OVH.FLOODO.knob</object-name>
+    <object-name>F.OVH.FLOODP.knob</object-name>
+    <object-name>F.OVH.PANELLTS.knob</object-name>
+    <object-name>F.OVH.WIPER.knob</object-name>
+    <object-name>F.OVH.body</object-name>
+    <object-name>F.OVHG</object-name>
+    <object-name>F.OVHG.BATTAMP.needle0</object-name>
+    <object-name>F.OVHG.DCLOADL.needle0</object-name>
+    <object-name>F.OVHG.DCLOADR.needle0</object-name>
+    <object-name>F.OVHG.OAT.needle0</object-name>
+    <object-name>F.OVHG.PROPAMP.needle0</object-name>
+    <object-name>F.OVHG.VOLTS.needle0</object-name>
+    <object-name>F.SIGNS.lever</object-name>
+    <object-name>F.STBYPUMPL.lever</object-name>
+    <object-name>F.STBYPUMPR.lever</object-name>
+    <object-name>F.XFEED.lever</object-name>
+    <emission>
+      <red>0.15</red>
+      <green>0.14</green>
+      <blue>0.12</blue>
+      <factor-prop>sim/model/fusion/flood-norm[2]</factor-prop>
+    </emission>
   </animation>
 </PropertyList>

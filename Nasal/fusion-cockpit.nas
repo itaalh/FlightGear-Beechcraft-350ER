@@ -84,7 +84,8 @@ var guard = func(guard_prop, prop, norm, type = "int") {
 # ---------------------------------------------------------------------------
 var lamp_nodes = {};
 var update_lamps = func {
-    var power = (getprop("systems/electrical/volts") or 0) > 18;
+    var power = (getprop("systems/electrical/volts") or 0) > 18 and cb("annunciators");
+    var level = getprop(FC ~ "annun-dim") ? 0.4 : 1.0;
     foreach (var k; keys(LAMPS)) {
         if (lamp_nodes[k] == nil) lamp_nodes[k] = lampnode.getNode(k, 1);
         var on = 0;
@@ -92,7 +93,7 @@ var update_lamps = func {
             var v = call(LAMPS[k], [], nil, nil, var err = []);
             on = (size(err) == 0 and v) ? 1 : 0;
         }
-        lamp_nodes[k].setDoubleValue(on);
+        lamp_nodes[k].setDoubleValue(on * level);
     }
 };
 
@@ -123,12 +124,14 @@ var start_switch = func(i) {
     if (v != 0 and !(getprop("controls/electric/battery-switch") or getprop("controls/electric/external-power"))) {
         gui.popupTip("Starter: no electrical power (battery OFF)");
     }
+    if (!cb("start[" ~ i ~ "]")) v = 0;
     ctl.getNode("starter-only", 1).setBoolValue(v == -1);
     ctl.getNode("starter", 1).setBoolValue(v != 0);
 };
 
 var autofeather_switch = func {
     var v = getprop(FC ~ "autofeather") or 0;
+    if (!cb("autofeather")) v = 0;
     setprop("controls/engines/autofeather", v != 0);
     setprop("controls/engines/autofeather-test", v == -1);
 };
@@ -153,6 +156,7 @@ var surface_deice = func {
 var bleed_switch = func(i) {
     var v = fc.getNode("bleed[" ~ i ~ "]").getValue();
     if (v == nil) v = 1;
+    if (!cb("bleed[" ~ i ~ "]")) v = 1;          # the valves fail open without power
     setprop("controls/pressurization/bleed-air[" ~ i ~ "]", v == 1);
     setprop("controls/pressurization/pneumatic[" ~ i ~ "]", v >= 0);
 };
@@ -167,8 +171,8 @@ var fire_extinguisher = func(eng) {
     var n = fc.getNode("extinguisher[" ~ eng ~ "]", 1);
     if (n.getBoolValue()) { gui.popupTip("Fire extinguisher already discharged"); return; }
     n.setBoolValue(1);
-    # the extinguisher closes the firewall valve of that engine
-    setprop("controls/engines/engine[" ~ eng ~ "]/fire-handle", 1);
+    # the extinguisher closes the firewall valve of that engine (valve breaker in)
+    if (cb("fw-valve[" ~ eng ~ "]")) setprop("controls/engines/engine[" ~ eng ~ "]/fire-handle", 1);
     click();
     gui.popupTip((eng == 0 ? "Left" : "Right") ~ " engine fire extinguisher DISCHARGED, firewall valve closed");
 };
@@ -269,7 +273,8 @@ var update_vnav = func {
 # ---------------------------------------------------------------------------
 var sync_trim = 0.0;
 var update_prop_sync = func {
-    var on = getprop(FC ~ "prop-sync") and getprop("engines/engine[0]/running") and getprop("engines/engine[1]/running");
+    var on = getprop(FC ~ "prop-sync") and cb("prop-sync") and dc_ok() and getprop("engines/engine[0]/running")
+             and getprop("engines/engine[1]/running");
     if (!on) {
         if (sync_trim != 0) { sync_trim = 0; setprop("fdm/jsbsim/fcs/prop-sync-trim", 0); }
         return;
@@ -328,6 +333,7 @@ var update_audio = func {
     foreach (var r; keys(RX)) {
         var v = 0;
         foreach (var k; [0, 1]) {
+            if (!cb(k == 0 ? "audio-panel" : "audio-panel[1]") or !dc_ok()) continue;
             var a = "controls/fusion/audio[" ~ k ~ "]/";
             if (getprop(a ~ r)) v = math.max(v, (getprop(a ~ r ~ "-vol") or 0) * (getprop(a ~ "master-vol") or 0));
         }
@@ -371,7 +377,7 @@ var update_cabin = func(dt) {
     var mode = getprop(FC ~ "env/mode");
     if (mode == nil) mode = 1;
     var bleed = getprop("systems/pressurization/bleed-air[0]") or getprop("systems/pressurization/bleed-air[1]");
-    var dc = (getprop("systems/electrical/volts") or 0) > 20;
+    var dc = (getprop("systems/electrical/volts") or 0) > 20 and cb("temp-control");
     var target = oat;
     var tau = 900.0;                                   # leak towards the outside
     if (dc and mode != 0) {
@@ -379,7 +385,12 @@ var update_cabin = func(dt) {
         if (mode == 1 and bleed) { target = sel; tau = 180; }
         elsif (mode == 2) { target = math.min(oat, 12); tau = 240; }                     # MAN COOL (vapour cycle)
         elsif (mode == 3 and bleed) { target = 20 + 12 * (getprop(FC ~ "env/man-heat") or 0.5); tau = 200; }   # MAN HEAT
-        elsif (mode == 4 and getprop("gear/gear[1]/wow")) { target = 24; tau = 400; }   # ELEC HEAT (ground)
+        elsif (mode == 4 and getprop("gear/gear[1]/wow") and cb("elec-heat")) { target = 24; tau = 400; }   # ELEC HEAT (ground)
+        # blowers (AUTO / LO / HI): faster mixing, none without their breakers
+        var blow = 0;
+        foreach (var k; [0, 1])
+            if (cb("blower[" ~ k ~ "]")) blow += 0.5 + 0.25 * (getprop(FC ~ (k == 0 ? "env/blower-cockpit" : "env/blower-cabin")) or 0);
+        tau = tau / math.max(0.3, blow);
     }
     cabin_t += (target - cabin_t) * math.min(1, dt / tau);
     setprop("systems/environment/cabin-temp-degc", cabin_t);
@@ -394,7 +405,7 @@ var update_cabin = func(dt) {
 var hobbs = props.globals.getNode("sim/model/fusion/hobbs-hours", 1);
 var update_hobbs = func(dt) {
     var h = hobbs.getValue() or 1248.3;
-    if (!getprop("gear/gear[1]/wow")) h += dt / 3600.0;
+    if (!getprop("gear/gear[1]/wow") and cb("hobbs") and dc_ok()) h += dt / 3600.0;
     hobbs.setDoubleValue(h);
     var t = h;
     var d = [math.mod(math.floor(t / 1000), 10), math.mod(math.floor(t / 100), 10), math.mod(math.floor(t / 10), 10),
@@ -475,7 +486,7 @@ var horn_silenced = 0;
 var update_gear_horn = func {
     var down = 1;
     foreach (var g; [0, 1, 2]) if ((getprop("gear/gear[" ~ g ~ "]/position-norm") or 0) < 0.999) down = 0;
-    var dc = (getprop("systems/electrical/volts") or 0) > 20;
+    var dc = (getprop("systems/electrical/volts") or 0) > 20 and cb("gear-warn");
     var thr = math.min(getprop("controls/engines/engine[0]/throttle") or 0, getprop("controls/engines/engine[1]/throttle") or 0);
     var low_power = thr < 0.15 and !getprop("gear/gear[1]/wow");
     var flaps = (getprop("surface-positions/flap-pos-norm") or 0) > 0.5;
@@ -493,7 +504,7 @@ var gear_horn_silence = func {
 
 # electric pitch trim (control wheel switches), ELEV TRIM switch on the pedestal
 var trim = func(dir) {
-    if (!(getprop(FC ~ "elec-trim") or 0) or (getprop("systems/electrical/volts") or 0) < 20) {
+    if (!(getprop(FC ~ "elec-trim") or 0) or !cb("elec-trim") or (getprop("systems/electrical/volts") or 0) < 20) {
         gui.popupTip("Electric pitch trim OFF");
         return;
     }
@@ -511,6 +522,7 @@ var ccp_device = func(side) {
     return side == 0 ? (d ? 2 : 1) : (d ? 3 : 2);
 };
 var fg1000_key = func(dev, key, off) {
+    if (!cb("ccp") or !dc_ok()) { gui.popupTip("Cursor control panels and keyboard: no power (CCP MKP breaker)"); return; }
     if ((getprop(FC ~ "inhibit-" ~ INHIBIT[dev]) or 0) == -1) {
         gui.popupTip("Cursor control inhibited on " ~ ["", "PFD 1", "the MFD", "PFD 2"][dev]);
         return;
@@ -533,13 +545,128 @@ var cabin_press = func {
 };
 var cvr_t = 0;
 var update_cvr = func(dt) {
-    if (getprop(FC ~ "cvr-test") and (getprop("systems/electrical/volts") or 0) > 20) cvr_t += dt;
+    if (getprop(FC ~ "cvr-test") and cb("cvr") and (getprop("systems/electrical/volts") or 0) > 20) cvr_t += dt;
     else cvr_t = 0;
     setprop(FC ~ "cvr-ok", cvr_t > 1.0);
 };
 var cvr_erase = func {
     if (getprop("gear/gear[1]/wow") and getprop("controls/gear/brake-parking")) gui.popupTip("Cockpit voice recorder erased");
     else gui.popupTip("CVR erase: on the ground with the parking brake set only");
+};
+
+# ---------------------------------------------------------------------------
+# circuit breakers (side panels): controls/fusion/cb/<id> = 1 when pulled. The shared systems read them too
+# (electrical.nas, ice-protection.nas, kingair350.nas, annunciators.nas, pressurization.nas).
+# ---------------------------------------------------------------------------
+var cb = func(id) { !getprop("controls/fusion/cb/" ~ id); };
+var dc_ok = func { (getprop("systems/electrical/volts") or 0) > 20; };
+
+# functions whose switch position is kept while their breaker is pulled: the system is forced off, then restored
+var cb_saved = {};
+var cb_force_off = func(id, prop) {
+    if (!cb(id)) {
+        if (cb_saved[id] == nil) cb_saved[id] = getprop(prop) ? 1 : 0;
+        if (getprop(prop)) setprop(prop, 0);
+    } elsif (cb_saved[id] != nil) {
+        setprop(prop, cb_saved[id]);
+        cb_saved[id] = nil;
+    }
+};
+
+# DC loads without a system model of their own (A), added by Nasal/electrical.nas
+var load_amps = func {
+    var a = 0;
+    if (getprop(FC ~ "window-defog") and cb("window-defog")) a += 7;
+    var cl = getprop(FC ~ "cabin-lights") or 0;
+    if (cl and cb("cabin-lights")) a += 5 * cl;
+    if (getprop("controls/lighting/ice-light") and cb("ice-light")) a += 4;
+    foreach (var i; [0, 1]) if (getprop("controls/fuel/stby-pump[" ~ i ~ "]")) a += 5;
+    var mode = getprop(FC ~ "env/mode") or 0;
+    if (mode != 0)
+        foreach (var k; [0, 1])
+            if (cb("blower[" ~ k ~ "]")) a += 6 + 4 * (getprop(FC ~ (k == 0 ? "env/blower-cockpit" : "env/blower-cabin")) or 0);
+    return a;
+};
+
+var flap_hold = nil;
+var gear_hold = nil;
+var update_cbs = func {
+    cb_force_off("rudder-boost", "controls/flight/rudder-boost");
+    cb_force_off("yaw-damper", "controls/flight/yaw-damper");
+    # flaps: no motor or no control, the flaps stay where they are
+    var fl = getprop("controls/flight/flaps") or 0;
+    if (!cb("flap-motor") or !cb("flap-control")) {
+        if (flap_hold == nil) flap_hold = getprop("surface-positions/flap-pos-norm") or fl;
+        if (math.abs(fl - flap_hold) > 0.001) setprop("controls/flight/flaps", flap_hold);
+    } else flap_hold = nil;
+    # landing gear control: the handle does nothing
+    var gd = getprop("controls/gear/gear-down");
+    if (!cb("gear-control") or !cb("gear-relay")) {
+        if (gear_hold == nil) gear_hold = gd;
+        if (gd != gear_hold) setprop("controls/gear/gear-down", gear_hold);
+    } else gear_hold = nil;
+    # autopilot servos
+    if (!cb("autopilot") and FCS.engaged) { FCS.engage(0); gui.popupTip("Autopilot: servo power lost (AP SERVOS breaker)"); }
+    # propeller overspeed governor test
+    if (!cb("prop-gov-test") and getprop("controls/engines/prop-overspeed-test")) setprop("controls/engines/prop-overspeed-test", 0);
+    # starters
+    foreach (var i; [0, 1])
+        if (!cb("start[" ~ i ~ "]") and getprop("controls/engines/engine[" ~ i ~ "]/starter"))
+            setprop("controls/engines/engine[" ~ i ~ "]/starter", 0);
+};
+
+# ---------------------------------------------------------------------------
+# overhead: panel lights, flood lights, display brightness, annunciator dimming, cabin signs
+# ---------------------------------------------------------------------------
+var update_lighting = func {
+    var master = getprop("controls/lighting/master-panel") and dc_ok();
+    setprop("sim/model/fusion/panel-lights-norm", master and cb("instrument-lights")
+            ? math.clamp(getprop("controls/lighting/instruments-norm") or 0, 0, 1) : 0);
+    foreach (var z; [0, 1, 2])
+        setprop("sim/model/fusion/flood-norm[" ~ z ~ "]",
+                (master and cb("flood")) ? math.clamp(getprop("sim/model/fusion/flood[" ~ z ~ "]") or 0, 0, 1) : 0);
+};
+
+var cabin_signs = func {
+    if (!dc_ok() or !cb("cabin-signs")) return;
+    setprop("sim/sound/cabin-chime", 1);
+    settimer(func setprop("sim/sound/cabin-chime", 0), 1.0);
+    var v = getprop(FC ~ "cabin-signs") or 0;
+    setprop("sim/model/fusion/signs/seatbelt", v >= 1);
+    setprop("sim/model/fusion/signs/no-smoking", v >= 2);
+};
+
+# ---------------------------------------------------------------------------
+# fuel panel: crossfeed, standby pumps, aux transfer, quantity gauges (MAIN / AUX / TEST)
+# ---------------------------------------------------------------------------
+var crossfeed_switch = func {
+    var v = getprop(FC ~ "crossfeed") or 0;
+    if (!cb("crossfeed") or !dc_ok()) v = 0;
+    # cockpit LEFT: the right main feeds the left engine (crossfeed -1); RIGHT: the left main feeds the right engine
+    setprop("controls/fuel/transfer", v == 1 ? "left" : (v == -1 ? "right" : "off"));
+};
+
+var update_fuel = func {
+    foreach (var i; [0, 1]) {
+        var x = getprop(FC ~ "aux-xfer[" ~ i ~ "]");
+        if (x == nil) x = 0;
+        var on = (x == 1) or (x == 0 and cb("aux-xfer[" ~ i ~ "]"));      # OVERRIDE bypasses the automatic control
+        setprop(i == 0 ? "controls/fuel/Laux-switch" : "controls/fuel/Raux-switch", (on and dc_ok()) ? "auto" : "off");
+        setprop("controls/fuel/stby-pump[" ~ i ~ "]",
+                (getprop(FC ~ "stby-pump[" ~ i ~ "]") or 0) and cb("stby-pump[" ~ i ~ "]") and dc_ok());
+    }
+    crossfeed_switch();
+    var sel = getprop(FC ~ "fuel-qty-select") or 0;
+    foreach (var i; [0, 1]) {
+        var lbs = 0;
+        if (dc_ok()) {
+            if (sel == -1) lbs = 1000;
+            elsif (sel == 1) lbs = cb("fuel-qty-aux") ? (getprop("consumables/fuel/tank[" ~ (i == 0 ? 0 : 3) ~ "]/level-lbs") or 0) : 0;
+            else lbs = cb("fuel-qty-main") ? (getprop("consumables/fuel/tank[" ~ (i == 0 ? 1 : 2) ~ "]/level-lbs") or 0) : 0;
+        }
+        var n = props.globals.getNode("sim/model/fusion/fuel-qty-ind[" ~ i ~ "]", 1);
+        n.setDoubleValue((n.getValue() or 0) + (lbs - (n.getValue() or 0)) * 0.15);
+    }
 };
 
 # ---------------------------------------------------------------------------
@@ -580,7 +707,9 @@ var DEFAULTS = [
     ["couple", 0], ["vnav", 0], ["radio-call", 0], ["env/mode", 1], ["env/blower-cockpit", 0], ["env/blower-cabin", 0],
     ["env/man-temp", 0], ["cb/landing-gear-relay", 0], ["extinguisher[0]", 0], ["extinguisher[1]", 0],
     ["ccp[0]/display", 0], ["ccp[1]/display", 0], ["elec-trim", 1], ["cabin-press", 0], ["stall-test", 0],
-    ["gear-warn-test", 0], ["cvr-test", 0],
+    ["gear-warn-test", 0], ["cvr-test", 0], ["annun-dim", 0], ["cabin-signs", 0], ["cabin-lights", 0],
+    ["crossfeed", 0], ["stby-pump[0]", 0], ["stby-pump[1]", 0], ["aux-xfer[0]", 0], ["aux-xfer[1]", 0],
+    ["fuel-qty-select", 0],
 ];
 var DEFAULTS_D = [["env/temp-cockpit", 0.5], ["env/temp-cabin", 0.5], ["env/man-heat", 0.5], ["friction[0]", 0.3],
                   ["friction[1]", 0.3]];
@@ -608,8 +737,11 @@ var init = func {
     }
     if (getprop("instrumentation/altimeter[1]/setting-inhg") == nil)
         setprop("instrumentation/altimeter[1]/setting-inhg", getprop("instrumentation/altimeter/setting-inhg") or 29.92);
-    setprop("systems/oxygen/pressure-psi", 1850);
-    if (getprop("sim/model/fusion/display-brightness") == nil) setprop("sim/model/fusion/display-brightness", 1.0);
+    setprop("systems/oxygen/bottle-psi", 1850);
+    foreach (var k; [0, 1, 2]) {
+        if (getprop("sim/model/fusion/display-brightness[" ~ k ~ "]") == nil) setprop("sim/model/fusion/display-brightness[" ~ k ~ "]", 1.0);
+        if (getprop("sim/model/fusion/flood[" ~ k ~ "]") == nil) setprop("sim/model/fusion/flood[" ~ k ~ "]", 0.0);
+    }
     sync_switches();
 
     foreach (var i; [0, 1]) {
@@ -634,6 +766,7 @@ var init = func {
         setprop("controls/electric/bus-sense-reset", v == -1);
     }, 0, 0);
     setlistener(FC ~ "cabin-press", cabin_press, 0, 0);
+    setlistener(FC ~ "cabin-signs", cabin_signs, 0, 0);
     setlistener(FC ~ "ahs-source", func(n) { gui.popupTip("Pilot PFD attitude / heading: AHRS " ~ (n.getValue() ? "1" : "2")); }, 0, 0);
     setlistener(FC ~ "ads-source", func(n) { gui.popupTip("Pilot PFD air data: ADC " ~ (n.getValue() ? "1" : "2")); }, 0, 0);
 
@@ -642,14 +775,9 @@ var init = func {
     print("KingAir-350ER: Pro Line Fusion cockpit ok");
 };
 
-# back lighting of the panel markings (lightmaps of Models/Fusion/Effects): instrument lights dimmer on the DC bus
-var update_panel_lights = func {
-    setprop("sim/model/fusion/panel-lights-norm",
-            math.clamp((getprop("systems/electrical/outputs/lights/instrument-lights") or 0) / 28.0, 0, 1));
-};
-
 var fast = func {
-    update_panel_lights();
+    update_lighting();
+    update_cbs();
     update_power_levers();
     update_gear_horn();
     update_cvr(0.1);
@@ -662,6 +790,8 @@ var slow = func {
     sync_switches();
     update_audio();
     update_cabin(0.5);
+    update_fuel();
+    setprop("systems/oxygen/pressure-psi", (dc_ok() and cb("oxygen")) ? (getprop("systems/oxygen/bottle-psi") or 0) : 0);
     update_hobbs(0.5);
     update_vnav();
 };

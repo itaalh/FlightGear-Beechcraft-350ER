@@ -58,7 +58,8 @@ var update_engines = func {
         var auto_ign = ctl[i].getNode("auto-ignition", 1).getValue();
         var n1 = eng[i].getNode("n1", 1).getValue() or 0.0;
         var running = eng[i].getNode("running", 1).getBoolValue();
-        ctl[i].getNode("ignition", 1).setBoolValue((starting and !starter_only) or ((auto_ign == nil or auto_ign) and running and n1 < 55));
+        var ign_cb = !getprop("controls/fusion/cb/auto-ign[" ~ i ~ "]");       # Pro Line Fusion cockpit breaker
+        ctl[i].getNode("ignition", 1).setBoolValue((starting and !starter_only) or ((auto_ign == nil or auto_ign) and ign_cb and running and n1 < 55));
 
         # gauges: torque %, ITT, propeller rpm
         eng[i].getNode("rpm", 1).setDoubleValue(eng[i].getNode("thruster/rpm", 1).getValue() or 0.0);
@@ -380,7 +381,7 @@ var update_wipers = func {
     var dt = 0.05;
     var sw = int(wiper_sw.getValue() or 0);
     var pos = wiper_pos.getValue() or 0;
-    var powered = (getprop("systems/electrical/volts") or 0) > 20;
+    var powered = (getprop("systems/electrical/volts") or 0) > 20 and !getprop("controls/fusion/cb/wipers");
     if (!powered or sw == 0) {
         wiper_timer.stop();
         return;

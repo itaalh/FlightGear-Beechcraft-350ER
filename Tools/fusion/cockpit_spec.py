@@ -9,7 +9,7 @@ Nasal/fusion-cockpit.nas. New cockpit switch properties live under controls/fusi
 import math
 
 import shell as S
-from layout import Y0, Frame, tilted_frame, add, mul
+from layout import Y0, Frame, tilted_frame, add, mul, rot_axis
 from spec_base import *                     # noqa: F401,F403
 
 PANELS = []
@@ -66,7 +66,7 @@ def glareshield():
     # ---- engine fire extinguisher and firewall valve push-lights (hump shoulders)
     for side, s, eng in (("L", -0.142, 0), ("R", 0.142, 1)):
         p = panel("GS.fire" + side, brow_frame(s, 0.442, tilt=14.0), 50, 24, radius=2, ppm=12, screws=False)
-        fire = lamp("fire_%d" % eng, 'getprop("controls/fusion/fire-test[%d]") == 1' % eng)
+        fire = lamp("fire_%d" % eng, 'getprop("controls/fusion/fire-test[%d]") == 1 and cb("fire-det")' % eng)
         disch = lamp("ext_disch_%d" % eng, 'getprop("controls/fusion/extinguisher[%d]") or getprop("controls/fusion/fire-test[%d]") == -1' % (eng, eng))
         fw = lamp("fw_valve_%d" % eng, 'getprop("controls/engines/engine[%d]/fire-handle")' % eng)
         order = (-12.0, 12.0) if side == "L" else (12.0, -12.0)
@@ -106,7 +106,7 @@ FGP_FRAME = tilted_frame((S.lip_x(0) + 0.013, Y0, 0.358), 8.0)
 
 
 def fgp():
-    p = panel("FGP", FGP_FRAME, 414, 62, radius=3, thick=4, elev=8, ppm=10, color=(0.10, 0.10, 0.105), screws=True)
+    p = panel("FGP", FGP_FRAME, 414, 62, radius=3, thick=4, elev=8, ppm=8, color=(0.10, 0.10, 0.105), screws=True)
     p.rect(-204, -28, 204, 28, width=0.9, radius=2.0, color=(0.72, 0.70, 0.64), lit=False)
     for x in (-155, -127, -97, -76, -41, -11, 49, 81, 114, 152):
         p.line([(x, -24), (x, 24)], 0.4, color=(0.55, 0.55, 0.55), lit=False)
@@ -198,7 +198,7 @@ STBY_FRAME = tilted_frame((S.lip_x(0) - 0.004, Y0, 0.458), 8.0)
 
 
 def standby():
-    p = panel("STBY", STBY_FRAME, 150, 104, radius=5, thick=6, elev=0, ppm=10, color=(0.07, 0.07, 0.075), screws=True)
+    p = panel("STBY", STBY_FRAME, 150, 104, radius=5, thick=6, elev=0, ppm=6, color=(0.07, 0.07, 0.075), screws=True)
     p.add(Decor("STBY.SCREEN", -14.0, 2.0, "screen", w=100.0, h=75.0, object="Fusion.Stby.screen"))
     p.add(Button("STBY.MENU", 55.0, 22.0, 11.0, 9.0, [nasal("fusion_standby.menu();"), CLICK], legend="MENU",
                  cap="bezel_key", legend_color=WHITE, legend_size=2.2, tooltip=tip("Standby display: MENU (declutter)")))
@@ -217,7 +217,7 @@ def audio_panel(side):
     k = 0 if side == "L" else 1
     u = -535.0 if side == "L" else 535.0
     fr = S.MP.sub(u, -18.0, 0.0)
-    p = panel("AUDIO" + side, fr, 76, 238, radius=3, thick=3, elev=0, ppm=9)
+    p = panel("AUDIO" + side, fr, 76, 238, radius=3, thick=3, elev=0, ppm=7)
     a = "controls/fusion/audio[%d]/" % k
     p.add(Knob("AUD%s.XMT" % side, 0.0, 88.0, a + "xmit", lo=0, hi=3, step=1, factor=40, offset=-60,
                style="selector", d=14.0, h=9.0, positions=[(0, "1"), (1, "2"), (2, "PA"), (3, "HF")], pos_size=2.4,
@@ -270,7 +270,7 @@ def audio_panel(side):
 
 
 def strip():
-    p = panel("STRIP", S.MP.sub(-12.0, -131.0, 0.0), 470, 36, radius=2.5, thick=2.5, elev=0, ppm=9)
+    p = panel("STRIP", S.MP.sub(-12.0, -131.0, 0.0), 470, 36, radius=2.5, thick=2.5, elev=0, ppm=7)
     t = dict(title_size=2.1, label_size=1.9)
     # PROP SYNC
     p.add(PushLight("PSYNC", -218.0, 1.0, 11.0, 11.0, [toggle(FC + "prop-sync"), CLICK], "ON",
@@ -326,7 +326,7 @@ def lp(name, x0, x1, **kw):
 def lower_panels():
     sw = dict(title_size=2.3, label_size=2.0)
     # ------------------------------------------------------------------ pilot subpanel
-    p = lp("PSUB", -528.0, -283.0, ppm=6)
+    p = lp("PSUB", -528.0, -283.0, ppm=5)
     p.add(Toggle("MASTER", -108.0, 52.0, FC + "master-emer", values=(1, 0), labels=("EMER\nOFF", "NORM"),
                  guard=FC + "master-guard", title="DC\nMASTER", **sw,
                  tooltip=tip("DC master: %s (guarded)", FC + "master-emer", 'return arg[0] ? "EMER OFF" : "NORM";')))
@@ -391,7 +391,7 @@ def lower_panels():
     p.add(Decor("PSUB.COLUMN", 50.0, 62.0, "column_boot"))
 
     # ------------------------------------------------------------------ lights and ice protection
-    p = lp("LTS", -279.0, -170.0, ppm=7)
+    p = lp("LTS", -279.0, -170.0, ppm=6)
     x0 = -44.0
     lights = [("LDGL", "controls/lighting/landing-lights[0]", "LEFT"), ("LDGR", "controls/lighting/landing-lights[1]", "RIGHT"),
               ("TAXI", "controls/lighting/taxi-lights", "TAXI"), ("ICEL", "controls/lighting/ice-light", "ICE"),
@@ -449,14 +449,14 @@ def lower_panels():
                      tooltip=tip("%s pitot heat: %%s" % ("Left" if k == 0 else "Right"), "controls/anti-ice/pitot-heat[%d]" % k,
                                  'return arg[0] ? "ON" : "OFF";')))
         p.text("LEFT" if k == 0 else "RIGHT", x, -49.5, 1.9)
-    p.add(Knob("GEARRELAY", 44.0, -38.0, FC + "cb/landing-gear-relay", lo=0, hi=1, step=1, factor=0, offset=0,
-               style="cb", d=9.0, h=6.0, push=[toggle(FC + "cb/landing-gear-relay"), CLICK], title="LANDING\nGEAR",
-               title_size=1.8, tooltip=tip("Landing gear relay circuit breaker: %s", FC + "cb/landing-gear-relay",
+    p.add(Knob("GEARRELAY", 44.0, -38.0, "controls/fusion/cb/gear-relay", lo=0, hi=1, step=1, factor=0, offset=0,
+               style="cb", d=9.0, h=6.0, push=[toggle("controls/fusion/cb/gear-relay"), CLICK], title="LANDING\nGEAR",
+               title_size=1.8, tooltip=tip("Landing gear relay circuit breaker: %s", "controls/fusion/cb/gear-relay",
                                            'return arg[0] ? "PULLED" : "IN";')))
     p.text("RELAY", 44.0, -48.0, 1.8)
 
     # ------------------------------------------------------------------ landing gear, beacon, strobe
-    p = lp("GEAR", -166.0, -92.0, ppm=7)
+    p = lp("GEAR", -166.0, -92.0, ppm=6)
     p.text("LDG GEAR CONTROL", -8.0, 70.0, 2.1)
     p.add(Decor("GEAR.SLOT", -16.0, 20.0, "gear_slot"))
     p.text("UP", -2.0, 44.0, 2.0)
@@ -493,7 +493,7 @@ def lower_panels():
                         ' or getprop("controls/gear/lights-test") or getprop("controls/fusion/gear-warn")')
 
     # ------------------------------------------------------------------ centre: pressurization and flap gauges
-    p = lp("CTR", -88.0, 88.0, ppm=6, color=(0.06, 0.06, 0.063))
+    p = lp("CTR", -88.0, 88.0, ppm=3, color=(0.06, 0.06, 0.063))
     p.add(Gauge("FLAPIND", -58.0, -38.0, 44.0, "flap", [("surface-positions/flap-pos-norm",
                                                           [(0.0, -60.0), (0.4, 0.0), (1.0, 60.0)], "white")]))
     p.add(Gauge("CABCLIMB", 0.0, -38.0, 44.0, "cabin_climb", [("systems/pressurization/cabin-rate-fpm",
@@ -503,7 +503,7 @@ def lower_panels():
         ("systems/pressurization/diff-psi", [(0.0, -160.0), (7.0, -20.0)], "orange")]))
 
     # ------------------------------------------------------------------ environmental
-    p = lp("ENV", 92.0, 236.0, ppm=7)
+    p = lp("ENV", 92.0, 236.0, ppm=6)
     p.group(-68.0, -70.0, 68.0, 68.0, "ENVIRONMENTAL", size=2.4)
     kn = dict(style="rheostat", d=15.0, h=10.0, title_size=2.1)
     for row, y, zone in ((0, 38.0, "cockpit"), (1, -26.0, "cabin")):
@@ -544,7 +544,7 @@ def lower_panels():
     p.text("PNEU & ENVIR OFF", 46.0, -40.5, 1.8)
 
     # ------------------------------------------------------------------ copilot subpanel
-    p = lp("CSUB", 240.0, 528.0, ppm=6)
+    p = lp("CSUB", 240.0, 528.0, ppm=5)
     p.add(Toggle("WDEFOG", -128.0, 44.0, FC + "window-defog", values=(0, 1), labels=("OFF", "ON"), title="WINDOW\nDEFOG",
                  **sw, tooltip=tip("Side window defog: %s", FC + "window-defog", 'return arg[0] ? "ON" : "OFF";')))
     p.add(Toggle("CABTEST", -96.0, 44.0, FC + "cabin-warn-test", values=(-1, 0, 1), labels=("DIFF", "OFF", "CABIN\nALT"),
@@ -583,7 +583,7 @@ import pedestal as PD                                   # noqa: E402
 def pedestal():
     # ---- power quadrant: flat drawing of the curved surface (built by controls3d.build_pedestal)
     L = PD.arc_len_mm()
-    p = panel("PED.QUAD", PD.aft_frame(-4.3, 0.0), PD.QUAD_HW * 2000, L, radius=0, ppm=6, color=(0.07, 0.07, 0.075),
+    p = panel("PED.QUAD", PD.aft_frame(-4.3, 0.0), PD.QUAD_HW * 2000, L, radius=0, ppm=5, color=(0.07, 0.07, 0.075),
               screws=False, custom=True)
     y = PD.quad_y_mm
     for nm, off, prop, table, style, length in PD.LEVERS:
@@ -629,7 +629,7 @@ def pedestal():
     p.text("T.O.", 6.0, -6.2, 1.8, align="l", color=GREEN)
 
     # ---- trim face: aileron and rudder trim knobs
-    p = panel("PED.TRIM", PD.trim_face_frame(0.0), 236, 176, radius=3, thick=3, ppm=6, color=(0.07, 0.07, 0.075))
+    p = panel("PED.TRIM", PD.trim_face_frame(0.0), 236, 176, radius=3, thick=3, ppm=4, color=(0.07, 0.07, 0.075))
     p.add(Knob("ATRIM", -52.0, -12.0, "controls/flight/aileron-trim", lo=-1.0, hi=1.0, step=0.01, factor=100,
                offset=0, style="trim", d=44.0, h=16.0, shift_step=0.05,
                tooltip=tip("Aileron trim: %.2f", "controls/flight/aileron-trim")))
@@ -659,7 +659,7 @@ def pedestal():
     # ---- cursor control panels (FG1000: FMS, range, keys, radios), pilot and copilot
     for k in (0, 1):
         side = "L" if k == 0 else "R"
-        p = panel("CCP" + side, PD.aft_frame(-3.965, -0.113 if k == 0 else 0.113), 104, 120, radius=4, thick=4, ppm=10,
+        p = panel("CCP" + side, PD.aft_frame(-3.965, -0.113 if k == 0 else 0.113), 104, 120, radius=4, thick=4, ppm=6,
                   color=(0.075, 0.075, 0.08))
         cc = lambda key, arg="1": nasal('fusion.ccp(%d, "%s", %s);' % (k, key, arg))
         knob_off = 'cmdarg().getNode("offset").getValue()'
@@ -693,7 +693,7 @@ def pedestal():
             p.add(Button("CCP%s.%sXFR" % (side, nm), x, -54.0, action=[cc(dev + "_FREQ_TRANSFER"), CLICK],
                          legend="<>", tooltip=tip("%s frequency transfer" % nm), **dict(key, w=14.0, h=8.0)))
     # ---- multifunction keyboard (FG1000 KEY_INPUT on the display of the last used cursor panel)
-    p = panel("MKP", PD.aft_frame(-3.965, 0.0), 116, 120, radius=4, thick=4, ppm=10, color=(0.075, 0.075, 0.08))
+    p = panel("MKP", PD.aft_frame(-3.965, 0.0), 116, 120, radius=4, thick=4, ppm=5, color=(0.075, 0.075, 0.08))
     kk = dict(w=9.5, h=8.5, cap="cap_dark", legend_color=WHITE, legend_size=2.6, depth=4.0, travel=1.0)
     for i, ch in enumerate("1234567890"):
         p.add(Button("MKP.%s" % ch, -49.5 + 11.0 * i, 48.0, action=[nasal('fusion.mkp("%s");' % ch), CLICK], legend=ch,
@@ -718,7 +718,7 @@ def pedestal():
     p.text("KEYS TO: CURSOR PANEL IN USE", 0.0, -57.0, 1.9)
 
     # ---- pressurization controller, rudder boost, electric trim, stall warning test
-    p = panel("PRESS", PD.aft_frame(-3.824, 0.0), 300, 70, radius=3, thick=3, ppm=8, color=(0.075, 0.075, 0.08))
+    p = panel("PRESS", PD.aft_frame(-3.824, 0.0), 300, 70, radius=3, thick=3, ppm=6, color=(0.075, 0.075, 0.08))
     p.group(-146.0, -32.0, -8.0, 30.0, "PRESSURIZATION", size=2.3)
     p.add(Knob("CABALTSEL", -118.0, -6.0, "controls/pressurization/cabin-alt-ft", lo=-1000, hi=10000, step=100,
                factor=0.024, offset=-132, style="selector", d=18.0, h=10.0, shift_step=1000,
@@ -745,7 +745,7 @@ def pedestal():
                  tooltip=tip("Landing gear warning horn test (hold)")))
 
     # ---- cockpit voice recorder
-    p = panel("CVR", PD.aft_frame(-3.715, -0.080), 150, 70, radius=3, thick=3, ppm=8, color=(0.075, 0.075, 0.08))
+    p = panel("CVR", PD.aft_frame(-3.715, -0.080), 150, 70, radius=3, thick=3, ppm=6, color=(0.075, 0.075, 0.08))
     p.text("COCKPIT VOICE RECORDER", 0.0, 26.0, 2.4)
     p.add(Button("CVR.TEST", -44.0, -4.0, 9.0, 9.0, [set_(FC + "cvr-test", 1), CLICK], release=[set_(FC + "cvr-test", 0)],
                  cap="cap_dark_round", title="TEST", title_dy=8.0, tooltip=tip("CVR test (hold: the green light shows)")))
@@ -755,7 +755,211 @@ def pedestal():
                  title="ERASE", title_dy=8.0, tooltip=tip("CVR erase (on the ground, parking brake set)")))
     p.text("HEADSET", 48.0, 6.0, 2.0)
     p.add(Decor("CVR.JACK", 48.0, -6.0, "jack"))
-    p = panel("PED.BLANK", PD.aft_frame(-3.715, 0.085), 150, 70, radius=3, thick=3, ppm=4, color=(0.075, 0.075, 0.08))
+    p = panel("PED.BLANK", PD.aft_frame(-3.715, 0.085), 150, 70, radius=3, thick=3, ppm=1, color=(0.075, 0.075, 0.08))
+
+
+# =================================================================================================================
+# OVERHEAD, SIDE WALLS (fuel panel, circuit breakers)
+# =================================================================================================================
+OVH_TILT_SW = 12.0
+OVH_TILT_G = 45.0
+
+
+def ovh_frame(x, z, tilt, y_off=0.0):
+    """Overhead face looking down: u = +y, 'up' on the face = aft (the crew looks up and forward)."""
+    t = math.radians(tilt)
+    return Frame((x, Y0 + y_off, z), (0.0, 1.0, 0.0), (math.cos(t), 0.0, math.sin(t)))
+
+
+OVH_SW_FRAME = ovh_frame(-4.075, 0.848, OVH_TILT_SW)
+OVH_G_FRAME = ovh_frame(-4.228, 0.795, OVH_TILT_G)
+
+
+def wall_frame(side, x, z, y, tilt=12.0, yaw=0.0):
+    """Side wall face (pilot's side: side -1, copilot: +1) centred at (x, y, z), tilted up by `tilt`; u runs forward
+    on the left wall and aft on the right wall so that the text reads from the seats. The cabin lining of
+    Models/KingAir.ac (object "interior") comes inboard towards the nose: `yaw` turns the face to follow it, and y
+    leaves 3 mm between the plate and the lining (the panels are backed by a box that goes into the lining)."""
+    t = math.radians(tilt)
+    if side < 0:
+        u, v = (-1.0, 0.0, 0.0), (0.0, -math.sin(t), math.cos(t))
+    else:
+        u, v = (1.0, 0.0, 0.0), (0.0, math.sin(t), math.cos(t))
+    if yaw:
+        u, v = rot_axis(u, (0, 0, 1), side * yaw), rot_axis(v, (0, 0, 1), side * yaw)
+    return Frame((x, y, z), u, v)
+
+
+def overhead():
+    p = panel("OVH", OVH_SW_FRAME, 380, 250, radius=4, thick=3, ppm=4.5, color=(0.075, 0.075, 0.08))
+    kn = dict(style="rheostat", d=16.0, h=11.0, lo=0.0, hi=1.0, step=0.05, factor=270, offset=-135, title_size=2.4,
+              title_dy=14.5, pos_size=2.0)
+    p.add(Toggle("MSTRPANEL", -160.0, 66.0, "controls/lighting/master-panel", values=(0, 1), prop_type="bool",
+                 labels=("OFF", "ON"), title="MASTER\nPANEL LIGHTS", title_size=2.3, label_size=2.1,
+                 tooltip=tip("Master panel lights: %s", "controls/lighting/master-panel", 'return arg[0] ? "ON" : "OFF";')))
+    for nm, x, prop, title, t in (
+            ("PANELLTS", -105.0, "controls/lighting/instruments-norm", "PANEL\nLIGHTS", "Panel back lighting"),
+            ("DSPL1", -45.0, "sim/model/fusion/display-brightness[0]", "PILOT\nDISPLAYS", "Pilot PFD and standby brightness"),
+            ("DSPL2", 15.0, "sim/model/fusion/display-brightness[1]", "MFD", "MFD brightness"),
+            ("DSPL3", 75.0, "sim/model/fusion/display-brightness[2]", "COPILOT\nDISPLAY", "Copilot PFD brightness"),
+            ("FLOODP", -80.0, "sim/model/fusion/flood[0]", "PANEL\nFLOOD", "Instrument panel flood lights"),
+            ("FLOODD", -20.0, "sim/model/fusion/flood[1]", "PEDESTAL\nFLOOD", "Pedestal flood lights"),
+            ("FLOODO", 40.0, "sim/model/fusion/flood[2]", "OVERHEAD\nFLOOD", "Overhead and side panel flood lights")):
+        y = 66.0 if nm in ("PANELLTS", "DSPL1", "DSPL2", "DSPL3") else 6.0
+        p.add(Knob("OVH." + nm, x, y, prop, positions=[(0.0, "OFF"), (1.0, "BRT")],
+                   title=title, tooltip=tip(t + ": %.0f %%", prop, 'return arg[0] * 100;'), **kn))
+    p.add(Toggle("ANNDIM", 150.0, 66.0, FC + "annun-dim", values=(0, 1), labels=("BRT", "DIM"), title="ANNUN",
+                 title_size=2.3, label_size=2.1,
+                 tooltip=tip("Annunciators: %s", FC + "annun-dim", 'return arg[0] ? "DIM" : "BRIGHT";')))
+    p.add(Knob("OVH.WIPER", -152.0, 6.0, "controls/electric/wipers/switch-pos", lo=-1, hi=2, step=1, factor=40,
+               offset=-20, style="selector", d=15.0, h=10.0,
+               positions=[(-1, "PARK"), (0, "OFF"), (1, "SLOW"), (2, "FAST")], pos_size=2.0,
+               title="WINDSHIELD\nWIPER", title_dy=16.0, title_size=2.2, prop_type="int",
+               tooltip=tip("Windshield wiper: %s", "controls/electric/wipers/switch-pos",
+                           'return ["PARK", "OFF", "SLOW", "FAST"][math.min(3, math.max(0, int(arg[0] or 0) + 1))];')))
+    p.text("DO NOT OPERATE ON DRY GLASS", -152.0, -16.0, 1.8)
+    p.add(Toggle("SIGNS", 110.0, 6.0, FC + "cabin-signs", values=(0, 1, 2), labels=("OFF", "FSB", "NO SMK\n& FSB"),
+                 title="CABIN SIGNS", title_size=2.2, label_size=1.9,
+                 tooltip=tip("Cabin signs: %s", FC + "cabin-signs", 'return ["OFF", "FASTEN SEAT BELTS", "NO SMOKING & FSB"][int(arg[0] or 0)];')))
+    p.add(Toggle("CABLIGHTS", 160.0, 6.0, FC + "cabin-lights", values=(0, 1, 2), labels=("OFF", "DIM", "BRT"),
+                 title="CABIN\nLIGHTS", title_size=2.2, label_size=1.9,
+                 tooltip=tip("Cabin lights: %s", FC + "cabin-lights", 'return ["OFF", "DIM", "BRIGHT"][int(arg[0] or 0)];')))
+    # placards
+    p.rect(-186.0, -118.0, -20.0, -40.0, 0.35, 1.0)
+    p.text("OPERATING LIMITATIONS", -103.0, -46.0, 2.2)
+    lines = ["THIS AIRPLANE MUST BE OPERATED IN THE NORMAL", "CATEGORY IN COMPLIANCE WITH THE OPERATING",
+             "LIMITATIONS STATED IN THE FORM OF PLACARDS,", "MARKINGS AND MANUALS. NO ACROBATIC MANEUVERS,",
+             "INCLUDING SPINS, APPROVED. FLIGHT IN KNOWN", "ICING CONDITIONS APPROVED WITH REQUIRED",
+             "EQUIPMENT OPERATIVE. REFER TO THE AFM."]
+    for k, t in enumerate(lines):
+        p.text(t, -103.0, -53.0 - k * 8.5, 1.6)
+    p.rect(20.0, -118.0, 186.0, -40.0, 0.35, 1.0)
+    p.text("MAXIMUM ALTITUDE 35 000 FT", 103.0, -52.0, 2.0)
+    p.text("VMO 263 KIAS  -  MMO 0.58", 103.0, -62.0, 2.0)
+    p.text("VLE 184 KIAS  -  VLO 184 KIAS", 103.0, -72.0, 2.0)
+    p.text("VFE APPR 202 KIAS  -  DOWN 158 KIAS", 103.0, -82.0, 2.0)
+    p.text("VA 184 KIAS  -  VMCA 94 KIAS", 103.0, -92.0, 2.0)
+    p.text("MAX CABIN DIFF 6.6 PSI", 103.0, -102.0, 2.0)
+
+    p = panel("OVHG", OVH_G_FRAME, 330, 62, radius=3, thick=3, ppm=8, color=(0.07, 0.07, 0.075))
+    for k, (nm, dial, needles) in enumerate((
+            ("DCLOADL", "dcload_l", [("systems/electrical/gen-load[0]", [(0.0, -135.0), (1.0, 135.0)], "white")]),
+            ("DCLOADR", "dcload_r", [("systems/electrical/gen-load[1]", [(0.0, -135.0), (1.0, 135.0)], "white")]),
+            ("BATTAMP", "battamps", [("systems/electrical/ammeter", [(-100.0, -120.0), (0.0, 0.0), (100.0, 120.0)], "white")]),
+            ("VOLTS", "volts", [("systems/electrical/volts", [(0.0, -135.0), (30.0, 135.0)], "white")]),
+            ("PROPAMP", "propamps", [("systems/anti-ice/prop-deice-amps", [(0.0, -135.0), (40.0, 135.0)], "white")]),
+            ("OAT", "oat", [("environment/temperature-degc", [(-50.0, -135.0), (50.0, 135.0)], "white")]))):
+        p.add(Gauge("OVHG." + nm, -137.5 + 55.0 * k, 0.0, 40.0, dial, needles, bezel=3.0, depth=5.0))
+
+
+def fuel_panel():
+    p = panel("FUEL", wall_frame(-1, -4.285, 0.040, -0.7288, yaw=3.5), 330, 118, radius=4, thick=3, ppm=5,
+              color=(0.06, 0.06, 0.065), backing=40.0)
+    # u runs forward on the left wall: x > 0 = towards the nose
+    for side, x, i in (("L", -70.0, 0), ("R", 70.0, 1)):
+        p.add(Gauge("FQTY" + side, x, -8.0, 56.0, "fuelqty", [("sim/model/fusion/fuel-qty-ind[%d]" % i,
+                                                                [(0.0, -120.0), (2000.0, 120.0)], "white")]))
+        p.text("LEFT" if i == 0 else "RIGHT", x, -44.0, 2.4)
+    p.text("FUEL QTY", 0.0, 50.0, 2.6)
+    p.add(Toggle("XFEED", 0.0, 32.0, FC + "crossfeed", values=(-1, 0, 1), labels=("LEFT", "OFF", "RIGHT"),
+                 horizontal=True, title="CROSSFEED FLOW", title_size=2.2, label_size=2.0,
+                 tooltip=tip("Fuel crossfeed: %s", FC + "crossfeed",
+                             'return ["LEFT (right main feeds left engine)", "OFF", "RIGHT (left main feeds right engine)"][int(arg[0] or 0) + 1];')))
+    p.line([(-14.0, 30.0), (-30.0, 30.0)], 0.5)
+    p.line([(14.0, 30.0), (30.0, 30.0)], 0.5)
+    p.add(Toggle("FQSEL", 0.0, -30.0, FC + "fuel-qty-select", values=(-1, 0, 1), labels=("TEST", "MAIN", "AUXILIARY"),
+                 momentary=(-1,), rest=0, title="FUEL QUANTITY", title_size=2.1, label_size=1.9,
+                 tooltip=tip("Fuel quantity gauges: %s", FC + "fuel-qty-select",
+                             'return ["TEST", "MAIN tanks", "AUXILIARY tanks"][int(arg[0] or 0) + 1];')))
+    p.rect(-26.0, -4.0, 26.0, 18.0, 0.4, 0.5)
+    p.text("USABLE FUEL", 0.0, 13.5, 1.8)
+    p.text("2067 LB EACH MAIN", 0.0, 9.0, 1.7)
+    p.text("533 LB EACH AUX", 0.0, 4.5, 1.7)
+    p.text("SEE MANUAL", 0.0, 0.0, 1.7)
+    for side, x, i in (("L", -142.0, 0), ("R", 142.0, 1)):
+        p.add(Toggle("STBYPUMP" + side, x, 30.0, FC + "stby-pump[%d]" % i, values=(0, 1), labels=("OFF", "ON"),
+                     title="STBY PUMP", title_size=2.0, label_size=1.9, label_side="left" if i == 1 else "right",
+                     tooltip=tip("%s standby fuel pump: %%s" % ("Left" if i == 0 else "Right"), FC + "stby-pump[%d]" % i,
+                                 'return arg[0] ? "ON" : "OFF";')))
+        p.add(Toggle("AUXXFER" + side, x, -24.0, FC + "aux-xfer[%d]" % i, values=(-1, 0, 1),
+                     labels=("OFF", "AUTO", "OVRD"), title="AUX XFER", title_size=2.0, label_size=1.9,
+                     label_side="left" if i == 1 else "right",
+                     tooltip=tip("%s aux transfer: %%s" % ("Left" if i == 0 else "Right"), FC + "aux-xfer[%d]" % i,
+                                 'return ["OFF", "AUTO", "OVERRIDE"][int(arg[0] or 0) + 1];')))
+
+
+# circuit breakers: id (controls/fusion/cb/<id>, 1 = pulled), label, amps
+CB_LEFT = [
+    ("FUEL SYSTEM", [("stby-pump[0]", "STBY PUMP\nLEFT", 10), ("stby-pump[1]", "STBY PUMP\nRIGHT", 10),
+                     ("aux-xfer[0]", "AUX XFER\nLEFT", 5), ("aux-xfer[1]", "AUX XFER\nRIGHT", 5),
+                     ("crossfeed", "CROSS\nFEED", 5), ("fuel-qty-main", "QTY IND\nMAIN", 5),
+                     ("fuel-qty-aux", "QTY IND\nAUX", 5), ("fw-valve[0]", "F/W VALVE\nLEFT", 5),
+                     ("fw-valve[1]", "F/W VALVE\nRIGHT", 5), ("fuel-press-warn", "FUEL PRESS\nWARN", 5)]),
+    ("ENGINE", [("start[0]", "IGN START\nLEFT", 5), ("start[1]", "IGN START\nRIGHT", 5),
+                ("auto-ign[0]", "AUTO IGN\nLEFT", 5), ("auto-ign[1]", "AUTO IGN\nRIGHT", 5),
+                ("autofeather", "AUTO\nFEATHER", 5), ("prop-sync", "PROP\nSYNC", 5), ("prop-gov-test", "PROP GOV\nTEST", 5),
+                ("eng-ice[0]", "ENG ANTI\nICE LEFT", 5), ("eng-ice[1]", "ENG ANTI\nICE RIGHT", 5),
+                ("fire-det", "FIRE\nDETECT", 5)]),
+    ("LIGHTS", [("landing-lights[0]", "LANDING\nLEFT", 15), ("landing-lights[1]", "LANDING\nRIGHT", 15),
+                ("taxi-lights", "TAXI", 10), ("nav-lights", "NAV", 5), ("beacon", "BEACON", 5), ("strobe", "STROBE", 10),
+                ("recog-lights", "RECOG", 10), ("ice-light", "ICE", 5), ("logo-lights", "TAIL\nFLOOD", 5),
+                ("cabin-lights", "CABIN", 10)]),
+    ("MISC", [("instrument-lights", "PANEL\nLIGHTS", 5), ("flood", "FLOOD\nLIGHTS", 5), ("wipers", "WSHLD\nWIPER", 10),
+              ("hobbs", "HOUR\nMETER", 2), ("cvr", "CVR", 5), ("annunciators", "ANNUN\nPOWER", 5),
+              ("gear-warn", "GEAR\nWARN", 5), ("stall-warn", "STALL\nWARN", 5), ("oxygen", "OXYGEN\nIND", 2),
+              ("cabin-signs", "CABIN\nSIGNS", 5)]),
+]
+CB_RIGHT = [
+    ("AVIONICS", [("fg1000-pfd", "PFD 1", 7), ("fg1000-mfd", "MFD", 7), ("fg1000-pfd2", "PFD 2", 7),
+                  ("stby-display", "STBY\nDSPL", 5), ("comm", "COM 1", 5), ("comm[1]", "COM 2", 5), ("nav", "NAV 1", 3),
+                  ("nav[1]", "NAV 2", 3), ("dme", "DME", 3), ("adf", "ADF", 3), ("transponder", "XPDR", 3)]),
+    ("AVIONICS", [("audio-panel", "AUDIO\n1", 5), ("audio-panel[1]", "AUDIO\n2", 5), ("gps", "FMS\nGPS", 5),
+                  ("fgc-65", "FLT GUID\nPANEL", 5), ("autopilot", "AP\nSERVOS", 5), ("mk-viii", "TAWS", 3),
+                  ("turn-coordinator", "AHRS", 5), ("ccp", "CCP\nMKP", 3), ("avionics", "AVIONICS\nMASTER", 5),
+                  ("ext-power", "EXT\nPWR", 5), ("gen[0]", "GEN CONT\nLEFT", 5)]),
+    ("FLIGHT", [("gen[1]", "GEN CONT\nRIGHT", 5), ("flap-motor", "FLAP\nMOTOR", 20), ("flap-control", "FLAP\nCONTROL", 5),
+                ("gear-control", "GEAR\nCONTROL", 5), ("elec-trim", "PITCH\nTRIM", 5), ("rudder-boost", "RUDDER\nBOOST", 5),
+                ("yaw-damper", "YAW\nDAMP", 5), ("press-control", "PRESS\nCONTROL", 5), ("temp-control", "TEMP\nCONTROL", 5),
+                ("blower[0]", "BLOWER\nCKPT", 15), ("blower[1]", "BLOWER\nCABIN", 20)]),
+    ("ICE PROTECTION", [("window-heat[0]", "WSHLD\nPILOT", 25), ("window-heat[1]", "WSHLD\nCOPILOT", 25),
+                        ("pitot-heat[0]", "PITOT\nLEFT", 7), ("pitot-heat[1]", "PITOT\nRIGHT", 7),
+                        ("stall-warn-heat", "STALL\nHEAT", 7), ("prop-heat", "PROP\nDEICE", 25),
+                        ("surface-deice", "SURF\nDEICE", 5), ("fuel-vent-heat[0]", "FUEL VENT\nLEFT", 5),
+                        ("fuel-vent-heat[1]", "FUEL VENT\nRIGHT", 5), ("brake-deice", "BRAKE\nDEICE", 10),
+                        ("window-defog", "WINDOW\nDEFOG", 7)]),
+    ("ENVIRONMENTAL", [("bleed[0]", "BLEED VLV\nLEFT", 5), ("bleed[1]", "BLEED VLV\nRIGHT", 5),
+                       ("elec-heat", "ELEC\nHEAT", 5)]),
+]
+
+
+def cb_panel(name, frame, groups, w, h, cols, dx, dy):
+    p = panel(name, frame, w, h, radius=4, thick=3, ppm=5, color=(0.06, 0.06, 0.065), backing=40.0)
+    x0 = -(cols - 1) * dx / 2.0
+    y = h / 2.0 - 20.0
+    for title, cbs in groups:
+        p.line([(-w / 2 + 6, y + 12.5), (w / 2 - 6, y + 12.5)], 0.35)
+        tw = len(title) * 1.35 + 4.0
+        p.rect(-tw / 2 - 1.5, y + 11.0, tw / 2 + 1.5, y + 14.0, 0.1, color=(0.06, 0.06, 0.065), lit=False,
+               fill=(0.06, 0.06, 0.065))
+        p.text(title, 0.0, y + 12.5, 2.1)
+        for k, (cid, label, amps) in enumerate(cbs):
+            x = x0 + k * dx
+            p.add(Knob("CB.%s" % cid.replace("[", "").replace("]", ""), x, y - 3.0,
+                       "controls/fusion/cb/" + cid, lo=0, hi=1, step=1, factor=0, offset=0, style="cb",
+                       d=8.5, h=5.5, push=[toggle("controls/fusion/cb/" + cid), CLICK], title=None,
+                       tooltip=tip("Circuit breaker %s (%d A): %%s" % (label.replace("\n", " "), amps),
+                                   "controls/fusion/cb/" + cid, 'return arg[0] ? "PULLED" : "IN";')))
+            for j, t in enumerate(label.split("\n")):
+                p.text(t, x, y + 7.2 - j * 2.3, 1.55)
+            p.text(str(amps), x + 6.0, y - 9.0, 1.5, align="l")
+        y -= dy
+    return p
+
+
+def side_panels():
+    fuel_panel()
+    cb_panel("CBL", wall_frame(-1, -4.270, -0.190, -0.7376, tilt=3.0, yaw=4.0), CB_LEFT, 360, 170, 10, 34.0, 38.0)
+    cb_panel("CBR", wall_frame(1, -4.255, -0.080, 0.7587, tilt=3.0, yaw=4.0), CB_RIGHT, 380, 250, 11, 33.0, 43.0)
 
 
 # =================================================================================================================
@@ -768,6 +972,8 @@ def build():
     strip()
     lower_panels()
     pedestal()
+    overhead()
+    side_panels()
     return PANELS, LAMPS
 
 

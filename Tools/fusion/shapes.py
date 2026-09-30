@@ -233,7 +233,7 @@ def lathe(mb, fr, profile, mat, n=24, smooth=True, cx=0.0, cy=0.0, cap_top=True,
 
 
 def box(mb, fr, cx, cy, w, h, z0, z1, mat, front_uv=None):
-    return rrect_prism(mb, fr, cx, cy, w, h, 0.0, z0, z1, mat, front_uv=front_uv)
+    return rrect_prism(mb, fr, cx, cy, w, h, 0.0, z0, z1, mat, seg=0, front_uv=front_uv)
 
 
 def tube(mb, path, radius, mat, n=12, smooth=True, cap=True, radii=None):

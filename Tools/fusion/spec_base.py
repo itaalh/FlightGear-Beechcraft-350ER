@@ -72,7 +72,7 @@ class Mark:
 
 class Panel:
     def __init__(self, name, frame, w, h, radius=3.0, thick=3.0, elev=0.0, ppm=6, color=PANEL_GREY, screws=True,
-                 material="plate", border=False, custom=False):
+                 material="plate", border=False, custom=False, backing=0.0):
         self.name = name
         self.frame = frame
         self.w, self.h = w, h
@@ -85,6 +85,7 @@ class Panel:
         self.screws = screws
         self.border = border
         self.custom = custom          # drawn in the atlas, surface built elsewhere (curved quadrant)
+        self.backing = backing        # depth (mm) of a box behind the plate, horizontal, into the wall behind it
         self.marks = []
         self.controls = []
 

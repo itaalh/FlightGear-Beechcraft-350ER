@@ -119,7 +119,7 @@ var build = func {
 var powered = func(dt) {
     var sw = getprop("/controls/fusion/stby-display");
     if (sw == nil) sw = 1;
-    if (sw == 0) return 0;
+    if (sw == 0 or !fusion.cb("stby-display")) return 0;
     if ((getprop("/systems/electrical/volts") or 0) > 20) {
         battery_s = math.min(1800, battery_s + dt * 0.5);
         elems.batt.hide();

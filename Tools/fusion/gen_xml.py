@@ -291,7 +291,11 @@ def gen_button(x, b, piv):
         emission(x, [obj], b.lamp, b.lamp_color, 1.0 if b.lamp_style == "bar" else 1.6)
 
 
+EMISSIVE = set()
+
+
 def emission(x, objs, lamp, color, gain=1.4):
+    EMISSIVE.update(objs)
     x.open("animation")
     x.el("type", "material")
     for o in objs:
@@ -400,17 +404,19 @@ GEN = {Toggle: gen_toggle, Knob: gen_knob, DualKnob: gen_dualknob, Button: gen_b
 
 
 def gen_screens(x):
-    x.comment("self-lit displays (the canvas replaces the texture, the emission keeps them readable at night)")
-    x.open("animation")
-    x.el("type", "material")
-    for o in ("Fusion.Screen1", "Fusion.Screen2", "Fusion.Screen3", "Fusion.Stby.screen"):
-        x.el("object-name", o)
-    x.open("emission")
-    for c in ("red", "green", "blue"):
-        x.el(c, 1.0)
-    x.el("factor-prop", "sim/model/fusion/display-brightness")
-    x.close("emission")
-    x.close("animation")
+    x.comment("self-lit displays (the canvas replaces the texture, the emission keeps them readable at night);"
+              " brightness from the overhead rheostats")
+    for objs, k in ((("Fusion.Screen1", "Fusion.Stby.screen"), 0), (("Fusion.Screen2",), 1), (("Fusion.Screen3",), 2)):
+        x.open("animation")
+        x.el("type", "material")
+        for o in objs:
+            x.el("object-name", o)
+        x.open("emission")
+        for c in ("red", "green", "blue"):
+            x.el(c, 1.0)
+        x.el("factor-prop", "sim/model/fusion/display-brightness[%d]" % k)
+        x.close("emission")
+        x.close("animation")
     x.comment("FG1000 displays: touch softkeys along the bottom of each screen (FG1000 softkeys 1-12)")
     for n in (1, 2, 3):
         name = {1: "pfd1", 2: "mfd", 3: "pfd2"}[n]
@@ -622,6 +628,9 @@ def gen_effects(x):
             pages.setdefault(int(tex.split("-")[2].split(".")[0]), []).append(name)
     eff_dir = os.path.join(REPO, "Models", "Fusion", "Effects")
     os.makedirs(eff_dir, exist_ok=True)
+    for f in os.listdir(eff_dir):                     # effects of texture pages that no longer exist
+        if f.startswith("fusion-panel-") and int(f.split("-")[2].split(".")[0]) not in pages:
+            os.remove(os.path.join(eff_dir, f))
     x.comment("===== back lighting of the markings (lightmaps), one effect per texture page")
     for n in sorted(pages):
         with open(os.path.join(eff_dir, "fusion-panel-%d.eff" % n), "w", newline="\n") as fh:
@@ -631,6 +640,70 @@ def gen_effects(x):
         for o in sorted(pages[n]):
             x.el("object-name", o)
         x.close("effect")
+
+
+FLOOD_ZONES = {
+    0: ("GS.", "FGP", "STBY", "AUDIO", "STRIP", "PSUB", "LTS", "GEAR", "CTR", "ENV", "CSUB", "PBRAKE"),
+    1: ("PED.", "CCP", "MKP", "PRESS", "CVR"),
+    2: ("OVH", "FUEL", "CBL", "CBR"),
+}
+FLOOD_EXTRA = {
+    0: ("GS.shell", "MP.shell", "LP.shell", "Display1.bezel", "Display2.bezel", "Display3.bezel", "F.GEAR.", "F.YOKE",
+        "F.FGP.WHEEL"),
+    1: ("F.PED.", "F.PWR", "F.PROP", "F.COND", "F.FLAP.", "F.TRIMWHEEL", "F.ETRIM"),
+    2: ("F.OVH.", "F.COMPASS"),
+}
+
+
+def gen_compass(x, piv):
+    a = piv["COMPASS"]
+    x.comment("standby magnetic compass (the card reads backwards, like a real one)")
+    x.open("animation")
+    x.el("type", "rotate")
+    x.el("object-name", "F.COMPASS.card")
+    x.el("property", "instrumentation/magnetic-compass/indicated-heading-deg")
+    x.el("factor", 1.0)
+    vec(x, "center", a["pivot"])
+    vec(x, "axis", a["axis"])
+    x.close("animation")
+
+
+def gen_floods(x):
+    """Flood lights: a warm emission on everything of each zone (not on the lamps, screens and pick boxes)."""
+    with open(os.path.join(HERE, "_build", "objects.json")) as fh:
+        objs = list(json.load(fh).keys())
+    zone_of_panel = {}
+    for p in SPEC.PANELS:
+        for z, prefixes in FLOOD_ZONES.items():
+            if p.name.startswith(prefixes):
+                zone_of_panel[p.name] = z
+    groups = {0: set(), 1: set(), 2: set()}
+    for p in SPEC.PANELS:
+        z = zone_of_panel.get(p.name)
+        if z is None:
+            continue
+        groups[z].add("F." + p.name)
+        for c in p.controls:
+            pre = "F.%s." % c.name
+            groups[z].update(o for o in objs if o.startswith(pre))
+    for z, prefixes in FLOOD_EXTRA.items():
+        groups[z].update(o for o in objs if o.startswith(prefixes))
+    skip = lambda o: (o in EMISSIVE or ".hs" in o or o.endswith(".push") or ".sk" in o or o.startswith("Fusion.")
+                      or o not in objs)
+    x.comment("===== flood lights (overhead rheostats PANEL / PEDESTAL / OVERHEAD FLOOD)")
+    for z in (0, 1, 2):
+        x.open("animation")
+        x.el("type", "material")
+        for o in sorted(groups[z]):
+            if not skip(o):
+                x.el("object-name", o)
+        x.open("emission")
+        x.el("red", 0.15)
+        x.el("green", 0.14)
+        x.el("blue", 0.12)
+        x.el("factor-prop", "sim/model/fusion/flood-norm[%d]" % z)
+        x.close("emission")
+        x.close("animation")
 
 
 def write_lamps():
@@ -661,6 +734,8 @@ def main():
     gen_screens(x)
     gen_yokes(x, piv)
     gen_pedestal(x, piv)
+    gen_compass(x, piv)
+    gen_floods(x)
     # hotspot material objects are never drawn
     x.lines.append("</PropertyList>")
     with open(OUT, "w", encoding="utf-8", newline="\n") as fh:

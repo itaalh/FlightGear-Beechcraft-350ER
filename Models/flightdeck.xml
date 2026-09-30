@@ -6079,165 +6079,6 @@
         </emission>
     </animation>
 
-
-
-    <!-- ===== G1000 variant: hide the instruments, radio heads and engine gauges covered by the G1000 panel
-                (Models/G1000-panel.ac, Models/KingAir-G1000.xml) ===== -->
-    <animation>
-        <type>select</type>
-        <object-name>ASI1.needle</object-name>
-        <object-name>ASI1.needle1</object-name>
-        <object-name>ALTneedle1</object-name>
-        <object-name>VSI1.needle</object-name>
-        <object-name>RMI1.needle1adf</object-name>
-        <object-name>RMI1.needle1vor</object-name>
-        <object-name>RMI1.needle2adf</object-name>
-        <object-name>RMI1.needle2vor</object-name>
-        <object-name>RMI.btn1</object-name>
-        <object-name>RMI.btn2</object-name>
-        <object-name>RMI.adf1</object-name>
-        <object-name>RMI.adf2</object-name>
-        <object-name>RMI.vor1</object-name>
-        <object-name>RMI.vor2</object-name>
-        <object-name>eadi1.off</object-name>
-        <object-name>ehsi1.off</object-name>
-        <object-name>GPWS.Pcaution</object-name>
-        <object-name>EFIS84 EHSI-pilot</object-name>
-        <object-name>EFIS84 EADI-pilot</object-name>
-        <object-name>COMM1.flipflop</object-name>
-        <object-name>COMM1.frq-high</object-name>
-        <object-name>COMM1.frq-low</object-name>
-        <object-name>COMM1.knob1</object-name>
-        <object-name>COMM1.knob2</object-name>
-        <object-name>NAV1.flipflop</object-name>
-        <object-name>NAV1.frq-high</object-name>
-        <object-name>NAV1.frq-low</object-name>
-        <object-name>NAV1.knob1</object-name>
-        <object-name>NAV1.knob2</object-name>
-        <object-name>ADF1.flipflop</object-name>
-        <object-name>ADF1.frq-high</object-name>
-        <object-name>ADF1.frq-low</object-name>
-        <object-name>ADF1.knob1</object-name>
-        <object-name>ADF1.knob2</object-name>
-        <object-name>alerter.d0</object-name>
-        <object-name>alerter.d1</object-name>
-        <object-name>alerter.d2</object-name>
-        <object-name>alerter.d3</object-name>
-        <object-name>altalert.cancel</object-name>
-        <object-name>altalert.flg</object-name>
-        <object-name>altalert.knob</object-name>
-        <object-name>altalert.light</object-name>
-        <object-name>GPWS.Inhibit</object-name>
-        <object-name>GPWS.TrnInh</object-name>
-        <object-name>GPWS.inhibit-on</object-name>
-        <object-name>TERR.fail</object-name>
-        <object-name>TERR.inhibit-on</object-name>
-        <object-name>gyro-face</object-name>
-        <object-name>xmt.annun</object-name>
-        <object-name>xmt.annun.003</object-name>
-        <object-name>Circle.121</object-name>
-        <object-name>Circle.122</object-name>
-        <object-name>Circle.123</object-name>
-        <object-name>Circle.124</object-name>
-        <object-name>Circle.125</object-name>
-        <object-name>Circle.126</object-name>
-        <object-name>Circle.136</object-name>
-        <object-name>Circle.137</object-name>
-        <object-name>Circle.138</object-name>
-        <object-name>KLN90B.lhknob</object-name>
-        <object-name>KLN90B.lhknob1</object-name>
-        <object-name>gpsMSG.btn</object-name>
-        <object-name>KLN90B.screen</object-name>
-        <object-name>KLN90B.rhknob</object-name>
-        <object-name>KLN90B.rhknob1</object-name>
-        <object-name>KLN90B.pwr</object-name>
-        <object-name>gpsALT.btn</object-name>
-        <object-name>gpsCLR.btn</object-name>
-        <object-name>gpsDIRECT.btn</object-name>
-        <object-name>gpsENT.btn</object-name>
-        <object-name>CRSR.btn</object-name>
-        <object-name>RMI.compass</object-name>
-        <object-name>RMI.flag</object-name>
-        <object-name>slipball</object-name>
-        <object-name>GPWS.annun</object-name>
-        <object-name>GS.cancld</object-name>
-        <object-name>altnum10000</object-name>
-        <object-name>altnum1000</object-name>
-        <object-name>GPWS.inop</object-name>
-        <object-name>altnum100</object-name>
-        <object-name>GPWS.FlapOV</object-name>
-        <object-name>GPWS.flapOVRD</object-name>
-        <object-name>GPWS.APsteep</object-name>
-        <object-name>GPWS.stpapr</object-name>
-        <object-name>BaroKnob</object-name>
-        <object-name>Circle.282</object-name>
-        <object-name>Eng.gauges</object-name>
-        <object-name>Oil.needle2</object-name>
-        <object-name>RPM.needle</object-name>
-        <object-name>Torque.needle</object-name>
-        <object-name>Oil.needle1</object-name>
-        <object-name>TR.needle</object-name>
-        <object-name>PPH.needle</object-name>
-        <object-name>ITT.needle</object-name>
-        <object-name>Oil1.needle2</object-name>
-        <object-name>RPM1.needle</object-name>
-        <object-name>Torque1.needle</object-name>
-        <object-name>Oil1.needle1</object-name>
-        <object-name>TR1.needle</object-name>
-        <object-name>PPH1.needle</object-name>
-        <object-name>ITT1.needle</object-name>
-        <object-name>NAV2.knob1</object-name>
-        <object-name>NAV2.knob2</object-name>
-        <object-name>xmt.annun.002</object-name>
-        <object-name>Circle.127</object-name>
-        <object-name>Circle.128</object-name>
-        <object-name>NAV2.frq-high</object-name>
-        <object-name>NAV2.frq-low</object-name>
-        <object-name>Circle.129</object-name>
-        <object-name>NAV2.flipflop</object-name>
-        <object-name>XPDR.knob1</object-name>
-        <object-name>XPDR.knob2</object-name>
-        <object-name>COMM2.knob1</object-name>
-        <object-name>COMM2.knob2</object-name>
-        <object-name>xmt.annun.001</object-name>
-        <object-name>Circle.133</object-name>
-        <object-name>Circle.134</object-name>
-        <object-name>Circle.131</object-name>
-        <object-name>Circle.132</object-name>
-        <object-name>XPDR.frq-high</object-name>
-        <object-name>XPDR.frq-low</object-name>
-        <object-name>Circle.135</object-name>
-        <object-name>COMM2.frq-high</object-name>
-        <object-name>COMM2.frq-low</object-name>
-        <object-name>ATC.flipflop</object-name>
-        <object-name>Circle.130</object-name>
-        <object-name>COMM2.flipflop</object-name>
-        <object-name>RMI.btn1.002</object-name>
-        <object-name>RMI.adf1.002</object-name>
-        <object-name>RMI.vor1.002</object-name>
-        <object-name>RMI2.needle2adf</object-name>
-        <object-name>RMI2.needle2vor</object-name>
-        <object-name>ASI2.needle</object-name>
-        <object-name>ASI2.needle1</object-name>
-        <object-name>RMI2.needle1adf</object-name>
-        <object-name>RMI2.needle1vor</object-name>
-        <object-name>RMI.vor2.002</object-name>
-        <object-name>RMI.btn2.002</object-name>
-        <object-name>RMI.adf2.002</object-name>
-        <object-name>eadi2.off</object-name>
-        <object-name>ehsi2.off</object-name>
-        <object-name>CurveCircle.049</object-name>
-        <object-name>VSI2.needle</object-name>
-        <object-name>ALTneedle2</object-name>
-        <object-name>BaroKnob.001</object-name>
-        <object-name>EFIS84 EHSI-copilot</object-name>
-        <object-name>EFIS84 EADI-copilot</object-name>
-        <condition>
-            <not><property>sim/model/g1000/enabled</property></not>
-        </condition>
-    </animation>
-
-
 <!-- ================================================================================
      Ice protection panel, autofeather, generator ties, test switches, fire handles.
      Levers: rotation fitted on the ignition switch (Lign.off -> Lign.on), Nasal/ice-protection.nas
@@ -7274,10 +7115,11 @@
     </animation>
 
 
-    <!-- ===== Pro Line Fusion cockpit (KingAir-350ER-G1000, Models/Fusion/fusion-cockpit.xml): hide the glareshield,
-                instrument panel, subpanels, yokes and pedestal it replaces (sim/model/fusion/cockpit) ===== -->
+    <!-- ===== Pro Line Fusion cockpit (KingAir-350ER-G1000, Models/Fusion/fusion-cockpit.xml): hide every part of
+                the classic flight deck it replaces, all but the floor and the rudder pedals (sim/model/fusion/cockpit) ===== -->
     <animation>
         <type>select</type>
+        <object-name>AC-volts</object-name>
         <object-name>ADF1.flipflop</object-name>
         <object-name>ADF1.frq-high</object-name>
         <object-name>ADF1.frq-low</object-name>
@@ -7344,15 +7186,21 @@
         <object-name>Audioswitch.025</object-name>
         <object-name>Audioswitch.026</object-name>
         <object-name>Audioswitch.027</object-name>
+        <object-name>Avn.dimmer</object-name>
         <object-name>BC.btn</object-name>
         <object-name>BNK-toggle</object-name>
         <object-name>BRKdeice.sw</object-name>
         <object-name>BUS.sw</object-name>
         <object-name>BaroKnob</object-name>
         <object-name>BaroKnob.001</object-name>
+        <object-name>Batt-amp</object-name>
+        <object-name>Batt-volt</object-name>
         <object-name>Batt.off</object-name>
         <object-name>Batt.on</object-name>
         <object-name>Batt.pk</object-name>
+        <object-name>BcnL.off</object-name>
+        <object-name>BcnL.on</object-name>
+        <object-name>Beacon.pk</object-name>
         <object-name>BrgPtr11</object-name>
         <object-name>BrgPtr12</object-name>
         <object-name>BrgPtr21</object-name>
@@ -7417,6 +7265,8 @@
         <object-name>Clock1.knob</object-name>
         <object-name>Cond0</object-name>
         <object-name>Cond1</object-name>
+        <object-name>Console.dimmer</object-name>
+        <object-name>Copilot.dimmer</object-name>
         <object-name>CrsSel.btn2</object-name>
         <object-name>CurveCircle.015</object-name>
         <object-name>CurveCircle.049</object-name>
@@ -7430,6 +7280,9 @@
         <object-name>Cylinder.015</object-name>
         <object-name>Cylinder.016</object-name>
         <object-name>Cylinder.017</object-name>
+        <object-name>DC-load1</object-name>
+        <object-name>DC-load2</object-name>
+        <object-name>DCknob</object-name>
         <object-name>DEICE.sw</object-name>
         <object-name>DSC.btn</object-name>
         <object-name>EFIS84 EADI-copilot</object-name>
@@ -7437,8 +7290,15 @@
         <object-name>EFIS84 EHSI-copilot</object-name>
         <object-name>EFIS84 EHSI-pilot</object-name>
         <object-name>Eng.gauges</object-name>
+        <object-name>Engine.dimmer</object-name>
         <object-name>Etrim</object-name>
         <object-name>ExtPwr</object-name>
+        <object-name>Extlights.003</object-name>
+        <object-name>Extlights.009</object-name>
+        <object-name>Extlights.010</object-name>
+        <object-name>Extlights.011</object-name>
+        <object-name>Extlights.012</object-name>
+        <object-name>Extlights.013</object-name>
         <object-name>FD.alt</object-name>
         <object-name>FD.ap</object-name>
         <object-name>FD.apdis</object-name>
@@ -7461,10 +7321,25 @@
         <object-name>FD.trimfail</object-name>
         <object-name>FD.vs</object-name>
         <object-name>FD.yaw</object-name>
+        <object-name>FQaux.off</object-name>
+        <object-name>FQaux.on</object-name>
+        <object-name>FQneedle.1</object-name>
+        <object-name>FQneedle.2</object-name>
+        <object-name>FQselect.pk</object-name>
+        <object-name>FTransfer.pk</object-name>
+        <object-name>Fdeck.001</object-name>
+        <object-name>Fdeck.002</object-name>
+        <object-name>Fdeck_0</object-name>
         <object-name>Fdeck_1</object-name>
         <object-name>FlapIndicator</object-name>
         <object-name>FlapLever</object-name>
         <object-name>Flapneedle</object-name>
+        <object-name>Fswitch.1</object-name>
+        <object-name>Fswitch.5</object-name>
+        <object-name>Ftransfer.left</object-name>
+        <object-name>Ftransfer.off</object-name>
+        <object-name>Ftransfer.right</object-name>
+        <object-name>Fuselage.005</object-name>
         <object-name>GENtie.sw</object-name>
         <object-name>GPS-apr.001</object-name>
         <object-name>GPS-apr.002</object-name>
@@ -7494,6 +7369,7 @@
         <object-name>HrHand2</object-name>
         <object-name>ITT.needle</object-name>
         <object-name>ITT1.needle</object-name>
+        <object-name>Instr-indirect.dimmer</object-name>
         <object-name>KLN90B.lhknob</object-name>
         <object-name>KLN90B.lhknob1</object-name>
         <object-name>KLN90B.pwr</object-name>
@@ -7513,15 +7389,28 @@
         <object-name>LGen.pk</object-name>
         <object-name>LHfirehandle</object-name>
         <object-name>LHgear.lamp</object-name>
+        <object-name>LHpropAmps</object-name>
         <object-name>LOP-lo</object-name>
         <object-name>LT.test</object-name>
         <object-name>LT.test.001</object-name>
+        <object-name>Laux.off</object-name>
+        <object-name>Laux.on</object-name>
+        <object-name>Laux.pk</object-name>
         <object-name>Lign.off</object-name>
         <object-name>Lign.on</object-name>
         <object-name>Lign.pk</object-name>
+        <object-name>Lland.off</object-name>
+        <object-name>Lland.on</object-name>
+        <object-name>Lland.pk</object-name>
+        <object-name>Logo.off</object-name>
+        <object-name>Logo.on</object-name>
+        <object-name>Logo.pk</object-name>
         <object-name>Lpitot.sw</object-name>
         <object-name>Lstarter.off</object-name>
         <object-name>Lstarter.on</object-name>
+        <object-name>MPanel.pk</object-name>
+        <object-name>Masterpanel.off</object-name>
+        <object-name>Masterpanel.on</object-name>
         <object-name>MnHand1</object-name>
         <object-name>MnHand2</object-name>
         <object-name>Mstr.Ctn</object-name>
@@ -7539,12 +7428,16 @@
         <object-name>NAV2.frq-low</object-name>
         <object-name>NAV2.knob1</object-name>
         <object-name>NAV2.knob2</object-name>
+        <object-name>Nav.pk</object-name>
+        <object-name>NavL.off</object-name>
+        <object-name>NavL.on</object-name>
         <object-name>Navdata1.knob</object-name>
         <object-name>Navdata1.knob.001</object-name>
         <object-name>Navdata1.knob.003</object-name>
         <object-name>Navdata1.knob.004</object-name>
         <object-name>Navdata2.knob</object-name>
         <object-name>Nosegear.lamp</object-name>
+        <object-name>OHflood.dimme</object-name>
         <object-name>Oil.needle1</object-name>
         <object-name>Oil.needle2</object-name>
         <object-name>Oil1.needle1</object-name>
@@ -7560,12 +7453,15 @@
         <object-name>Panel</object-name>
         <object-name>Panel.002</object-name>
         <object-name>Panel.005</object-name>
+        <object-name>Panel.gauges_0</object-name>
         <object-name>Panel.gauges_1</object-name>
         <object-name>Panel.gauges_2</object-name>
         <object-name>Pbrake.off</object-name>
         <object-name>Pbrake.on</object-name>
+        <object-name>Pilot.dimmer</object-name>
         <object-name>Pitch.dn</object-name>
         <object-name>Pitch.up</object-name>
+        <object-name>Plane</object-name>
         <object-name>Plane.155</object-name>
         <object-name>Plane.258</object-name>
         <object-name>Pltefis.off</object-name>
@@ -7588,6 +7484,7 @@
         <object-name>RGen.pk</object-name>
         <object-name>RHfirehandle</object-name>
         <object-name>RHgear.lamp</object-name>
+        <object-name>RHpropAmps</object-name>
         <object-name>RMI.adf1</object-name>
         <object-name>RMI.adf1.002</object-name>
         <object-name>RMI.adf2</object-name>
@@ -7613,9 +7510,17 @@
         <object-name>ROP-lo</object-name>
         <object-name>RPM.needle</object-name>
         <object-name>RPM1.needle</object-name>
+        <object-name>Raux.off</object-name>
+        <object-name>Raux.on</object-name>
+        <object-name>Raux.pk</object-name>
+        <object-name>Rcg.off</object-name>
+        <object-name>Rcg.on</object-name>
+        <object-name>Rcg.pk</object-name>
         <object-name>Rign.off</object-name>
         <object-name>Rign.on</object-name>
         <object-name>Rign.pk</object-name>
+        <object-name>Rland.off</object-name>
+        <object-name>Rland.on</object-name>
         <object-name>Roll.trim</object-name>
         <object-name>Rpitot.sw</object-name>
         <object-name>Rstarter.off</object-name>
@@ -7625,12 +7530,19 @@
         <object-name>STALLwrn.sw</object-name>
         <object-name>ScHand1</object-name>
         <object-name>ScHand2</object-name>
+        <object-name>Seats</object-name>
         <object-name>Starter0</object-name>
         <object-name>Starter1</object-name>
+        <object-name>StrbL.off</object-name>
+        <object-name>StrbL.on</object-name>
+        <object-name>Strobe.pk</object-name>
         <object-name>TERR.fail</object-name>
         <object-name>TERR.inhibit-on</object-name>
         <object-name>TR.needle</object-name>
         <object-name>TR1.needle</object-name>
+        <object-name>Taxi.off</object-name>
+        <object-name>Taxi.on</object-name>
+        <object-name>Taxi.pk</object-name>
         <object-name>Throttle0</object-name>
         <object-name>Throttle1</object-name>
         <object-name>Torque.needle</object-name>
@@ -7652,6 +7564,7 @@
         <object-name>WSHDheat1.sw</object-name>
         <object-name>WSHDheat2.sw</object-name>
         <object-name>Warn-test</object-name>
+        <object-name>Wiper.knob</object-name>
         <object-name>XPDR.frq-high</object-name>
         <object-name>XPDR.frq-low</object-name>
         <object-name>XPDR.knob1</object-name>
@@ -7674,6 +7587,7 @@
         <object-name>coplt-ehsi.pk</object-name>
         <object-name>eadi1.off</object-name>
         <object-name>eadi2.off</object-name>
+        <object-name>edgelight.dimmer</object-name>
         <object-name>ehsi1.off</object-name>
         <object-name>ehsi2.off</object-name>
         <object-name>gps-leg</object-name>
@@ -7692,6 +7606,7 @@
         <object-name>inop.sw.006</object-name>
         <object-name>inop.sw.007</object-name>
         <object-name>inop.sw.008</object-name>
+        <object-name>magcompass</object-name>
         <object-name>pedestal</object-name>
         <object-name>plt-ehsi.pk</object-name>
         <object-name>slipball</object-name>

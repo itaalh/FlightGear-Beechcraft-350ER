@@ -64,6 +64,12 @@ def build_panel(ctx, p):
         # edges in the panel paint, the face textured with the panel drawing
         rrect_prism(st, fr, 0.0, 0.0, w, h, p.radius * MM, z0 - 0.002, z1, "panel",
                     bevel=min(0.0008, p.thick * MM * 0.4), front_mat=p.material, front_uv=uv)
+    if p.backing and not p.custom:
+        # side panel box: the plate outline pushed horizontally into the cabin lining, which hides its far end
+        d = norm((-fr.n[0], -fr.n[1], 0.0))
+        ring = [fr_point(fr, q, z0 - 0.002) for q in rounded_rect(w, h, p.radius * MM, 5)]
+        far = [add(q, mul(d, p.backing * MM)) for q in ring]
+        st.quad_strip(far, ring, "panel", closed=True, smooth=False)
     if p.screws and not p.custom:
         for sx in (-1, 1):
             for sy in (-1, 1):

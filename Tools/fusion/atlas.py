@@ -202,7 +202,7 @@ def draw_legend(c, legend, color, size, lit_color=None):
 
 
 def decal_button(b):
-    ppm = 14
+    ppm = 10
     if isinstance(b, PushLight):
         c = Canvas(b.w, b.h, ppm, CAP_COLORS["lens"])
         # unlit: legend in a dark tint of its colour; lit via emission
@@ -216,7 +216,7 @@ def decal_button(b):
 
 
 def decal_lamp(l):
-    ppm = 14
+    ppm = 10
     c = Canvas(l.w, l.h, ppm, (0.08, 0.08, 0.08))
     dim = tuple(0.18 + 0.3 * v for v in l.color)
     if l.legend:
@@ -254,7 +254,7 @@ def lin(v0, a0, v1, a1):
 
 
 def decal_dial(g):
-    ppm = 16
+    ppm = 12
     d = g.d
     c = Canvas(d, d, ppm, (0.03, 0.03, 0.03))
     r = d / 2 - 0.8
@@ -308,6 +308,48 @@ def decal_dial(g):
         c.arc(0, 0, r - 0.6, f(1550), f(1850), 1.2, GREEN)
         c.text("OXYGEN", 0, -6.0, 2.6)
         c.text("PSI x 100", 0, -9.2, 2.0)
+    elif kind in ("dcload_l", "dcload_r"):
+        f = lin(0, -135, 100, 135)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 20 == 0, str(v) if v % 20 == 0 else None) for v in range(0, 101, 10)],
+                    size=2.6)
+        c.text("DC", 0, 6.0, 2.4)
+        c.text("% LOAD", 0, -5.0, 2.3)
+        c.text("LEFT" if kind.endswith("_l") else "RIGHT", 0, -9.5, 2.0)
+    elif kind == "battamps":
+        f = lin(-100, -120, 100, 120)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 50 == 0, str(v) if v % 50 == 0 else None) for v in range(-100, 101, 25)],
+                    size=2.4)
+        c.text("BATT", 0, 6.0, 2.4)
+        c.text("AMPS", 0, -5.0, 2.3)
+        c.text("-  DISCH   CHG  +", 0, -9.5, 1.7)
+    elif kind == "volts":
+        f = lin(0, -135, 30, 135)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 10 == 0, str(v) if v % 10 == 0 else None) for v in range(0, 31, 2)],
+                    size=2.6)
+        c.arc(0, 0, r - 0.8, f(24), f(29), 1.2, GREEN)
+        c.text("DC", 0, 6.0, 2.4)
+        c.text("VOLTS", 0, -5.0, 2.3)
+    elif kind == "propamps":
+        f = lin(0, -135, 40, 135)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 10 == 0, str(v) if v % 10 == 0 else None) for v in range(0, 41, 5)],
+                    size=2.6)
+        c.arc(0, 0, r - 0.8, f(26), f(32), 1.2, GREEN)
+        c.text("PROP", 0, 6.0, 2.4)
+        c.text("AMPS", 0, -5.0, 2.3)
+    elif kind == "oat":
+        f = lin(-50, -135, 50, 135)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 20 == 0 or abs(v) == 50, str(v) if v % 20 == 0 else None)
+                                 for v in range(-50, 51, 10)], size=2.4)
+        c.text("OAT", 0, 6.0, 2.4)
+        c.text("\u00b0C", 0, -5.0, 2.3)
+    elif kind == "fuelqty":
+        f = lin(0, -120, 2000, 120)
+        gauge_scale(c, 0, 0, r, [(f(v), v % 400 == 0, str(v // 100) if v % 400 == 0 else None)
+                                 for v in range(0, 2001, 200)], size=3.4)
+        c.arc(0, 0, r - 1.0, f(0), f(265), 1.6, AMBER)
+        c.text("FUEL", 0, 8.0, 3.0)
+        c.text("QTY", 0, -8.0, 2.8)
+        c.text("LBS x 100", 0, -12.5, 2.0)
     elif kind == "hobbs":
         c.text("QUARTZ", 0, 8.5, 2.8)
         c.text("FLIGHT HOURS", 0, -9.0, 2.6)
@@ -323,6 +365,20 @@ def decal_emblem():
     px, py = c.P(0, 4.5)
     c.d.text((px, py), "Beechcraft", font=f, fill=rgb255((0.80, 0.08, 0.06)), anchor="ms")
     c.text("K I N G   A I R", 0, -8.5, 3.6, style=FONT, color=(0.72, 0.72, 0.74), lit=False)
+    return c
+
+
+def decal_compass():
+    """Compass card strip: 0-360 deg over 120 mm (wrapped round the drum), N E S W and every 30 deg."""
+    ppm = 12
+    c = Canvas(120.0, 12.0, ppm, (0.05, 0.05, 0.05))
+    for d in range(0, 360, 5):
+        x = -60.0 + d / 360.0 * 120.0
+        big = d % 30 == 0
+        c.line([(x, 6.0), (x, 6.0 - (2.4 if big else 1.2))], 0.3)
+        if big:
+            lab = {0: "N", 90: "E", 180: "S", 270: "W"}.get(d, str(d // 10))
+            c.text(lab, x, 0.0, 3.2 if d % 90 == 0 else 2.6)
     return c
 
 
@@ -357,6 +413,7 @@ def collect():
                                                                      "trim"})]
     common.append(("digits", decal_digits()))
     common.append(("yoke:emblem", decal_emblem()))
+    common.append(("compass", decal_compass()))
     return groups, common
 
 
@@ -432,7 +489,9 @@ def main():
     for k, pg in enumerate(pages):
         used = pg["y"]
         pg["img"].convert("RGB").save(os.path.join(OUT, "fusion-panel-%d.png" % k), optimize=True)
-        pg["lm"].convert("RGB").save(os.path.join(OUT, "fusion-panel-%d-lm.png" % k), optimize=True)
+        # the lightmap only needs half the resolution (same UV layout)
+        pg["lm"].convert("RGB").resize((PAGE // 2, PAGE // 2), Image.LANCZOS).save(
+            os.path.join(OUT, "fusion-panel-%d-lm.png" % k), optimize=True)
         print("page %d: used height %d px" % (k, used))
     with open(os.path.join(BUILD, "atlas.json"), "w") as fh:
         json.dump({"pages": len(pages), "regions": regions}, fh, indent=0)
