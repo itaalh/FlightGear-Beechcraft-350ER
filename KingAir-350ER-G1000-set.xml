@@ -67,9 +67,11 @@
       </door-positions>
       <g1000>
         <enabled type="bool">false</enabled>
-        <pfd><dx-m type="double">0</dx-m><dy-m type="double">0</dy-m><dz-m type="double">0</dz-m></pfd>
-        <mfd><dx-m type="double">0</dx-m><dy-m type="double">0</dy-m><dz-m type="double">0</dz-m></mfd>
       </g1000>
+      <!-- Pro Line Fusion flight deck (Models/Fusion/fusion-cockpit.xml, Nasal/fusion-*.nas) -->
+      <fusion>
+        <cockpit type="bool">true</cockpit>
+      </fusion>
       <pushback>
         <kp type="double">300</kp>
         <ki type="double">0</ki>
@@ -500,6 +502,13 @@
     <fg1000map>
       <file>Aircraft/KingAir-350/Nasal/fg1000-maptiles.nas</file>
     </fg1000map>
+    <fusion>
+      <file>Aircraft/KingAir-350/Nasal/fusion-lamps.nas</file>
+      <file>Aircraft/KingAir-350/Nasal/fusion-cockpit.nas</file>
+    </fusion>
+    <fusion_standby>
+      <file>Aircraft/KingAir-350/Nasal/fusion-standby.nas</file>
+    </fusion_standby>
   </nasal>
 
 </PropertyList>

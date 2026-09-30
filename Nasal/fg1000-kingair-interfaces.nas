@@ -76,6 +76,22 @@ var KingAirEISPublisher =
   },
 };
 
+# ---------------------------------------------------------------------------
+# Air data publisher: the generic one, with the heading of the simulated AHRS of the Pro Line Fusion cockpit
+# (slaved or DG FREE, Nasal/fusion-cockpit.nas) when that cockpit is loaded.
+# ---------------------------------------------------------------------------
+var KingAirADCPublisher = {
+  new : func() {
+    var obj = GenericADCPublisher.new();
+    if (getprop("/sim/model/fusion/cockpit")) {
+      forindex (var i; obj._propmaps)
+        if (obj._propmaps[i].getName() == "ADCHeadingMagneticDeg")
+          obj._propmaps[i] = PropMap.new("ADCHeadingMagneticDeg", "/instrumentation/fusion/ahrs-heading-deg", 1);
+    }
+    return obj;
+  },
+};
+
 var KingAirInterfaceController = {
 
   _instance : nil,
@@ -87,7 +103,7 @@ var KingAirInterfaceController = {
     "GenericNavComUpdater",
     "GenericFMSPublisher",
     "GenericFMSUpdater",
-    "GenericADCPublisher",
+    "KingAirADCPublisher",
     "GFC700Publisher",
     "GFC700Interface",
     "GMA1347Interface",

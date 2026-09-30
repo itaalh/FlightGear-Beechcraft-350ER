@@ -38,8 +38,10 @@ var update = func {
         n.setDoubleValue(pos);
     }
 
-    # surface deice: one wing + tail cycle per SINGLE selection (needs engine bleed air)
-    var bleed = getprop("engines/engine[0]/running") or getprop("engines/engine[1]/running");
+    # surface deice: one wing + tail cycle per SINGLE selection (needs engine bleed air; the Pro Line Fusion
+    # cockpit bleed valves can shut the pneumatic supply: controls/pressurization/pneumatic[i], on by default)
+    var pneu = func(i) { var p = getprop("controls/pressurization/pneumatic[" ~ i ~ "]"); return p == nil or p; };
+    var bleed = (getprop("engines/engine[0]/running") and pneu(0)) or (getprop("engines/engine[1]/running") and pneu(1));
     if (boot_t < 0 and ctl.getNode("wing-deice-cycle", 1).getBoolValue() and dc and bleed) boot_t = 0;
     if (boot_t >= 0) {
         boot_t += dt;
@@ -65,7 +67,9 @@ var update = func {
 # extra DC load for the electrical system (A)
 var load_amps = func {
     var a = sys.getNode("prop-deice-amps", 1).getValue() or 0;
-    foreach (var h; ["window-heat[0]", "window-heat[1]"]) if (sys.getNode(h, 1).getBoolValue()) a += 25;
+    foreach (var i; [0, 1])
+        if (sys.getNode("window-heat[" ~ i ~ "]", 1).getBoolValue())
+            a += getprop("controls/anti-ice/window-heat-hi[" ~ i ~ "]") ? 35 : 25;     # HI (Fusion cockpit switch)
     foreach (var h; ["pitot-heat[0]", "pitot-heat[1]", "stall-warn-heat", "fuel-vent-heat[0]", "fuel-vent-heat[1]"])
         if (sys.getNode(h, 1).getBoolValue()) a += 5;
     if (sys.getNode("brake-deice", 1).getBoolValue()) a += 10;

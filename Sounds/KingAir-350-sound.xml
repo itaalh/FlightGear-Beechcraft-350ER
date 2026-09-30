@@ -1066,6 +1066,37 @@
 			<max-dist>5</max-dist>
 		</pre-stall>
 
+		<!-- Pro Line Fusion cockpit (Nasal/fusion-cockpit.nas): landing gear warning horn and stall warning test -->
+		<gear-warning-horn>
+			<name>gear-warning-horn</name>
+			<mode>looped</mode>
+			<path>Sounds/gear-hrn.wav</path>
+			<condition>
+				<property>sim/sound/gear-warn</property>
+			</condition>
+			<volume>
+				<factor>0.6</factor>
+			</volume>
+		</gear-warning-horn>
+
+		<stall-warning-test>
+			<name>stall-warning-test</name>
+			<mode>looped</mode>
+			<path>Sounds/stall.wav</path>
+			<condition>
+				<and>
+					<property>controls/fusion/stall-test</property>
+					<greater-than>
+						<property>systems/electrical/volts</property>
+						<value>20</value>
+					</greater-than>
+				</and>
+			</condition>
+			<volume>
+				<factor>0.6</factor>
+			</volume>
+		</stall-warning-test>
+
 		
 		<!-- STARTER SWITCH -->
 		<starter-switch>
