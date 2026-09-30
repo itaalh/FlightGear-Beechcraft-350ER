@@ -29,7 +29,7 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   - **Plafonnier et parois :** rhéostats d'éclairage (inscriptions, écrans, projecteurs), essuie-glaces, signaux
     cabine, instruments électriques et OAT ; panneau carburant (jauges MAIN / AUX / TEST, intercommunication, pompes
     de secours, transfert) ; environ 90 disjoncteurs qui coupent réellement leur circuit ; compas de secours ;
-    sièges.
+    sièges, dont l'accoudoir intérieur se relève d'un clic (relevé au démarrage, pour laisser voir le pupitre).
   - **Nuit :** inscriptions rétroéclairées, écrans auto-éclairés et projecteurs d'ambiance.
 - **Nouvelles fonctions** (Nasal/fusion-cockpit.nas) : synchroniseur d'hélices, VNAV simplifié (vers la prochaine
   contrainte d'altitude de la route), couplage du pilote automatique au PFD copilote (CPL), GO AROUND, avertisseur

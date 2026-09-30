@@ -668,6 +668,26 @@ def gen_compass(x, piv):
     x.close("animation")
 
 
+def gen_seats(x, piv):
+    x.comment("inboard armrests: stowed up (0, default) or down (1), click to fold")
+    for i, k in enumerate(("L", "R")):
+        a = piv["ARM" + k]
+        prop = "sim/model/fusion/armrest[%d]" % i
+        obj = "F.SEAT%s.arm" % k
+        x.open("animation")
+        x.el("type", "rotate")
+        x.el("object-name", obj)
+        x.el("property", prop)
+        x.raw("<interpolation><entry><ind>0</ind><dep>%s</dep></entry><entry><ind>1</ind><dep>0</dep></entry>"
+              "</interpolation>" % a["stowed"])
+        vec(x, "center", a["pivot"])
+        vec(x, "axis", a["axis"])
+        x.close("animation")
+        pick(x, obj, [{"command": "nasal", "script": 'var p = "%s"; interpolate(p, getprop(p) ? 0 : 1, 0.6);' % prop}],
+             tip={"label": "Inboard armrest: %s", "property": prop, "script": 'return arg[0] ? "DOWN" : "STOWED";'},
+             tid=obj)
+
+
 def gen_floods(x):
     """Flood lights: a warm emission on everything of each zone (not on the lamps, screens and pick boxes)."""
     with open(os.path.join(HERE, "_build", "objects.json")) as fh:
@@ -735,6 +755,7 @@ def main():
     gen_yokes(x, piv)
     gen_pedestal(x, piv)
     gen_compass(x, piv)
+    gen_seats(x, piv)
     gen_floods(x)
     # hotspot material objects are never drawn
     x.lines.append("</PropertyList>")

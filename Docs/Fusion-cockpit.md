@@ -24,6 +24,7 @@ Toutes les commandes affichent une bulle d'aide avec leur état au survol.
 | Levier de volets | molette ou glisser : UP, APPROACH, DOWN. |
 | Roue de trim de profondeur | molette ou glisser (rouler vers l'avant : piqué) ; Maj : rapide. |
 | Écrans | clic sur le libellé d'une touche programmable, en bas de l'écran (écran tactile). |
+| Accoudoir intérieur des sièges | clic : baissé / relevé. Il est relevé au démarrage, pour laisser voir le pupitre. |
 
 Les volants se masquent par le menu *King Air 350 › Yokes visible* (`sim/model/yokes-visible`). Ils portent la
 déconnexion AP / YD, le trim électrique (deux boutons à tenir) et l'alternat.
@@ -101,6 +102,7 @@ L'inhibition CURSOR d'un écran désactive le boîtier sur cet écran ; l'inhibi
 |---|---|
 | `sim/model/fusion/cockpit` | `true` dans `KingAir-350ER-G1000-set.xml` : masque l'ancien cockpit de `Models/flightdeck.xml` (sauf plancher et palonniers). |
 | `sim/model/yokes-visible` | Affichage des volants. |
+| `sim/model/fusion/armrest[n]` | Accoudoir intérieur, 0 pilote, 1 copilote : `0` relevé, `1` baissé. |
 | `controls/fusion/...` | Positions des nouvelles commandes du cockpit (nombres, 0 = position basse). |
 | `controls/fusion/cb/<nom>` | Disjoncteurs : `1` = tiré ; absent ou `0` = enfoncé. |
 | `sim/model/fusion/panel-lights-norm` | Luminosité du rétroéclairage des inscriptions (0 à 1). |

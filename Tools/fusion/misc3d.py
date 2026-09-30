@@ -84,39 +84,54 @@ def build_compass(ctx):
     ctx.build_obj("F.COMPASS.lubber", lb, None, {})
 
 
+SEAT_Y = 0.405          # seat centre line off the cockpit centre line (eye points at 0.355): the cushions leave the
+                        # aft pedestal (half width 0.172) in view from the eye points
+SEAT_W = 0.42           # cushion and back width
+ARM_DY = 0.245          # armrest centre line off the seat centre line
+ARM_STOWED = 100.0      # inboard armrest folded up alongside the seat back (deg from horizontal)
+
+
 def seat(ctx, side):
-    """Crew seat (tan leather): base on rails, cushion with bolsters, reclined back, headrest, armrests."""
-    y = Y0 + side * 0.355
+    """Crew seat (tan leather): base on rails, cushion with bolsters, reclined back, headrest, armrests. The inboard
+    armrest is a separate object that folds up (F.SEATL.arm / F.SEATR.arm)."""
+    k = "L" if side < 0 else "R"
+    y = Y0 + side * SEAT_Y
     mb = MeshBuilder()
     x0, x1 = -4.33, -3.86                  # cushion front / rear
     zc = -0.19                             # cushion top
     # base and rails
-    for dy in (-0.16, 0.16):
+    for dy in (-0.14, 0.14):
         wbox(mb, -4.36, -3.80, y + dy - 0.012, y + dy + 0.012, -0.558, -0.540, "metal")
-    wbox(mb, -4.26, -3.90, y - 0.17, y + 0.17, -0.540, -0.300, "shell")
+    wbox(mb, -4.26, -3.90, y - 0.15, y + 0.15, -0.540, -0.300, "shell")
     # cushion (horizontal frame, normal up)
     cf = Frame(((x0 + x1) / 2, y, zc - 0.07), (0.0, 1.0, 0.0), (-1.0, 0.0, 0.0))
-    rrect_prism(mb, cf, 0.0, 0.0, 0.46, x1 - x0, 0.06, 0.0, 0.075, "leather", bevel=0.03, bevel_steps=4,
+    rrect_prism(mb, cf, 0.0, 0.0, SEAT_W, x1 - x0, 0.06, 0.0, 0.075, "leather", bevel=0.03, bevel_steps=4,
                 side_smooth=True)
-    for dy in (-0.205, 0.205):
-        rrect_prism(mb, cf, dy, 0.0, 0.07, x1 - x0 - 0.02, 0.03, 0.0, 0.095, "leather", bevel=0.03, bevel_steps=4,
+    for dy in (-0.18, 0.18):
+        rrect_prism(mb, cf, dy, 0.0, 0.05, x1 - x0 - 0.02, 0.024, 0.0, 0.095, "leather", bevel=0.024, bevel_steps=4,
                     side_smooth=True)
     # back, reclined 14 deg
     t = math.radians(14.0)
     bb = (x1 - 0.02, y, zc)
     bf = Frame(add(bb, (math.sin(t) * 0.32, 0.0, math.cos(t) * 0.32)), (0.0, -1.0, 0.0), (math.sin(t), 0.0, math.cos(t)))
-    rrect_prism(mb, bf, 0.0, 0.0, 0.46, 0.62, 0.07, 0.0, 0.10, "leather", bevel=0.035, bevel_steps=4, side_smooth=True)
-    for dy in (-0.21, 0.21):
-        rrect_prism(mb, bf, dy, -0.03, 0.06, 0.52, 0.03, 0.0, 0.125, "leather", bevel=0.03, bevel_steps=4,
+    rrect_prism(mb, bf, 0.0, 0.0, SEAT_W, 0.62, 0.07, 0.0, 0.10, "leather", bevel=0.035, bevel_steps=4, side_smooth=True)
+    for dy in (-0.185, 0.185):
+        rrect_prism(mb, bf, dy, -0.03, 0.05, 0.52, 0.024, 0.0, 0.125, "leather", bevel=0.024, bevel_steps=4,
                     side_smooth=True)
     # headrest
     hf = Frame(add(bb, (math.sin(t) * 0.72, 0.0, math.cos(t) * 0.72)), (0.0, -1.0, 0.0), (math.sin(t), 0.0, math.cos(t)))
     rrect_prism(mb, hf, 0.0, 0.0, 0.26, 0.17, 0.06, 0.02, 0.10, "leather", bevel=0.03, bevel_steps=4, side_smooth=True)
-    # armrests (inboard and outboard) on posts
-    for dy in (-0.25, 0.25):
-        wbox(mb, x1 - 0.30, x1 - 0.02, y + dy - 0.03, y + dy + 0.03, zc + 0.17, zc + 0.22, "leather", smooth=False)
+    # armrests on posts at the rear: the outboard one fixed, the inboard one hinged on its post
+    for dy in (side * ARM_DY, -side * ARM_DY):
         wbox(mb, x1 - 0.05, x1 - 0.02, y + dy - 0.01, y + dy + 0.01, zc, zc + 0.17, "shell")
-    ctx.build_obj("F.SEAT%s" % ("L" if side < 0 else "R"), mb, None, {"ac_crease": 60.0})
+    ya = y + side * ARM_DY
+    wbox(mb, x1 - 0.30, x1 - 0.02, ya - 0.03, ya + 0.03, zc + 0.17, zc + 0.22, "leather", smooth=False)
+    ctx.build_obj("F.SEAT" + k, mb, None, {"ac_crease": 60.0})
+    arm = MeshBuilder()
+    yi = y - side * ARM_DY
+    wbox(arm, x1 - 0.30, x1 - 0.02, yi - 0.03, yi + 0.03, zc + 0.17, zc + 0.22, "leather", smooth=False)
+    ctx.build_obj("F.SEAT%s.arm" % k, arm, None, {"ac_crease": 60.0})
+    ctx.anim["ARM" + k] = {"pivot": (x1 - 0.035, yi, zc + 0.195), "axis": (0.0, 1.0, 0.0), "stowed": ARM_STOWED}
 
 
 def build_misc(ctx):
