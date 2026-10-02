@@ -3,7 +3,7 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [2.6.0] — 2026-10-02
 
 ### Ajouté
 - **G1000 : touche ENGINE du MFD.** Elle ouvre le sous-menu ENGINE / SYSTEM / FUEL (touche active en surbrillance) ;
@@ -261,6 +261,7 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
+[2.6.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.5.0...v2.6.0
 [2.5.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.0...v2.4.1
