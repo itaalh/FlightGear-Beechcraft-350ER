@@ -65,7 +65,9 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 
 - **Écrans :** PFD pilote, MFD au centre, PFD copilote : trois écrans larges de 14 pouces. L'image G1000 (4:3) occupe
   le centre de chaque écran. Les touches programmables du G1000 se commandent en cliquant leur libellé en bas de
-  l'écran, comme sur un écran tactile. Les molettes et touches du G1000 sont reportées :
+  l'écran, comme sur un écran tactile. Les radios se règlent aussi directement sur les cadres NAV et COM en haut des
+  PFD : clic sur une fréquence d'attente pour choisir la radio, molette dessus pour la régler (MHz ; Maj : kHz), clic
+  sur la flèche ou la fréquence active pour les permuter. Les molettes et touches du G1000 sont reportées :
   - sur le panneau de pilote automatique (FGP) : CRS1, HDG, ALT, CRS2 ;
   - sur les panneaux audio : BARO ;
   - sur les deux boîtiers de curseur du pupitre : FMS, RANGE, D→, MENU, FPL, PROC, CLR, ENT, radios NAV et COM. Le
@@ -98,7 +100,9 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   pression et température d'huile en échelles horizontales à deux index L/R avec valeurs numériques, carburant
   par côté et total, tension / courant / charge des générateurs. Plages de couleur = marquages des instruments
   du 350 (couple 100 %, ITT 400-820 °C, hélice 1 450-1 700 tr/min, N1 62-104 %, huile 60/90-135 psi et
-  0-99/110 °C, carburant 0-265 lb interdit au décollage).
+  0-99/110 °C, carburant 0-265 lb interdit au décollage). La touche ENGINE du MFD choisit le bas du bandeau :
+  ENGINE (ce résumé), SYSTEM (électrique, prélèvement d'air, dégivrage, pressurisation) ou FUEL (chaque réservoir,
+  débits, autonomie, distance franchissable, consommé, intercommunication).
 - PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà),
   repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de vitesse marquée comme l'anémomètre du 350 (arc blanc
   large 81-96 / étroit 96-158 kt, repère volets APP 202 kt, trait rouge Vmca 94, trait bleu Vyse 125, bande rayée

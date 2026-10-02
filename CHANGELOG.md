@@ -3,6 +3,25 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **G1000 : touche ENGINE du MFD.** Elle ouvre le sous-menu ENGINE / SYSTEM / FUEL (touche active en surbrillance) ;
+  les jauges moteur restent en haut du bandeau EIS, le bas du bandeau change :
+  - **ENGINE :** le résumé habituel (carburant par côté, électrique, pressurisation) ;
+  - **SYSTEM :** tension DC, courant et charge batterie, charge des générateurs G / D (OFF en jaune), tension AC de
+    l'onduleur, prélèvement d'air, séparateurs inertiels, chauffage pare-brise, boudins de dégivrage, dégivrage
+    hélices, altitude, variation et différentiel cabine, altitude cabine sélectionnée ;
+  - **FUEL :** carburant de chaque réservoir (principal, auxiliaire), par côté et total, débit par moteur et total,
+    autonomie, distance franchissable à la vitesse sol actuelle, carburant consommé, intercommunication.
+- **Cockpit Pro Line Fusion : radios tactiles sur les PFD.** Sur les cadres NAV et COM en haut des deux PFD : clic sur
+  une fréquence d'attente pour choisir la radio, molette dessus pour la régler (MHz ; Maj : kHz), clic sur la flèche
+  ou la fréquence active pour les permuter. Les boîtiers du pupitre, au niveau du siège, ne sont plus indispensables.
+
+### Corrigé
+- **G1000 : la touche ENGINE du MFD ne faisait rien** (sous-menu réduit à ENGINE / BACK depuis le remplacement de
+  l'EIS monomoteur de FGData).
+
 ## [2.5.0] — 2026-10-02
 
 ### Ajouté

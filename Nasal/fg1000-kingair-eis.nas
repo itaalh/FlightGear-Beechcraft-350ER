@@ -76,6 +76,15 @@ var KingAirEIS =
       y += EIS_ROW;
     }
 
+    # lower part of the strip, below the engine gauges: the ENGINE summary, or the SYSTEM or FUEL page
+    # chosen with the ENGINE softkey menu
+    obj._low = {};
+    foreach (var m; ["ENGINE", "SYSTEM", "FUEL"])
+      obj._low[m] = root.createChild("group");
+    obj._drawSystem(obj._low.SYSTEM, y);
+    obj._drawFuel(obj._low.FUEL, y);
+    root = obj._low.ENGINE;
+
     # fuel: both sides on one scale (full scale = side capacity, set on the first data)
     root.createChild("path").moveTo(4, y - 4).horizTo(146).setColor(EIS_GREY).setStrokeLineWidth(1);
     obj._fuel = obj._drawGauge(root,
@@ -107,8 +116,84 @@ var KingAirEIS =
     obj._diff = obj._text(root, "", 146, y + 54, 16, "right-baseline", EIS_WHITE);
 
     obj._fuelMax = nil;
+    obj._fuelStart = nil;
+    obj.setMode("ENGINE");
     return obj;
   },
+
+  # ENGINE, SYSTEM or FUEL in the lower part of the strip
+  setMode : func(mode) {
+    me._mode = mode;
+    foreach (var m; keys(me._low))
+      me._low[m].setVisible(m == mode);
+  },
+
+  # a line of the SYSTEM / FUEL pages: cyan label, one value (right) or the L and R values
+  _row : func(parent, label, y, dual = 0) {
+    me._text(parent, label, 8, y, 13, "left-baseline", EIS_CYAN);
+    if (dual)
+      return [me._text(parent, "", 108, y, 16, "right-baseline", EIS_WHITE),
+              me._text(parent, "", 146, y, 16, "right-baseline", EIS_WHITE)];
+    return me._text(parent, "", 146, y, 16, "right-baseline", EIS_WHITE);
+  },
+
+  _separator : func(parent, y) {
+    parent.createChild("path").moveTo(4, y).horizTo(146).setColor(EIS_GREY).setStrokeLineWidth(1);
+  },
+
+  # SYSTEM page: electrical, bleed air and ice protection, pressurization (rows of 18 px: 14 rows above the softkeys)
+  _drawSystem : func(p, y) {
+    var s = {};
+    me._separator(p, y - 4);
+    me._text(p, "L", 108, y + 10, 11, "right-baseline", EIS_GREY);
+    me._text(p, "R", 146, y + 10, 11, "right-baseline", EIS_GREY);
+    y += 8;
+    s.volts     = me._row(p, "DC VOLTS", y += 18);
+    s.battAmps  = me._row(p, "BATT AMPS", y += 18);
+    s.battChg   = me._row(p, "BATT CHG %", y += 18);
+    s.genLoad   = me._row(p, "GEN LOAD %", y += 18, 1);
+    s.acVolts   = me._row(p, "INV AC V", y += 18);
+    me._separator(p, y + 7);
+    y += 6;
+    s.bleed     = me._row(p, "BLEED AIR", y += 18, 1);
+    s.vanes     = me._row(p, "ICE VANES", y += 18, 1);
+    s.wshld     = me._row(p, "W/S HEAT", y += 18, 1);
+    s.boots     = me._row(p, "SURF DEICE", y += 18);
+    s.propAmps  = me._row(p, "PROP DEICE A", y += 18);
+    me._separator(p, y + 7);
+    y += 6;
+    s.cabinAlt  = me._row(p, "CABIN ALT FT", y += 18);
+    s.cabinRate = me._row(p, "CAB RATE FPM", y += 18);
+    s.diff      = me._row(p, "DIFF PSI", y += 18);
+    s.cabinSel  = me._row(p, "CAB SEL FT", y += 18);
+    me._sys = s;
+  },
+
+  # FUEL page: each tank, fuel flow, endurance and range, crossfeed
+  _drawFuel : func(p, y) {
+    var f = {};
+    me._separator(p, y - 4);
+    me._text(p, "L", 108, y + 10, 11, "right-baseline", EIS_GREY);
+    me._text(p, "R", 146, y + 10, 11, "right-baseline", EIS_GREY);
+    y += 8;
+    f.main      = me._row(p, "MAIN LBS", y += 19, 1);
+    f.aux       = me._row(p, "AUX LBS", y += 19, 1);
+    f.side      = me._row(p, "SIDE LBS", y += 19, 1);
+    f.total     = me._row(p, "TOTAL LBS", y += 19);
+    me._separator(p, y + 7);
+    y += 6;
+    f.ff        = me._row(p, "FF PPH", y += 19, 1);
+    f.ffTotal   = me._row(p, "FF TOTAL PPH", y += 19);
+    f.endurance = me._row(p, "ENDURANCE", y += 19);
+    f.range     = me._row(p, "RANGE NM", y += 19);
+    f.used      = me._row(p, "USED LBS", y += 19);
+    me._separator(p, y + 7);
+    y += 6;
+    f.crossfeed = me._row(p, "CROSSFEED", y += 19);
+    me._fuelPage = f;
+  },
+
+  _onOff : func(v) { v ? "ON" : "OFF"; },
 
   _text : func(parent, text, x, y, size, align, colour) {
     return parent.createChild("text")
@@ -202,21 +287,98 @@ var KingAirEIS =
       .setColor(ca > 12000 ? EIS_RED : (ca > 10000 ? EIS_YELLOW : EIS_WHITE));
     me._cabinRate.setText(sprintf("%+.0f", math.round(data.CabinRate, 50)));
     me._diff.setText(sprintf("%.1f", data.DiffPsi)).setColor(data.DiffPsi > 6.6 ? EIS_RED : EIS_WHITE);
+
+    if (me._mode == "SYSTEM") me._updateSystem(data);
+    elsif (me._mode == "FUEL") me._updateFuel(data);
+  },
+
+  _updateSystem : func(data) {
+    var s = me._sys;
+    s.volts.setText(sprintf("%.1f", data.Volts)).setColor(data.Volts < 24 ? EIS_YELLOW : EIS_WHITE);
+    s.battAmps.setText(sprintf("%+.0f", data.BattAmps));
+    s.battChg.setText(sprintf("%.0f", data.BattCharge * 100)).setColor(data.BattCharge < 0.5 ? EIS_YELLOW : EIS_WHITE);
+    forindex (var i; [0, 1]) {
+      s.genLoad[i].setText(data.GenLoad[i] > 0 ? sprintf("%.0f", data.GenLoad[i] * 100) : "OFF")
+        .setColor(data.GenLoad[i] > 0 ? EIS_WHITE : EIS_YELLOW);
+      s.bleed[i].setText(me._onOff(data.BleedAir[i])).setColor(data.BleedAir[i] ? EIS_WHITE : EIS_YELLOW);
+      # inertial separator vanes: RET(racted), EXT(ended), or moving
+      var v = data.IceVanes[i];
+      s.vanes[i].setText(v > 0.98 ? "EXT" : (v < 0.02 ? "RET" : "TRAN")).setColor(v < 0.02 ? EIS_WHITE : EIS_CYAN);
+      s.wshld[i].setText(me._onOff(data.WshldHeat[i]));
+    }
+    s.acVolts.setText(sprintf("%.0f", data.AcVolts)).setColor(data.AcVolts < 100 ? EIS_YELLOW : EIS_WHITE);
+    s.boots.setText(data.WingBoots ? "WING" : (data.TailBoots ? "TAIL" : "OFF"))
+      .setColor(data.WingBoots or data.TailBoots ? EIS_CYAN : EIS_WHITE);
+    s.propAmps.setText(sprintf("%.0f", data.PropAmps));
+    var ca = data.CabinAlt;
+    s.cabinAlt.setText(sprintf("%.0f", math.round(ca, 50)))
+      .setColor(ca > 12000 ? EIS_RED : (ca > 10000 ? EIS_YELLOW : EIS_WHITE));
+    s.cabinRate.setText(sprintf("%+.0f", math.round(data.CabinRate, 50)));
+    s.diff.setText(sprintf("%.1f", data.DiffPsi)).setColor(data.DiffPsi > 6.6 ? EIS_RED : EIS_WHITE);
+    s.cabinSel.setText(sprintf("%.0f", math.round(data.CabinSel, 50)));
+  },
+
+  _updateFuel : func(data) {
+    var f = me._fuelPage;
+    # tanks 0/1: left aux/main, 2/3: right main/aux
+    var main = [data.TankLbs[1], data.TankLbs[2]];
+    var aux = [data.TankLbs[0], data.TankLbs[3]];
+    var ff = [data.Engines[0].FF, data.Engines[1].FF];
+    forindex (var i; [0, 1]) {
+      f.main[i].setText(sprintf("%.0f", main[i]));
+      f.aux[i].setText(sprintf("%.0f", aux[i]));
+      # 265 lb a side: no take-off range of the fuel gauges
+      f.side[i].setText(sprintf("%.0f", data.FuelLbs[i])).setColor(data.FuelLbs[i] < 265 ? EIS_YELLOW : EIS_WHITE);
+      f.ff[i].setText(sprintf("%.0f", ff[i]));
+    }
+    var total = data.FuelLbs[0] + data.FuelLbs[1];
+    var ffTotal = ff[0] + ff[1];
+    f.total.setText(sprintf("%.0f", total));
+    f.ffTotal.setText(sprintf("%.0f", ffTotal));
+    if (ffTotal > 20) {
+      var hours = total / ffTotal;
+      f.endurance.setText(sprintf("%d:%02d", int(hours), int(math.mod(hours * 60, 60))));
+      f.range.setText(data.GroundSpeed > 30 ? sprintf("%.0f", hours * data.GroundSpeed) : "---");
+    } else {
+      f.endurance.setText("--:--");
+      f.range.setText("---");
+    }
+    # fuel used since the start of the session (back to 0 after refuelling)
+    if (me._fuelStart == nil or total > me._fuelStart) me._fuelStart = total;
+    f.used.setText(sprintf("%.0f", me._fuelStart - total));
+    var xf = data.Crossfeed;
+    f.crossfeed.setText(xf > 0.5 ? "L > R" : (xf < -0.5 ? "R > L" : "OFF")).setColor(xf != 0 ? EIS_CYAN : EIS_WHITE);
   },
 
   # Menu tree. engineMenu is referenced from most pages as softkey 0:
   # pg.addMenuItem(0, "ENGINE", pg, pg.mfd.EIS.engineMenu);
-  engineMenu : func(device, pg, menuitem) {
+  # ENGINE, SYSTEM and FUEL choose the lower part of the strip; the selected one is highlighted.
+  # Menu callbacks are called without an object (no "me").
+  _menu : func(device, pg, active) {
     pg.clearMenu();
     pg.resetMenuColors();
     pg.addMenuItem(0, "ENGINE", pg, pg.mfd.EIS.engineMenu);
+    pg.addMenuItem(1, "SYSTEM", pg, pg.mfd.EIS.systemMenu);
+    pg.addMenuItem(2, "FUEL", pg, pg.mfd.EIS.fuelMenu);
     pg.addMenuItem(8, "BACK", pg, pg.topMenu);
     device.updateMenus();
+    device.svg.getElementById("SoftKey" ~ active ~ "-bg").setColorFill(0.7, 0.7, 0.7);
+    device.svg.getElementById("SoftKey" ~ active).setColor(0.0, 0.0, 0.0);
   },
 
-  # menu callbacks are called without an object (no "me")
+  engineMenu : func(device, pg, menuitem) {
+    pg.mfd.EIS.setMode("ENGINE");
+    KingAirEIS._menu(device, pg, 0);
+  },
+
   systemMenu : func(device, pg, menuitem) {
-    KingAirEIS.engineMenu(device, pg, menuitem);
+    pg.mfd.EIS.setMode("SYSTEM");
+    KingAirEIS._menu(device, pg, 1);
+  },
+
+  fuelMenu : func(device, pg, menuitem) {
+    pg.mfd.EIS.setMode("FUEL");
+    KingAirEIS._menu(device, pg, 2);
   },
 
   offdisplay : func() {

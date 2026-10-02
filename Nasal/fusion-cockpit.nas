@@ -537,6 +537,20 @@ var mkp = func(ch) { fg1000_key(ccp_device(last_ccp), "KEY_INPUT", ch); };
 var mkp_key = func(key, off = 1) { fg1000_key(ccp_device(last_ccp), key, off); };
 
 # ---------------------------------------------------------------------------
+# touch radio boxes of the PFDs (kind NAV or COM, line 1 or 2): "select" makes that radio the one tuned (cyan box),
+# "tune" moves its standby frequency (mouse wheel: MHz, with shift: kHz), "swap" exchanges its active and standby
+# frequencies. The FG1000 acts on the selected radio only, so the line is selected first.
+# ---------------------------------------------------------------------------
+var PFD_POWER = {1: "fg1000-pfd", 3: "fg1000-pfd2"};
+var radio_touch = func(dev, kind, line, action, dir = 0) {
+    if ((getprop("systems/electrical/outputs/" ~ PFD_POWER[dev]) or 0) < 20) return;
+    var key = func(k, off = 1) fgcommand("FG1000HardKeyPushed", props.Node.new({"device": dev, "notification": k, "offset": off}));
+    if ((getprop("instrumentation/" ~ (kind == "NAV" ? "nav" : "com") ~ "-selected") or 1) != line) key(kind ~ "_TOGGLE");
+    if (action == "swap") key(kind ~ "_FREQ_TRANSFER");
+    elsif (action == "tune") key(kind ~ (getprop("devices/status/keyboard/shift") ? "_INNER" : "_OUTER"), dir);
+};
+
+# ---------------------------------------------------------------------------
 # pressurization controller switch, cockpit voice recorder
 # ---------------------------------------------------------------------------
 var cabin_press = func {
