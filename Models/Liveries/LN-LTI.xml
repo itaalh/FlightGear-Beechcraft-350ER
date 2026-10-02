@@ -6,6 +6,7 @@
       <livery>
         <name type="string">Luftambulansetjenesten/Lufttransport (LN-LTI)</name>
         <index type="int">2</index>
+        <window-plug-l1 type="bool">false</window-plug-l1>
         <bodyWork>
   	  <texture>Liveries/LN-LTI.png</texture>
         </bodyWork>

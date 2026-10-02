@@ -3,6 +3,29 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## Non publié
+
+### Ajouté
+- **Livrée Armée de l'Air – ALSR Vador 1030 F-RACH** (EEA 1/54 « Dunkerque »), texture 4096 × 4096 reproduite
+  d'après des photographies de l'avion : blanc intégral, inscriptions basse visibilité (F-RACH sur le fuselage, sur
+  l'aile droite et sous l'aile gauche, ARMEE DE L'AIR, 1030 sur la dérive), cocardes (cône arrière, extrados de l'aile gauche et, en symétrie, intrados de l'aile
+  droite), bande d'hélice HELICE /
+  DANGER, marquages de porte et d'issue de secours, premier hublot cabine gauche obturé comme sur l'avion (objet
+  `WindowPlugL1`, visible avec cette livrée seulement).
+- **Relief de surface pour toutes les livrées** : normal map (jointures de tôles, rivets, trappes de visite,
+  verrous de capots) et brillance par matériau.
+- `PaintKit/UV-template-4096.png` et `Tools/livery/` (générateur de la livrée et de la normal map).
+
+### Modifié
+- **Dessous des ailes et des ailerons** : coordonnées de texture propres (ils réutilisaient celles de l'extrados, un
+  marquage d'aile apparaissait donc aussi sous l'aile). Les livrées existantes et la lightmap ont été complétées
+  pour garder le même aspect.
+
+### Corrigé
+- Volets, bandes de volets, vérins de train et une grande partie du cône de nez avaient des coordonnées de texture
+  réduites à un point : ils s'affichaient noirs dès qu'une normal map était active. Chaque polygone a désormais une
+  surface de texture (sous le texel, sans changement de couleur).
+
 ## [2.4.2] — 2026-09-27
 
 ### Corrigé
