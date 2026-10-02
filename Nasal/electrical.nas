@@ -14,24 +14,29 @@ var sys  = props.globals.getNode("systems/electrical", 1);
 var light = props.globals.getNode("controls/lighting", 1);
 
 var battery_charge = 1.0;      # 0..1
+
+# circuit breakers of the Pro Line Fusion cockpit (controls/fusion/cb/<id> = 1 when pulled; absent = in)
+var cb = func(id) { !getprop("controls/fusion/cb/" ~ id); };
 var BATTERY_AH = 42.0;
 
 var update = func {
     var dt = 0.2;
     var batt_sw = elec.getNode("battery-switch", 1).getBoolValue();
-    var ext_sw  = elec.getNode("external-power", 1).getBoolValue() and (getprop("gear/gear[1]/wow") or 0);
+    var ext_sw  = elec.getNode("external-power", 1).getBoolValue() and (getprop("gear/gear[1]/wow") or 0) and cb("ext-power");
     var gen = [0, 0];
     # heaters and deicers (Nasal/ice-protection.nas), shared by the generators on line
     var extra = contains(globals, "iceprotection") ? iceprotection.load_amps() : 0;
+    # other loads of the Pro Line Fusion cockpit (defog, cabin and ice lights, standby pumps, blowers)
+    if (contains(globals, "fusion") and contains(fusion, "load_amps")) extra += fusion.load_amps();
     var ngen_on = 0;
     foreach (var i; [0, 1])
         if ((getprop("engines/engine[" ~ i ~ "]/running") or 0) and elec.getNode("engine[" ~ i ~ "]/bus-tie", 1).getBoolValue()
-            and (getprop("engines/engine[" ~ i ~ "]/n1") or 0) > 52) ngen_on += 1;
+            and (getprop("engines/engine[" ~ i ~ "]/n1") or 0) > 52 and cb("gen[" ~ i ~ "]")) ngen_on += 1;
     foreach (var i; [0, 1]) {
         var n1 = getprop("engines/engine[" ~ i ~ "]/n1") or 0;
         var running = getprop("engines/engine[" ~ i ~ "]/running") or 0;
         var sw = elec.getNode("engine[" ~ i ~ "]/bus-tie", 1).getBoolValue();
-        gen[i] = (running and sw and n1 > 52) ? 1 : 0;
+        gen[i] = (running and sw and n1 > 52 and cb("gen[" ~ i ~ "]")) ? 1 : 0;
         sys.getNode("gen-load[" ~ i ~ "]", 1).setDoubleValue(gen[i] ? (0.35 + 0.15 * (ngen_on > 1 ? 0 : 1) + extra / 300.0 / ngen_on) : 0);
     }
     var ngen = gen[0] + gen[1];
@@ -72,31 +77,32 @@ var update = func {
     sys.getNode("gyro-suction-inhg", 1).setDoubleValue((lh_ac > 0 or rh_ac > 0) ? 5.0 : 0.0);
 
     # avionics bus
-    var av = elec.getNode("avionics-switch", 1).getBoolValue() ? volts : 0.0;
+    var av = (elec.getNode("avionics-switch", 1).getBoolValue() and cb("avionics")) ? volts : 0.0;
     foreach (var n; ["nav", "nav[1]", "comm", "comm[1]", "adf", "dme", "gps", "transponder", "turn-coordinator", "mk-viii", "fgc-65", "audio-panel", "autopilot", "fg1000-pfd", "fg1000-mfd", "fg1000-pfd2"])
-        out.getNode(n, 1).setDoubleValue(av);
+        out.getNode(n, 1).setDoubleValue(av * (cb(n) ? 1 : 0));
     out.getNode("efis[0]", 1).setDoubleValue(elec.getNode("efis/bank[0]", 1).getBoolValue() ? lh_ac / 115.0 * 29 : 0);
     out.getNode("efis[1]", 1).setDoubleValue(elec.getNode("efis/bank[1]", 1).getBoolValue() ? rh_ac / 115.0 * 29 : 0);
     out.getNode("efis", 1).setDoubleValue(out.getNode("efis[0]").getValue());
 
     # lights
     var pwr = dc ? volts : 0.0;
-    out.getNode("lights/landing-lights[0]", 1).setDoubleValue(pwr * (light.getNode("landing-lights[0]", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/landing-lights[1]", 1).setDoubleValue(pwr * (light.getNode("landing-lights[1]", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/taxi-lights", 1).setDoubleValue(pwr * (light.getNode("taxi-lights", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/logo-lights", 1).setDoubleValue(pwr * (light.getNode("logo-lights", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/nav-lights", 1).setDoubleValue(pwr * (light.getNode("nav-lights", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/recog-lights", 1).setDoubleValue(pwr * (light.getNode("recog-lights", 1).getBoolValue() ? 1 : 0));
-    out.getNode("lights/instrument-lights", 1).setDoubleValue(pwr * (light.getNode("instruments-norm", 1).getValue() or 0));
-    out.getNode("lights/eng-lights", 1).setDoubleValue(pwr * (light.getNode("eng-norm", 1).getValue() or 0));
-    out.getNode("lights/strobe", 1).setDoubleValue(pwr * (getprop("sim/model/lights/strobe/state") or 0));
-    out.getNode("lights/beacon", 1).setDoubleValue(pwr * (getprop("sim/model/lights/beacon/state") or 0));
+    var lt = func(name, on) { out.getNode("lights/" ~ name, 1).setDoubleValue(pwr * on * (cb(name) ? 1 : 0)); };
+    lt("landing-lights[0]", light.getNode("landing-lights[0]", 1).getBoolValue() ? 1 : 0);
+    lt("landing-lights[1]", light.getNode("landing-lights[1]", 1).getBoolValue() ? 1 : 0);
+    lt("taxi-lights", light.getNode("taxi-lights", 1).getBoolValue() ? 1 : 0);
+    lt("logo-lights", light.getNode("logo-lights", 1).getBoolValue() ? 1 : 0);
+    lt("nav-lights", light.getNode("nav-lights", 1).getBoolValue() ? 1 : 0);
+    lt("recog-lights", light.getNode("recog-lights", 1).getBoolValue() ? 1 : 0);
+    lt("instrument-lights", light.getNode("instruments-norm", 1).getValue() or 0);
+    lt("eng-lights", light.getNode("eng-norm", 1).getValue() or 0);
+    lt("strobe", getprop("sim/model/lights/strobe/state") or 0);
+    lt("beacon", getprop("sim/model/lights/beacon/state") or 0);
     # starters
     out.getNode("starter[0]", 1).setDoubleValue(pwr * (getprop("controls/engines/engine[0]/starter") or 0));
     out.getNode("starter[1]", 1).setDoubleValue(pwr * (getprop("controls/engines/engine[1]/starter") or 0));
     # misc buses used by generic instruments
     out.getNode("bus-dc", 1).setDoubleValue(pwr);
-    out.getNode("annunciators", 1).setDoubleValue(pwr);
+    out.getNode("annunciators", 1).setDoubleValue(pwr * (cb("annunciators") ? 1 : 0));
 };
 
 var timer = maketimer(0.2, update);

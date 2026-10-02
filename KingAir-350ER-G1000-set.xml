@@ -9,11 +9,13 @@
 <PropertyList>
 
   <sim>
-    <description>Beechcraft King Air 350ER G1000 (JSBSim, PT6A-60A, glass cockpit)</description>
+    <description>Beechcraft King Air 350ER G1000 (JSBSim, PT6A-60A, Pro Line Fusion style glass cockpit)</description>
     <long-description>
-      King Air 350ER with a Garmin G1000 NXi style retrofit: two GDU 1044B displays (FG1000 from FGData) replace
-      the EFIS-84 tubes and the COM1/NAV1 stack; the analogue engine gauges, the second radio stack and the FGC
-      autopilot panel are kept. Requires the FG1000 shipped with FlightGear 2018.3 or later.
+      King Air 350ER with a Collins Pro Line Fusion style flight deck: glareshield with the standby flight display,
+      flight guidance panel, three 14-inch widescreen displays showing the G1000 pages of the FG1000 (touch softkeys,
+      cursor control panels and keyboard on the pedestal), audio panels, display control strip, subpanels, power
+      quadrant, overhead and side panels with working circuit breakers. Every control is animated and wired to the
+      aircraft systems. Requires the FG1000 shipped with FlightGear 2018.3 or later.
       Extended Range airframe (B300CER): MTOW 16500 lb, MLW 15675 lb, MZFW 13000 lb,
       775 US gal (5192 lb) of fuel in enlarged nacelle tanks, reinforced landing gear. This is the airframe of
       the French Air and Space Force ALSR "Vador" and of many ISR / special mission King Airs. Same flight model
@@ -21,7 +23,7 @@
       distance over 50 ft. PT6A-60A engines with beta/reverse, feathering, autofeather, rudder boost,
       yaw damper, aux-to-main fuel transfer, crossfeed and a 3-axis autopilot driven from the cockpit panel.
     </long-description>
-    <author>3D: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky - FDM/systems rebuild 2026</author>
+    <author>3D: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky - FDM/systems rebuild and Pro Line Fusion cockpit 2026</author>
     <aircraft-version>2.4.2</aircraft-version>
     <variant-of>KingAir-350</variant-of>
     <status>beta</status>
@@ -67,9 +69,11 @@
       </door-positions>
       <g1000>
         <enabled type="bool">false</enabled>
-        <pfd><dx-m type="double">0</dx-m><dy-m type="double">0</dy-m><dz-m type="double">0</dz-m></pfd>
-        <mfd><dx-m type="double">0</dx-m><dy-m type="double">0</dy-m><dz-m type="double">0</dz-m></mfd>
       </g1000>
+      <!-- Pro Line Fusion flight deck (Models/Fusion/fusion-cockpit.xml, Nasal/fusion-*.nas) -->
+      <fusion>
+        <cockpit type="bool">true</cockpit>
+      </fusion>
       <pushback>
         <kp type="double">300</kp>
         <ki type="double">0</ki>
@@ -119,8 +123,10 @@
       <line>Press the starter (cockpit switch or 's' with the engine selected); at 12 % N1 move the condition</line>
       <line>lever to LOW IDLE. Light-off follows, N1 stabilises at 62 %. Generators ON after the start.</line>
       <line>Menu KingAir-350 > Automatic start does the whole sequence.</line>
-      <line>G1000: the displays come on with the avionics master. Softkeys and knobs are clickable on the bezels;</line>
-      <line>PFD / MFD pop-up windows are in the King Air 350 menu. The autopilot is flown from the FGC panel (or F11).</line>
+      <line>Displays: they come on with the avionics master. Click the softkey labels at the bottom of a screen (touch);</line>
+      <line>FMS, range, D-, MENU, FPL, PROC, CLR, ENT and radios on the pedestal cursor panels (DISPLAY selects the screen),</line>
+      <line>letters on the pedestal keyboard. Autopilot: flight guidance panel under the glareshield (or F11).</line>
+      <line>Levers: mouse wheel or vertical drag (shift: both levers). Circuit breakers on the side walls: click to pull / push.</line>
       <line>Take-off: flaps APPROACH or UP, prop levers 1700 rpm, torque 100 % (3200 ft.lb), rotate at 104 kt.</line>
       <line>Limits: Vmo 263 KIAS / M 0.58, Vfe 202 (APP) / 158 (DOWN), Vle 184, Vmca 94.</line>
       <line>350ER: MTOW 16500 lb, MLW 15675 lb, MZFW 13000 lb, fuel 5192 lb (775 gal). Vs ~100 / Vso ~89 KCAS at 16500 lb,</line>
@@ -500,6 +506,13 @@
     <fg1000map>
       <file>Aircraft/KingAir-350/Nasal/fg1000-maptiles.nas</file>
     </fg1000map>
+    <fusion>
+      <file>Aircraft/KingAir-350/Nasal/fusion-lamps.nas</file>
+      <file>Aircraft/KingAir-350/Nasal/fusion-cockpit.nas</file>
+    </fusion>
+    <fusion_standby>
+      <file>Aircraft/KingAir-350/Nasal/fusion-standby.nas</file>
+    </fusion_standby>
   </nasal>
 
 </PropertyList>

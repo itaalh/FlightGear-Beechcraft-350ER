@@ -19,6 +19,9 @@
   <property value="1.0"> /controls/engines/autofeather </property>
   <property value="0.0"> systems/engines/autofeather-active[0] </property>
   <property value="0.0"> systems/engines/autofeather-active[1] </property>
+  <property value="0.0"> /controls/engines/autofeather-test </property>
+  <property value="0.0"> /controls/engines/prop-overspeed-test </property>
+  <property value="0.0"> fcs/prop-sync-trim </property>
 
   <channel name="Torque indication">
     <fcs_function name="propulsion/engine[0]/torque-pct">
@@ -58,15 +61,25 @@
   </channel>
 
   <channel name="Propeller levers">
-    <!-- governor setting: lever travel 0.08..1 -> 1450..1700 rpm; below 0.04 = feather detent -->
+    <!-- governor setting: lever travel 0.08..1 -> 1450..1700 rpm; below 0.04 = feather detent.
+         Pro Line Fusion cockpit: fcs/prop-sync-trim (synchrophaser, right governor, Nasal/fusion-cockpit.nas) and
+         the overspeed governor test (/controls/engines/prop-overspeed-test: governors limited to ~1565 rpm). -->
+    <fcs_function name="fcs/prop-gov-limit-norm">
+      <function> <difference> <value> 1 </value>
+        <product> <value> 0.54 </value> <property> /controls/engines/prop-overspeed-test </property> </product>
+      </difference> </function>
+    </fcs_function>
     <fcs_function name="fcs/advance-pos-norm[0]">
-      <function> <max> <value> 0 </value> <min> <value> 1 </value>
+      <function> <max> <value> 0 </value> <min> <property> fcs/prop-gov-limit-norm </property>
         <product> <value> 1.0869565 </value> <difference> <property> fcs/advance-cmd-norm[0] </property> <value> 0.08 </value> </difference> </product>
       </min> </max> </function>
     </fcs_function>
     <fcs_function name="fcs/advance-pos-norm[1]">
-      <function> <max> <value> 0 </value> <min> <value> 1 </value>
-        <product> <value> 1.0869565 </value> <difference> <property> fcs/advance-cmd-norm[1] </property> <value> 0.08 </value> </difference> </product>
+      <function> <max> <value> 0 </value> <min> <property> fcs/prop-gov-limit-norm </property>
+        <sum>
+          <product> <value> 1.0869565 </value> <difference> <property> fcs/advance-cmd-norm[1] </property> <value> 0.08 </value> </difference> </product>
+          <property> fcs/prop-sync-trim </property>
+        </sum>
       </min> </max> </function>
     </fcs_function>
     <switch name="systems/engines/manual-feather[0]">
@@ -82,7 +95,8 @@
   </channel>
 
   <channel name="Autofeather">
-    <!-- armed when both power levers above ~90 % N1 (throttle > 0.67) -->
+    <!-- armed when both power levers above ~90 % N1 (throttle > 0.67); AUTOFEATHER TEST (Pro Line Fusion cockpit,
+         /controls/engines/autofeather-test) arms it at any power setting for the ground test -->
     <switch name="systems/engines/autofeather-armed">
       <default value="0"/>
       <test logic="AND" value="1">
@@ -92,14 +106,24 @@
         propulsion/engine[0]/reverser == 0
         propulsion/engine[1]/reverser == 0
       </test>
+      <test logic="AND" value="1">
+        /controls/engines/autofeather-test == 1
+        propulsion/engine[0]/reverser == 0
+        propulsion/engine[1]/reverser == 0
+      </test>
     </switch>
-    <!-- torque below 17 % on one side while the other side is above 40 %: feather after a short delay -->
+    <!-- torque below 17 % on one side while the other side is above 40 % (20 % in TEST): feather after a short delay -->
     <switch name="systems/engines/autofeather-trigger[0]">
       <default value="0"/>
       <test logic="AND" value="1">
         systems/engines/autofeather-armed == 1
         propulsion/engine[0]/torque-pct lt 17
         propulsion/engine[1]/torque-pct gt 40
+      </test>
+      <test logic="AND" value="1">
+        /controls/engines/autofeather-test == 1
+        propulsion/engine[0]/torque-pct lt 17
+        propulsion/engine[1]/torque-pct gt 20
       </test>
     </switch>
     <switch name="systems/engines/autofeather-trigger[1]">
@@ -108,6 +132,11 @@
         systems/engines/autofeather-armed == 1
         propulsion/engine[1]/torque-pct lt 17
         propulsion/engine[0]/torque-pct gt 40
+      </test>
+      <test logic="AND" value="1">
+        /controls/engines/autofeather-test == 1
+        propulsion/engine[1]/torque-pct lt 17
+        propulsion/engine[0]/torque-pct gt 20
       </test>
     </switch>
     <lag_filter name="systems/engines/autofeather-delay[0]">

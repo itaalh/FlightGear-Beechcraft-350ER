@@ -2,7 +2,8 @@
 
 Version 2.4.2 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
 historique des versions dans `CHANGELOG.md`.
-Modèle 3D et cockpit : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017).
+Modèle 3D et cockpit : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017) ; cockpit
+Pro Line Fusion de la variante G1000 : 2026, généré par les scripts de `Tools/fusion`.
 Licence : GPL v2 ou ultérieure (voir `COPYING`).
 
 ## Installation
@@ -29,7 +30,7 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 | Essuie-glaces | sélecteur du panneau supérieur (clic gauche / molette) : PARK / OFF / SLOW / FAST ; PARK ramène les balais en butée puis revient sur OFF |
 | Volants | menu *King Air 350 › Yokes visible* (réglage conservé d'une session à l'autre) |
 | Départ en vol | `--in-air --altitude=… --vc=…` avec `--prop:/sim/presets/running=true` : moteurs en marche, puissance, pas d'hélice et trims réglés pour le palier, train rentré au-dessus de 150 kt ; l'avion est tenu 4 s, le temps que les hélices se stabilisent. Sans cette option, les moteurs sont arrêtés |
-| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
+| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK ; variante G1000 : panneau FGP, voir plus bas) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
 | Amortisseur de lacet | bouton YD ou `Ctrl-Y` (obligatoire au-dessus de 5 000 ft sur l'avion réel) |
 | Porte / escalier | `D` |
 | Carburant | menu *System failures* (dialogue systèmes) : crossfeed, pompes de transfert aux, générateurs, batterie… |
@@ -51,14 +52,44 @@ croisière max 305 KTAS FL240 (livre 303), décollage 3 910 ft sur 50 ft (BFL li
 
 ## Variante 350ER G1000 (`KingAir-350ER-G1000-set.xml`, `Models/KingAir-G1000.xml`)
 
-Cellule et modèle de vol du **350ER** (ci-dessus) avec un cockpit modernisé façon **King Air 350 / retrofit Garmin
-G1000 NXi** : trois écrans Garmin GDU 1044B du FG1000 fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`,
-FlightGear ≥ 2018.3) alignés sur le tableau de bord, PFD pilote, MFD au centre et PFD copilote. Ils remplacent les
-instruments EFIS-84 et analogiques des deux places (ADI, HSI, anémomètre, altimètre, variomètre, RMI), les radios
-COM/NAV/ADF/transpondeur, l'alerteur d'altitude, le KLN-90B et la colonne des jauges moteur : une plaque
-(`Models/G1000-panel.ac`) les recouvre et ils sont masqués automatiquement (`sim/model/g1000/enabled`).
+Cellule et modèle de vol du **350ER** (ci-dessus). Le cockpit est entièrement refait **façon Collins Pro Line Fusion**
+(King Air 350ER / 360), d'après photographies. Ses trois grands écrans affichent les pages du **G1000** : c'est le FG1000
+fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`, FlightGear ≥ 2018.3), seul système d'écrans
+disponible dans FlightGear. Toutes les commandes du cockpit sont animées, cliquables et reliées aux systèmes. La
+description détaillée des panneaux, et la façon de régénérer le cockpit, sont dans `Docs/Fusion-cockpit.md`.
 Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le lanceur propose donc `KingAir-350`,
 `KingAir-350ER` et `KingAir-350ER-G1000`.
+
+### Le cockpit
+
+- **Écrans :** PFD pilote, MFD au centre, PFD copilote : trois écrans larges de 14 pouces. L'image G1000 (4:3) occupe
+  le centre de chaque écran. Les touches programmables du G1000 se commandent en cliquant leur libellé en bas de
+  l'écran, comme sur un écran tactile. Les molettes et touches du G1000 sont reportées :
+  - sur le panneau de pilote automatique (FGP) : CRS1, HDG, ALT, CRS2 ;
+  - sur les panneaux audio : BARO ;
+  - sur les deux boîtiers de curseur du pupitre : FMS, RANGE, D→, MENU, FPL, PROC, CLR, ENT, radios NAV et COM. Le
+    sélecteur DISPLAY de chaque boîtier choisit l'écran commandé : PFD 1 ou MFD pour le pilote, MFD ou PFD 2 pour le
+    copilote.
+- **Clavier (MKP) :** lettres et chiffres pour saisir directement un identifiant (D→, plan de vol, pages WPT), sur
+  l'écran du dernier boîtier de curseur utilisé.
+- **Écran de secours :** au-dessus du FGP, avec attitude, vitesse, altitude avec son propre calage, cap et bille.
+  MENU épure l'affichage, BARO passe en STD, la molette règle le calage (appui : calage du PFD pilote).
+- **Pilote automatique :** celui de l'avion (boucles JSBSim), commandé par le FGP. Boutons FD, VS, VNAV, FLC, NAV,
+  HDG, APPR, 1/2 BANK, ALT, YD, CPL, AP et YD/AP DISC ; molettes SPEED et de tangage.
+  - **CPL :** couple le pilote automatique au PFD pilote ou copilote. Le mode NAV suit la source CDI de ce PFD : GPS
+    (plan de vol actif du G1000), NAV1 ou NAV2.
+  - **VNAV :** tient une pente vers la prochaine contrainte d'altitude de la route active, en VS avec capture ALTS.
+  - **ALT :** l'altitude choisie à la molette ALT est capturée depuis VS, FLC ou PIT (ALTS armé).
+  - **Autres commandes :** le bouton GO AROUND de la manette de puissance gauche passe le directeur de vol à 7° à
+    cabrer, ailes à plat ; les volants portent le trim électrique, la déconnexion AP / YD et l'alternat.
+- **Réversion d'écran :** un écran mis sur OFF s'éteint, et le PFD du même côté passe sur l'écran central. L'inhibition
+  TOUCH / CURSOR désactive les touches tactiles ou le boîtier de curseur d'un écran.
+- **Nuit :** inscriptions rétroéclairées (rhéostat PANEL LIGHTS et MASTER PANEL LIGHTS du plafonnier), écrans
+  auto-éclairés (rhéostats des écrans) et projecteurs d'ambiance (PANEL / PEDESTAL / OVERHEAD FLOOD).
+- **Disjoncteurs :** environ 90, sur les parois gauche et droite. Chacun coupe réellement son circuit : radios et
+  écrans, éclairages, démarrage, pompes, trims, volets, train, chauffages, conditionnement, etc.
+
+### Le G1000
 
 - `Nasal/fg1000-kingair.nas` charge le FG1000 après l'initialisation du FDM, avec un *Engine Indication System*
   bimoteur turbopropulseur (`Nasal/fg1000-kingair-eis.nas`, cadre `Models/Instruments/FG1000/EIS-KingAir.svg`,
@@ -67,22 +98,21 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   par côté et total, tension / courant / charge des générateurs. Plages de couleur = marquages des instruments
   du 350 (couple 100 %, ITT 400-820 °C, hélice 1 450-1 700 tr/min, N1 62-104 %, huile 60/90-135 psi et
   0-99/110 °C, carburant 0-265 lb interdit au décollage).
-- PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà), repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de
-  vitesse marquée comme l'anémomètre du 350 (arc blanc large 81-96 / étroit 96-158 kt, repère volets APP 202 kt,
-  trait rouge Vmca 94, trait bleu Vyse 125, bande rayée au-delà de Vmo).
+- PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà),
+  repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de vitesse marquée comme l'anémomètre du 350 (arc blanc
+  large 81-96 / étroit 96-158 kt, repère volets APP 202 kt, trait rouge Vmca 94, trait bleu Vyse 125, bande rayée
+  au-delà de Vmo).
 - PFD : fenêtre CAS (à droite de l'altimètre) alimentée par `Nasal/annunciators.nas` : alarmes en rouge, cautions
   en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
   MASTER CAUTION.
-- Heure : l'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h, comme les horloges analogiques du tableau
-  de bord (heure UTC du simulateur).
-- Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`) ;
-  les écrans s'éteignent avec l'avionique. Rétroéclairage des touches des cadres réglé par le rhéostat
-  *Instruments* (menu *King Air 350 › Lights*).
-- Cap : les boutons HDG des deux PFD, celui du panneau FGC et le dialogue du pilote automatique règlent le même
-  index de cap (le dernier tourné l'emporte).
+- Heure : l'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h (heure UTC du simulateur).
+- Cap : le cap affiché vient de l'AHRS du cockpit. Il est asservi au compas, ou devient un directionnel libre avec
+  DG FREE, recalé par SLEW.
+- Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`), avec
+  leurs disjoncteurs ; les écrans s'éteignent avec l'avionique.
 - Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* / *copilot PFD
-  pop-up window* ; commandes clavier du
-  FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le dialogue *Help › Aircraft keys*).
+  pop-up window* ; commandes clavier du FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le
+  dialogue *Help › Aircraft keys*).
 - Carte hors ligne : menu *King Air 350 › G1000: map tiles (offline map)* (`Nasal/fg1000-maptiles.nas`). On y choisit
   la source des tuiles du fond de carte (TOPO du MFD, encart carte du PFD) :
   - **OpenStreetMap** (par défaut) : téléchargement par Internet, cache dans `$FG_HOME/cache/maps/osm-cache` ;
@@ -96,20 +126,12 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 
   Le bouton *Test* vérifie la source à la position de l'avion. *Max zoom* indique le niveau de zoom le plus fin que
   possède la source : au-delà, les tuiles sont agrandies. Les réglages sont conservés d'une session à l'autre.
-- Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
-  `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
-  Les propriétés `sim/model/g1000/pfd|mfd|pfd2/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
-- Pilote automatique : celui de l'avion (boucles JSBSim), commandé au choix par le panneau FGC ou par les touches
-  des écrans GDU. Les touches AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC et NOSE UP / DN sont reprises ; VNV n'est
-  pas disponible.
-  - **Source de guidage :** la touche CDI du PFD pilote la choisit. En GPS, le mode NAV suit le plan de vol actif
-    du G1000 (NAV1 asservi au GPS) ; en NAV1 ou NAV2, il suit le VOR ou le LOC.
-  - **ALT SEL :** l'altitude choisie au bouton ALT du PFD est capturée depuis VS, FLC ou PIT (ALTS armé). Tourner
-    ALT SEL en ALT ne change pas l'altitude tenue.
-  - **Affichage :** les modes (GPS/VOR/LOC/HDG/ROL, ALT/VS/FLC/PIT/GS, ALTS, référence) et le directeur de vol
-    s'affichent en haut du PFD.
-- Limites : pas de mode réversion (EIS sur le PFD). VNV et approches GPS avec guidage vertical non simulés. Si le dossier FG1000 est absent, la variante
-  démarre avec les instruments d'origine et affiche un message.
+- Limites :
+  - Les pages et symboles sont ceux du G1000, pas ceux du Pro Line Fusion ; l'écran large garde donc des bandes
+    noires de chaque côté de l'image 4:3.
+  - Le VNAV est simplifié ; les approches GPS avec guidage vertical ne sont pas simulées.
+  - Si le dossier FG1000 est absent, les écrans restent noirs et un message s'affiche ; le reste du cockpit
+    fonctionne.
 
 ## Ce qui a été refait
 
