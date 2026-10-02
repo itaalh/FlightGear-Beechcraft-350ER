@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Armée de l'Air et de l'Espace - Beechcraft King Air 350ER ALSR "Vador", serial 1030, registration F-RACH
+  (EEA 01.054 "Dunkerque"). Painted from photographs of the aircraft (J.-L. Brunet / armée de l'Air et de l'Espace).
+  The registration is part of the texture (FlightGear has no generic in-sim registration feature).
+  window-plug-l1: the first cabin window on the left side is plugged on this aircraft (Models/KingAir.xml).
+-->
+
+<PropertyList>
+  <sim>
+    <model>
+      <livery>
+        <name type="string">Armée de l'Air - ALSR Vador 1030 F-RACH</name>
+        <index type="int">6</index>
+        <window-plug-l1 type="bool">true</window-plug-l1>
+        <bodyWork>
+          <texture>Liveries/ALSR.png</texture>
+        </bodyWork>
+      </livery>
+    </model>
+  </sim>
+</PropertyList>

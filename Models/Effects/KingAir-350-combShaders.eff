@@ -4,16 +4,19 @@
   <name>KingAir-350-combShaders</name>
   <inherits-from>Effects/model-combined-deferred</inherits-from>
   <parameters>
-    <normalmap-enabled type="int">0</normalmap-enabled>
+    <!-- surface detail shared by all liveries: panel joints, flush rivets, access panels;
+         alpha = gloss (1 on paint, lower on de-icing boots, tyres, exhausts) -->
+    <normalmap-enabled type="int">1</normalmap-enabled>
     <normalmap-dds type="int">0</normalmap-dds>
-    <!--
+    <normalmap-tiling type="float">1.0</normalmap-tiling>
     <texture n="2">
       <image>Effects/KingAir-350-normalmap.png</image>
+      <type>2d</type>
       <filter>linear-mipmap-linear</filter>
       <wrap-s>repeat</wrap-s>
       <wrap-t>repeat</wrap-t>
+      <internal-format>normalized</internal-format>
     </texture>
-   -->
     <lightmap-enabled type="int">1</lightmap-enabled>
     <lightmap-factor type="float"><use>gear/gear/position-norm</use></lightmap-factor>
     <texture n="3">

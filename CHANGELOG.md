@@ -35,16 +35,33 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   contrainte d'altitude de la route), couplage du pilote automatique au PFD copilote (CPL), GO AROUND, avertisseur
   de train, directionnel libre (DG FREE / SLEW), prise statique de secours, réversion d'écran, température cabine,
   compteur d'heures, voyant RADIO CALL, pompes de secours carburant.
+- **Livrée Armée de l'Air – ALSR Vador 1030 F-RACH** (EEA 1/54 « Dunkerque »), texture 4096 × 4096 reproduite
+  d'après des photographies de l'avion : blanc intégral, inscriptions basse visibilité (F-RACH sur le fuselage, sur
+  l'aile droite et sous l'aile gauche, ARMEE DE L'AIR, 1030 sur la dérive), cocardes (cône arrière, extrados de
+  l'aile gauche et, en symétrie, intrados de l'aile droite), bande d'hélice HELICE / DANGER, marquages de porte et
+  d'issue de secours, premier hublot cabine gauche obturé comme sur l'avion (objet `WindowPlugL1`, visible avec
+  cette livrée seulement).
+- **Relief de surface pour toutes les livrées** : normal map (jointures de tôles, rivets, trappes de visite,
+  verrous de capots) et brillance par matériau.
+- `PaintKit/UV-template-4096.png` et `Tools/livery/` (générateur de la livrée et de la normal map).
 
 ### Modifié
 - **Systèmes communs** (sans effet sur le 350 et le 350ER) : démarreur seul sans allumage, allumage automatique
   commutable, test de mise en drapeau automatique et du régulateur de survitesse, pare-brise HI, air pneumatique
   des clapets de prélèvement, disjoncteurs lus par l'électricité, l'antigivrage, la pressurisation et les
   annonciateurs.
+- **Dessous des ailes et des ailerons** : coordonnées de texture propres (ils réutilisaient celles de l'extrados, un
+  marquage d'aile apparaissait donc aussi sous l'aile). Les livrées existantes et la lightmap ont été complétées
+  pour garder le même aspect.
 
 ### Supprimé
 - Plaque `Models/G1000-panel.ac` et documentation de pose des boîtiers GDU (`Docs/G1000-*`), remplacées par le
   cockpit Fusion.
+
+### Corrigé
+- Volets, bandes de volets, vérins de train et une grande partie du cône de nez avaient des coordonnées de texture
+  réduites à un point : ils s'affichaient noirs dès qu'une normal map était active. Chaque polygone a désormais une
+  surface de texture (sous le texel, sans changement de couleur).
 
 ## [2.4.2] — 2026-09-27
 

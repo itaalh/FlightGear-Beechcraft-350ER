@@ -116,6 +116,7 @@ License: GPL2. See ./COPYING
 		<object-name>WingLightsRight</object-name>
 		<object-name>Wings</object-name>
 		<object-name>WngCowl</object-name>
+		<object-name>WindowPlugL1</object-name>
 	</effect>
 
 	<effect>
@@ -319,6 +320,7 @@ License: GPL2. See ./COPYING
 		<object-name>WingLightsRight</object-name>
 		<object-name>Wings</object-name>
 		<object-name>WngCowl</object-name>
+		<object-name>WindowPlugL1</object-name>
 	</animation>
 
 	<animation>
@@ -327,6 +329,16 @@ License: GPL2. See ./COPYING
 		<property-base>sim/model/livery/bodyWork</property-base>
 		<texture-prop>texture</texture-prop>
 		<texture>prototype.png</texture>
+	</animation>
+
+	<!-- Plugged first cabin window on the left side (ALSR "Vador"). Shown only by liveries that set
+	     sim/model/livery/window-plug-l1 to true (Liveries/ALSR.xml); the other liveries set it to false. -->
+	<animation>
+		<type>select</type>
+		<object-name>WindowPlugL1</object-name>
+		<condition>
+			<property>sim/model/livery/window-plug-l1</property>
+		</condition>
 	</animation>
   
 	<animation>
