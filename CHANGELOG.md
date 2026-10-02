@@ -6,25 +6,45 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 ## Non publié
 
 ### Ajouté
-- **Livrée Armée de l'Air – ALSR Vador 1030 F-RACH** (EEA 1/54 « Dunkerque »), texture 4096 × 4096 reproduite
-  d'après des photographies de l'avion : blanc intégral, inscriptions basse visibilité (F-RACH sur le fuselage, sur
-  l'aile droite et sous l'aile gauche, ARMEE DE L'AIR, 1030 sur la dérive), cocardes (cône arrière, extrados de l'aile gauche et, en symétrie, intrados de l'aile
-  droite), bande d'hélice HELICE /
-  DANGER, marquages de porte et d'issue de secours, premier hublot cabine gauche obturé comme sur l'avion (objet
-  `WindowPlugL1`, visible avec cette livrée seulement).
-- **Relief de surface pour toutes les livrées** : normal map (jointures de tôles, rivets, trappes de visite,
-  verrous de capots) et brillance par matériau.
-- `PaintKit/UV-template-4096.png` et `Tools/livery/` (générateur de la livrée et de la normal map).
+- **350ER G1000 : nouveau cockpit façon Collins Pro Line Fusion** (King Air 350ER / 360), refait d'après
+  photographies. Il remplace, pour cette variante seulement, tout le cockpit classique, hors plancher et palonniers :
+  - **Auvent et tableau :** auvent avec bosse de l'écran de secours, MASTER WARNING / MASTER CAUTION pilote et
+    copilote, poussoirs incendie (extincteurs, robinets coupe-feu), balises et TAWS, RADIO CALL.
+  - **Écrans :** trois écrans larges de 14 pouces qui affichent les pages du FG1000. Les touches programmables se
+    commandent en cliquant leur libellé en bas de l'écran, comme sur un écran tactile.
+  - **Pilote automatique (FGP) :** FD, VS, VNAV, FLC, NAV, HDG, APPR, 1/2 BANK, ALT, YD, CPL, AP, YD/AP DISC,
+    molettes CRS1 / SPEED / HDG / ALT / CRS2 et molette de tangage.
+  - **Écran de secours :** attitude, vitesse, altitude avec son propre calage, cap et bille.
+  - **Tableau et panneaux inférieurs :**
+    - panneaux audio pilote et copilote ;
+    - bandeau de commande des écrans (réversion, sources AHS / ADS, inhibition tactile / curseur, PROP SYNC,
+      DG FREE / SLEW, EMER FREQ, statique de secours) ;
+    - panneaux inférieurs : électricité, démarrage, antigivrage, éclairage, train, conditionnement d'air, jauges de
+      volets et de cabine ;
+    - volants avec trim électrique, déconnexion AP / YD et alternat.
+  - **Pupitre :** manettes de puissance (bêta / inverse, GO AROUND, silence de l'avertisseur de train), d'hélice et
+    de condition ; volets ; trims. Deux boîtiers de curseur et un clavier commandent le G1000 : molette FMS, portée,
+    D→, MENU, FPL, PROC, CLR, ENT, radios NAV / COM, saisie des identifiants au clavier. S'y ajoutent le contrôleur de
+    pressurisation, RUDDER BOOST, ELEV TRIM, les tests d'avertisseurs et l'enregistreur de conversations.
+  - **Plafonnier et parois :** rhéostats d'éclairage (inscriptions, écrans, projecteurs), essuie-glaces, signaux
+    cabine, instruments électriques et OAT ; panneau carburant (jauges MAIN / AUX / TEST, intercommunication, pompes
+    de secours, transfert) ; environ 90 disjoncteurs qui coupent réellement leur circuit ; compas de secours ;
+    sièges, dont l'accoudoir intérieur se relève d'un clic (relevé au démarrage, pour laisser voir le pupitre).
+  - **Nuit :** inscriptions rétroéclairées, écrans auto-éclairés et projecteurs d'ambiance.
+- **Nouvelles fonctions** (Nasal/fusion-cockpit.nas) : synchroniseur d'hélices, VNAV simplifié (vers la prochaine
+  contrainte d'altitude de la route), couplage du pilote automatique au PFD copilote (CPL), GO AROUND, avertisseur
+  de train, directionnel libre (DG FREE / SLEW), prise statique de secours, réversion d'écran, température cabine,
+  compteur d'heures, voyant RADIO CALL, pompes de secours carburant.
 
 ### Modifié
-- **Dessous des ailes et des ailerons** : coordonnées de texture propres (ils réutilisaient celles de l'extrados, un
-  marquage d'aile apparaissait donc aussi sous l'aile). Les livrées existantes et la lightmap ont été complétées
-  pour garder le même aspect.
+- **Systèmes communs** (sans effet sur le 350 et le 350ER) : démarreur seul sans allumage, allumage automatique
+  commutable, test de mise en drapeau automatique et du régulateur de survitesse, pare-brise HI, air pneumatique
+  des clapets de prélèvement, disjoncteurs lus par l'électricité, l'antigivrage, la pressurisation et les
+  annonciateurs.
 
-### Corrigé
-- Volets, bandes de volets, vérins de train et une grande partie du cône de nez avaient des coordonnées de texture
-  réduites à un point : ils s'affichaient noirs dès qu'une normal map était active. Chaque polygone a désormais une
-  surface de texture (sous le texel, sans changement de couleur).
+### Supprimé
+- Plaque `Models/G1000-panel.ac` et documentation de pose des boîtiers GDU (`Docs/G1000-*`), remplacées par le
+  cockpit Fusion.
 
 ## [2.4.2] — 2026-09-27
 
