@@ -22317,6 +22317,552 @@
     </hovered>
   </animation>
 
+  <!-- PFD radio boxes (touch, Nasal/fusion-cockpit.nas radio_touch): click a standby frequency to select that radio, mouse wheel on it to tune (MHz, shift: kHz), click the arrow or the active frequency to swap them -->
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.nav1.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 1, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 1, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 1, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.nav1.stby</tooltip-id>
+        <label>NAV1 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.nav1.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 1, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.nav1.swap</tooltip-id>
+        <label>NAV1: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.nav2.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 2, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 2, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 2, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.nav2.stby</tooltip-id>
+        <label>NAV2 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.nav2.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "NAV", 2, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.nav2.swap</tooltip-id>
+        <label>NAV2: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.com1.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 1, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 1, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 1, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.com1.stby</tooltip-id>
+        <label>COM1 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.com1.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 1, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.com1.swap</tooltip-id>
+        <label>COM1: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.com2.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 2, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 2, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 2, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.com2.stby</tooltip-id>
+        <label>COM2 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display1.com2.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(1, "COM", 2, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd1</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio1.com2.swap</tooltip-id>
+        <label>COM2: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.nav1.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 1, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 1, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 1, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.nav1.stby</tooltip-id>
+        <label>NAV1 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.nav1.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 1, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.nav1.swap</tooltip-id>
+        <label>NAV1: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.nav2.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 2, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 2, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 2, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.nav2.stby</tooltip-id>
+        <label>NAV2 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.nav2.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "NAV", 2, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.nav2.swap</tooltip-id>
+        <label>NAV2: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.com1.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 1, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 1, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 1, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.com1.stby</tooltip-id>
+        <label>COM1 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.com1.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 1, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.com1.swap</tooltip-id>
+        <label>COM1: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.com2.stby</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 2, "select");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>3</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 2, "tune", 1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <action>
+      <button>4</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 2, "tune", -1);</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.com2.stby</tooltip-id>
+        <label>COM2 standby: click to select, mouse wheel to tune (shift: kHz)</label>
+      </binding>
+    </hovered>
+  </animation>
+  <animation>
+    <type>pick</type>
+    <object-name>Display3.com2.swap</object-name>
+    <visible>false</visible>
+    <action>
+      <button>0</button>
+      <repeatable>false</repeatable>
+      <binding>
+        <command>nasal</command>
+        <script>fusion.radio_touch(3, "COM", 2, "swap");</script>
+        <condition>
+        <not><equals><property>controls/fusion/inhibit-pfd2</property><value>1</value></equals></not>
+        </condition>
+      </binding>
+    </action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>F.radio3.com2.swap</tooltip-id>
+        <label>COM2: swap active and standby frequencies</label>
+      </binding>
+    </hovered>
+  </animation>
+
   <!-- ===== control wheels: elevator (fore / aft), aileron (turn), menu King Air 350 > Yokes visible -->
   <animation>
     <type>select</type>

@@ -24,6 +24,7 @@ Toutes les commandes affichent une bulle d'aide avec leur état au survol.
 | Levier de volets | molette ou glisser : UP, APPROACH, DOWN. |
 | Roue de trim de profondeur | molette ou glisser (rouler vers l'avant : piqué) ; Maj : rapide. |
 | Écrans | clic sur le libellé d'une touche programmable, en bas de l'écran (écran tactile). |
+| Radios des PFD (cadres NAV et COM en haut) | clic sur une fréquence d'attente : choisit la radio ; molette dessus : réglage (MHz ; Maj : kHz) ; clic sur la flèche ou la fréquence active : permutation. |
 | Accoudoir intérieur des sièges | clic : baissé / relevé. Il est relevé au démarrage, pour laisser voir le pupitre. |
 
 Les volants se masquent par le menu *King Air 350 › Yokes visible* (`sim/model/yokes-visible`). Ils portent la

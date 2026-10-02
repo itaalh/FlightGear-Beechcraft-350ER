@@ -424,6 +424,25 @@ def gen_screens(x):
         for k in range(1, 13):
             pick(x, "Display%d.sk%d" % (n, k), [{"command": "FG1000SoftKeyPushed", "device": n, "offset": k}],
                  tip={"label": "Softkey %d (touch)" % k}, tid="F.sk%d.%d" % (n, k), visible=False, condition=cond)
+    x.comment("PFD radio boxes (touch, Nasal/fusion-cockpit.nas radio_touch): click a standby frequency to select"
+              " that radio, mouse wheel on it to tune (MHz, shift: kHz), click the arrow or the active frequency to"
+              " swap them")
+    for n in (1, 3):
+        name = {1: "pfd1", 3: "pfd2"}[n]
+        cond = "<not><equals><property>controls/fusion/inhibit-%s</property><value>1</value></equals></not>" % name
+        for kind in ("nav", "com"):
+            k = kind.upper()
+            for line in (1, 2):
+                obj = "Display%d.%s%d" % (n, kind, line)
+                call = lambda action, extra="": {"command": "nasal", "script": 'fusion.radio_touch(%d, "%s", %d, "%s"%s);'
+                                                 % (n, k, line, action, extra)}
+                pick(x, obj + ".stby", [call("select")],
+                     tip={"label": "%s%d standby: click to select, mouse wheel to tune (shift: kHz)" % (k, line)},
+                     tid="F.radio%d.%s%d.stby" % (n, kind, line), visible=False, condition=cond,
+                     wheel=([call("tune", ", 1")], [call("tune", ", -1")]))
+                pick(x, obj + ".swap", [call("swap")],
+                     tip={"label": "%s%d: swap active and standby frequencies" % (k, line)},
+                     tid="F.radio%d.%s%d.swap" % (n, kind, line), visible=False, condition=cond)
 
 
 def gen_yokes(x, piv):

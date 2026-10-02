@@ -93,6 +93,24 @@ def build_displays(coll):
                   S.SCREEN_Z + 0.0003, S.SCREEN_Z + 0.004, "hotspot")
             ob = hb.build("Display%d.sk%d" % (n, k + 1), coll, {"ac_twosided": True})
             ob.hide_render = True
+        # touch radio boxes of the PFDs: the NAV1/NAV2 lines (top left of the canvas) and COM1/COM2 lines (top
+        # right), each with a standby frequency zone and an arrow + active frequency zone (FG1000 SurroundPFD.svg,
+        # px of the 1024 x 768 canvas from the top left)
+        if n in (1, 3):
+            for kind, zones in (("nav", (("stby", 60, 134), ("swap", 134, 216))),
+                                ("com", (("swap", 780, 872), ("stby", 872, 952)))):
+                for line in (1, 2):
+                    py0 = 4 + (line - 1) * 25
+                    for part, px0, px1 in zones:
+                        x0 = cx - S.CANVAS_W / 2 + px0 / 1024.0 * S.CANVAS_W
+                        x1 = cx - S.CANVAS_W / 2 + px1 / 1024.0 * S.CANVAS_W
+                        y1 = S.SCREEN_H / 2 - py0 / 768.0 * S.SCREEN_H
+                        y0 = y1 - 25 / 768.0 * S.SCREEN_H
+                        hb = MeshBuilder()
+                        prism(hb, S.MP, lambda i, x0=x0, x1=x1, y0=y0, y1=y1: [(x0, y0), (x1, y0), (x1, y1), (x0, y1)],
+                              S.SCREEN_Z + 0.0003, S.SCREEN_Z + 0.004, "hotspot")
+                        ob = hb.build("Display%d.%s%d.%s" % (n, kind, line, part), coll, {"ac_twosided": True})
+                        ob.hide_render = True
 
 
 # ----------------------------------------------------------------------------------------------------------------

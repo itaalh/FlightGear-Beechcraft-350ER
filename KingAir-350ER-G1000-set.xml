@@ -126,6 +126,8 @@
       <line>Displays: they come on with the avionics master. Click the softkey labels at the bottom of a screen (touch);</line>
       <line>FMS, range, D-, MENU, FPL, PROC, CLR, ENT and radios on the pedestal cursor panels (DISPLAY selects the screen),</line>
       <line>letters on the pedestal keyboard. Autopilot: flight guidance panel under the glareshield (or F11).</line>
+      <line>Radios: on the NAV / COM boxes at the top of the PFDs, click a standby frequency to select it, mouse wheel to</line>
+      <line>tune (MHz, shift: kHz), click the arrow or the active frequency to swap. MFD ENGINE key: ENGINE / SYSTEM / FUEL.</line>
       <line>Levers: mouse wheel or vertical drag (shift: both levers). Circuit breakers on the side walls: click to pull / push.</line>
       <line>Take-off: flaps APPROACH or UP, prop levers 1700 rpm, torque 100 % (3200 ft.lb), rotate at 104 kt.</line>
       <line>Limits: Vmo 263 KIAS / M 0.58, Vfe 202 (APP) / 158 (DOWN), Vle 184, Vmca 94.</line>
