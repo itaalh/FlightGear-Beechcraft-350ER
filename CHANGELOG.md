@@ -3,6 +3,30 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+- **G1000 : carte hors ligne, serveurs dont l'URL ne finit pas par `.png` / `.jpg`.** Le format des tuiles était
+  déduit du texte de l'URL : les tuiles JPEG d'un serveur sans extension (ArcGIS `…/tile/{z}/{y}/{x}`, MapProxy,
+  QGIS Server, WMS…) étaient mises en cache en `.png` et restaient blanches. Le format réel (PNG ou JPEG) est
+  maintenant lu dans une tuile de test (*Test*, *Apply* et au démarrage), et le message d'état signale une réponse
+  qui n'est pas une image (page d'erreur, exception WMS, tuiles WebP). Le cache d'un serveur change de dossier
+  (`tiles-<serveur>-<somme de contrôle>`) : il se remplit à nouveau une fois.
+- **Dossier de tuiles en `.jpg`** : l'extension des tuiles d'un dossier simple est lue dans le dossier (`.png`
+  auparavant imposé).
+
+### Ajouté
+- **Serveurs de tuiles enregistrés sous un nom** : champ *Name* et bouton *Save* (URL et zoom maximal), liste
+  *Saved servers* pour passer d'un serveur à l'autre (le choix s'applique aussitôt), bouton *Delete*. La liste est
+  conservée d'une session à l'autre.
+- **Boutons *Paste*** à côté des champs URL et dossier : les champs de saisie des dialogues FlightGear ne prennent
+  pas Ctrl+V (un espace est inséré à la place) ; le bouton colle la première ligne du presse-papiers.
+- **Messages d'erreur réseau explicites** : nom de serveur introuvable, proxy nécessaire (option `--proxy`),
+  serveur injoignable, certificat HTTPS refusé ; une URL refusée est affichée dans le message.
+- **Nouveaux marqueurs d'URL** pour le serveur de tuiles : `{s}` (sous-domaine a / b / c), `{q}` / `{quadkey}`
+  (numérotation Bing), `{bbox}` (emprise EPSG:3857, pour interroger directement un serveur WMS) et les noms WMTS
+  `{TileMatrix}` `{TileCol}` `{TileRow}`.
+
 ## [2.6.0] — 2026-10-02
 
 ### Ajouté
