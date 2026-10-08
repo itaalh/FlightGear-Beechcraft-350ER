@@ -121,14 +121,28 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
 - Carte hors ligne : menu *King Air 350 › G1000: map tiles (offline map)* (`Nasal/fg1000-maptiles.nas`). On y choisit
   la source des tuiles du fond de carte (TOPO du MFD, encart carte du PFD) :
   - **OpenStreetMap** (par défaut) : téléchargement par Internet, cache dans `$FG_HOME/cache/maps/osm-cache` ;
-  - **Local server** : un serveur de tuiles XYZ, par exemple `http://localhost:8090/{z}/{x}/{y}.png` (`{tms_y}` pour
-    une numérotation TMS). Les tuiles reçues sont mises en cache dans `$FG_HOME/cache/maps/tiles-<serveur>` et restent
-    disponibles serveur arrêté. Un simple dossier de tuiles peut être servi avec
-    `python -m http.server 8090 --directory D:\Tiles` ;
-  - **Local folder** : un dossier de tuiles `zoom/x/y.png`, lu directement sans téléchargement. FlightGear n'autorise
+  - **Local server** : un serveur de tuiles, par exemple `http://localhost:8090/{z}/{x}/{y}.png` ou
+    `http://hôte/tile/{z}/{y}/{x}`. Les marqueurs peuvent être dans n'importe quel ordre et l'URL n'a pas besoin
+    d'extension :
+    - `{z}` `{x}` `{y}` (alias WMTS `{TileMatrix}` `{TileCol}` `{TileRow}`), `{-y}` ou `{tms_y}` pour une
+      numérotation TMS, `{s}` pour un sous-domaine `a` / `b` / `c`, `{q}` ou `{quadkey}` pour une numérotation Bing ;
+    - `{bbox}` pour un serveur WMS : emprise de la tuile en EPSG:3857, par exemple
+      `http://localhost/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=ortho&SRS=EPSG:3857&BBOX={bbox}&WIDTH=256&HEIGHT=256&FORMAT=image/jpeg`.
+
+    FlightGear choisit le décodeur d'image d'après l'extension du fichier en cache : le format réel des tuiles (PNG
+    ou JPEG) est donc lu dans une tuile de test (*Test*, *Apply* et au démarrage), pas déduit de l'URL. Les tuiles
+    WebP ne sont pas lisibles par FlightGear. FlightGear n'utilise pas le proxy de Windows : sur un réseau où le
+    navigateur passe par un proxy, ajouter `--proxy=hôte:port` dans les options du lanceur (sinon le message d'état
+    indique « server name not found »). Les tuiles reçues sont mises en cache dans
+    `$FG_HOME/cache/maps/tiles-<serveur>-<somme de contrôle>` et restent disponibles serveur arrêté. Un simple dossier
+    de tuiles peut être servi avec `python -m http.server 8090 --directory D:\Tiles` ;
+  - **Local folder** : un dossier de tuiles `zoom/x/y.png` ou `.jpg`, lu directement sans téléchargement. FlightGear n'autorise
     la lecture que sous FG_HOME, FG_ROOT et les dossiers d'avions et de scènerie. Un dossier situé ailleurs est
     refusé (FlightGear 2024.1 plante sur une lecture interdite) ; il faut alors le servir en *Local server*.
 
+  Un serveur peut être enregistré sous un nom (*Name*, puis *Save* : URL et zoom maximal) ; la liste *Saved
+  servers* permet ensuite d'en changer en un clic, et *Delete* retire le serveur choisi.
+  Les champs de saisie ne prennent pas Ctrl+V : le bouton *Paste* à côté colle le contenu du presse-papiers.
   Le bouton *Test* vérifie la source à la position de l'avion. *Max zoom* indique le niveau de zoom le plus fin que
   possède la source : au-delà, les tuiles sont agrandies. Les réglages sont conservés d'une session à l'autre.
 - Limites :
