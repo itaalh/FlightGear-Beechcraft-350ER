@@ -21,7 +21,7 @@
       pressurization systems, annunciator panel, checklists, ALSR Vador livery.
     </long-description>
     <author>Original 3D model and cockpit (2015-2017, FGMEMBERS USA Tour): SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky. 2026 rebuild: Itaalh - flight model, engines and propellers, systems (electrical, fuel, ice protection, pressurization, annunciators), autopilot, checklists, liveries</author>
-    <aircraft-version>2.7.0</aircraft-version>
+    <aircraft-version>2.8.0</aircraft-version>
     <variant-of>KingAir-350</variant-of>
     <status>beta</status>
     <minimum-fg-version>2020.3</minimum-fg-version>
