@@ -197,9 +197,11 @@ var init = func {
     fg1000system = fg1000.FG1000.getOrCreateInstance(fg1000.KingAirEIS,
                                                      aircraft_dir ~ "/Models/Instruments/FG1000/EIS-KingAir.svg");
     set_vspeeds(fg1000system.getConfigStore());
+    fg1000touch.patch();                     # maps: heading up and pan (Nasal/fg1000-maptouch.nas)
     fg1000system.addPFD(1);
     fg1000system.addMFD(2);
     fg1000system.addPFD(3);
+    fg1000touch.init(fg1000system);          # mouse on the maps
     if (fusion_cockpit()) {
         # Pro Line Fusion cockpit: the screens of Models/Fusion/fusion-cockpit.ac, with display reversion
         init_fusion_screens();
@@ -247,7 +249,9 @@ var placements = {};
 var place = func(screen, index) {
     if (placements[screen] != nil) { placements[screen].remove(); placements[screen] = nil; }
     if (index == nil) return;
-    placements[screen] = fg1000system.getDisplay(index).getCanvas().addPlacement({"node": "Fusion.Screen" ~ screen});
+    # capture-events: the mouse on the screen reaches the canvas (maps: Nasal/fg1000-maptouch.nas)
+    placements[screen] = fg1000system.getDisplay(index).getCanvas().addPlacement(
+        {"node": "Fusion.Screen" ~ screen, "capture-events": 1});
 };
 
 var update_reversion = func {
