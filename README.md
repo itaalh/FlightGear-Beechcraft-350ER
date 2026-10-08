@@ -1,11 +1,12 @@
 # Beechcraft King Air 350 (B300) pour FlightGear — modèle de vol JSBSim reconstruit
 
-Version 2.8.0 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
+Version 2.8.1 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
 historique des versions dans `CHANGELOG.md`.
 Modèle 3D et cockpit d'origine : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017,
 FGMEMBERS, USA Tour). Refonte 2026 : Itaalh — modèle de vol, moteurs et hélices, systèmes, pilote automatique,
 check-lists, livrées, cockpit Pro Line Fusion de la variante G1000 (généré par les scripts de `Tools/fusion`) et
 intégration du G1000.
+Photo de l'écran de chargement : Armée de l'Air et de l'Espace.
 Licence : GPL v2 ou ultérieure (voir `COPYING`).
 
 ## Installation
