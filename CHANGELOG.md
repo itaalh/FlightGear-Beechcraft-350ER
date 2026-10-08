@@ -3,6 +3,22 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **G1000 : cartes à la souris** (cockpit Pro Line Fusion), sur la carte du MFD et l'encart carte du PFD :
+  - molette : échelle (molette vers le haut : zoom avant) ;
+  - clic sur l'orientation en haut à droite : NORTH UP / HDG UP. Le cap en haut est réellement affiché (la carte
+    du FG1000 de FGData n'en changeait que le libellé) ;
+  - cliquer-glisser : déplacement de la carte, qui garde ensuite son décalage par rapport à l'avion. Une case
+    RECENTER apparaît alors sous l'orientation ; un clic dessus (ou un double clic sur la carte) recentre la carte
+    sur l'avion. Le symbole de l'avion reste à sa position géographique (la carte du FG1000 de FGData le dessinait
+    toujours au centre : ses options de couche n'étaient pas transmises).
+  - Sans effet quand le tactile de l'écran est désactivé (TOUCH / CURSOR).
+- **Nouvel écran de chargement** (16:9) : le King Air 350 F-RACH de l'ALSR Vador au décollage.
+  Il cite les auteurs du modèle d'origine (2015-2017, FGMEMBERS) et la refonte de 2026 ; même mise à jour des
+  crédits (*author*) et des descriptions des trois variantes, affichés par FlightGear au chargement.
+
 ## [2.7.0] — 2026-10-08
 
 ### Ajouté

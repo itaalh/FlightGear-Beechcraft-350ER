@@ -2,8 +2,10 @@
 
 Version 2.7.0 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
 historique des versions dans `CHANGELOG.md`.
-Modèle 3D et cockpit : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017) ; cockpit
-Pro Line Fusion de la variante G1000 : 2026, généré par les scripts de `Tools/fusion`.
+Modèle 3D et cockpit d'origine : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017,
+FGMEMBERS, USA Tour). Refonte 2026 : Itaalh — modèle de vol, moteurs et hélices, systèmes, pilote automatique,
+check-lists, livrées, cockpit Pro Line Fusion de la variante G1000 (généré par les scripts de `Tools/fusion`) et
+intégration du G1000.
 Licence : GPL v2 ou ultérieure (voir `COPYING`).
 
 ## Installation
@@ -67,7 +69,9 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   le centre de chaque écran. Les touches programmables du G1000 se commandent en cliquant leur libellé en bas de
   l'écran, comme sur un écran tactile. Les radios se règlent aussi directement sur les cadres NAV et COM en haut des
   PFD : clic sur une fréquence d'attente pour choisir la radio, molette dessus pour la régler (MHz ; Maj : kHz), clic
-  sur la flèche ou la fréquence active pour les permuter. Les molettes et touches du G1000 sont reportées :
+  sur la flèche ou la fréquence active pour les permuter. Sur les cartes (carte du MFD, encart du PFD) : molette
+  pour changer l'échelle, clic sur l'orientation en haut à droite pour passer de NORTH UP à HDG UP, cliquer-glisser
+  pour déplacer la carte ; la case RECENTER, sous l'orientation (ou un double clic), la recentre sur l'avion. Les molettes et touches du G1000 sont reportées :
   - sur le panneau de pilote automatique (FGP) : CRS1, HDG, ALT, CRS2 ;
   - sur les panneaux audio : BARO ;
   - sur les deux boîtiers de curseur du pupitre : FMS, RANGE, D→, MENU, FPL, PROC, CLR, ENT, radios NAV et COM. Le
