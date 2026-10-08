@@ -5,16 +5,6 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 
 ## [2.7.0] — 2026-10-08
 
-### Corrigé
-- **G1000 : carte hors ligne, serveurs dont l'URL ne finit pas par `.png` / `.jpg`.** Le format des tuiles était
-  déduit du texte de l'URL : les tuiles JPEG d'un serveur sans extension (ArcGIS `…/tile/{z}/{y}/{x}`, MapProxy,
-  QGIS Server, WMS…) étaient mises en cache en `.png` et restaient blanches. Le format réel (PNG ou JPEG) est
-  maintenant lu dans une tuile de test (*Test*, *Apply* et au démarrage), et le message d'état signale une réponse
-  qui n'est pas une image (page d'erreur, exception WMS, tuiles WebP). Le cache d'un serveur change de dossier
-  (`tiles-<serveur>-<somme de contrôle>`) : il se remplit à nouveau une fois.
-- **Dossier de tuiles en `.jpg`** : l'extension des tuiles d'un dossier simple est lue dans le dossier (`.png`
-  auparavant imposé).
-
 ### Ajouté
 - **Serveurs de tuiles enregistrés sous un nom** : champ *Name* et bouton *Save* (URL et zoom maximal), liste
   *Saved servers* pour passer d'un serveur à l'autre (le choix s'applique aussitôt), bouton *Delete*. La liste est
@@ -26,6 +16,16 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
 - **Nouveaux marqueurs d'URL** pour le serveur de tuiles : `{s}` (sous-domaine a / b / c), `{q}` / `{quadkey}`
   (numérotation Bing), `{bbox}` (emprise EPSG:3857, pour interroger directement un serveur WMS) et les noms WMTS
   `{TileMatrix}` `{TileCol}` `{TileRow}`.
+
+### Corrigé
+- **G1000 : carte hors ligne, serveurs dont l'URL ne finit pas par `.png` / `.jpg`.** Le format des tuiles était
+  déduit du texte de l'URL : les tuiles JPEG d'un serveur sans extension (ArcGIS `…/tile/{z}/{y}/{x}`, MapProxy,
+  QGIS Server, WMS…) étaient mises en cache en `.png` et restaient blanches. Le format réel (PNG ou JPEG) est
+  maintenant lu dans une tuile de test (*Test*, *Apply* et au démarrage), et le message d'état signale une réponse
+  qui n'est pas une image (page d'erreur, exception WMS, tuiles WebP). Le cache d'un serveur change de dossier
+  (`tiles-<serveur>-<somme de contrôle>`) : il se remplit à nouveau une fois.
+- **Dossier de tuiles en `.jpg`** : l'extension des tuiles d'un dossier simple est lue dans le dossier (`.png`
+  auparavant imposé).
 
 ## [2.6.0] — 2026-10-02
 
