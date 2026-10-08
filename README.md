@@ -1,8 +1,12 @@
 # Beechcraft King Air 350 (B300) pour FlightGear — modèle de vol JSBSim reconstruit
 
-Version 2.4.2 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
+Version 2.8.1 (2026) — modèle de vol, moteurs, hélices, systèmes et pilote automatique entièrement refaits ;
 historique des versions dans `CHANGELOG.md`.
-Modèle 3D et cockpit : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017).
+Modèle 3D et cockpit d'origine : SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky (2015-2017,
+FGMEMBERS, USA Tour). Refonte 2026 : Itaalh — modèle de vol, moteurs et hélices, systèmes, pilote automatique,
+check-lists, livrées, cockpit Pro Line Fusion de la variante G1000 (généré par les scripts de `Tools/fusion`) et
+intégration du G1000.
+Photo de l'écran de chargement : Armée de l'Air et de l'Espace.
 Licence : GPL v2 ou ultérieure (voir `COPYING`).
 
 ## Installation
@@ -29,7 +33,7 @@ Le nom du dossier doit rester `KingAir-350` (les chemins du modèle 3D en dépen
 | Essuie-glaces | sélecteur du panneau supérieur (clic gauche / molette) : PARK / OFF / SLOW / FAST ; PARK ramène les balais en butée puis revient sur OFF |
 | Volants | menu *King Air 350 › Yokes visible* (réglage conservé d'une session à l'autre) |
 | Départ en vol | `--in-air --altitude=… --vc=…` avec `--prop:/sim/presets/running=true` : moteurs en marche, puissance, pas d'hélice et trims réglés pour le palier, train rentré au-dessus de 150 kt ; l'avion est tenu 4 s, le temps que les hélices se stabilisent. Sans cette option, les moteurs sont arrêtés |
-| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
+| Pilote automatique | panneau FGC du cockpit (HDG, NAV, APPR, BC, ALT, ALTS, VS, CLIMB, molette de tangage, AP, YD, SR, BNK ; variante G1000 : panneau FGP, voir plus bas) ou dialogue standard *Autopilot* (F11) ; `Ctrl-F` engage/désengage ; l'action joystick *Autopilot disconnect* déconnecte seulement (bouton AP DISC du volant) |
 | Amortisseur de lacet | bouton YD ou `Ctrl-Y` (obligatoire au-dessus de 5 000 ft sur l'avion réel) |
 | Porte / escalier | `D` |
 | Carburant | menu *System failures* (dialogue systèmes) : crossfeed, pompes de transfert aux, générateurs, batterie… |
@@ -43,7 +47,8 @@ Masses : 15 000 lb décollage/atterrissage, 12 500 lb ZFW, 3 611 lb (539 gal) de
 Même cellule, même aile et mêmes PT6A-60A, mais : MTOW 16 500 lb, MLW 15 675 lb, MZFW 13 000 lb, masse à vide
 ≈ 10 150 lb, 775 gal (5 192 lb) de carburant grâce aux réservoirs de nacelles allongées (les *main* passent à
 308,5 gal chacun), train renforcé, légère traînée supplémentaire des nacelles. C'est la cellule de l'ALSR
-« Vador » de l'Armée de l'air et de l'Espace (le modèle 3D reste celui du 350, sans boule optronique).
+« Vador » de l'Armée de l'air et de l'Espace (le modèle 3D reste celui du 350, sans boule optronique ; la
+livrée de l'ALSR n° 1030 F-RACH est fournie, voir *Livrées* plus bas).
 Validation à 16 500 lb : décrochage 100 / 94 / 89 KCAS, montée initiale 2 430 ft/min (livre 2 400),
 croisière max 305 KTAS FL240 (livre 303), décollage 3 910 ft sur 50 ft (BFL livre 5 105 ft), monomoteur
 725 ft/min (livre 337, même optimisme que le 350). Les deux versions apparaissent séparément dans le lanceur
@@ -51,14 +56,48 @@ croisière max 305 KTAS FL240 (livre 303), décollage 3 910 ft sur 50 ft (BFL li
 
 ## Variante 350ER G1000 (`KingAir-350ER-G1000-set.xml`, `Models/KingAir-G1000.xml`)
 
-Cellule et modèle de vol du **350ER** (ci-dessus) avec un cockpit modernisé façon **King Air 350 / retrofit Garmin
-G1000 NXi** : trois écrans Garmin GDU 1044B du FG1000 fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`,
-FlightGear ≥ 2018.3) alignés sur le tableau de bord, PFD pilote, MFD au centre et PFD copilote. Ils remplacent les
-instruments EFIS-84 et analogiques des deux places (ADI, HSI, anémomètre, altimètre, variomètre, RMI), les radios
-COM/NAV/ADF/transpondeur, l'alerteur d'altitude, le KLN-90B et la colonne des jauges moteur : une plaque
-(`Models/G1000-panel.ac`) les recouvre et ils sont masqués automatiquement (`sim/model/g1000/enabled`).
+Cellule et modèle de vol du **350ER** (ci-dessus). Le cockpit est entièrement refait **façon Collins Pro Line Fusion**
+(King Air 350ER / 360), d'après photographies. Ses trois grands écrans affichent les pages du **G1000** : c'est le FG1000
+fourni avec FlightGear (`$FG_ROOT/Aircraft/Instruments-3d/FG1000`, FlightGear ≥ 2018.3), seul système d'écrans
+disponible dans FlightGear. Toutes les commandes du cockpit sont animées, cliquables et reliées aux systèmes. La
+description détaillée des panneaux, et la façon de régénérer le cockpit, sont dans `Docs/Fusion-cockpit.md`.
 Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le lanceur propose donc `KingAir-350`,
 `KingAir-350ER` et `KingAir-350ER-G1000`.
+
+### Le cockpit
+
+- **Écrans :** PFD pilote, MFD au centre, PFD copilote : trois écrans larges de 14 pouces. L'image G1000 (4:3) occupe
+  le centre de chaque écran. Les touches programmables du G1000 se commandent en cliquant leur libellé en bas de
+  l'écran, comme sur un écran tactile. Les radios se règlent aussi directement sur les cadres NAV et COM en haut des
+  PFD : clic sur une fréquence d'attente pour choisir la radio, molette dessus pour la régler (MHz ; Maj : kHz), clic
+  sur la flèche ou la fréquence active pour les permuter. Sur les cartes (carte du MFD, encart du PFD) : molette
+  pour changer l'échelle, clic sur l'orientation en haut à droite pour passer de NORTH UP à HDG UP, cliquer-glisser
+  pour déplacer la carte ; la case RECENTER, sous l'orientation (ou un double clic), la recentre sur l'avion. Les molettes et touches du G1000 sont reportées :
+  - sur le panneau de pilote automatique (FGP) : CRS1, HDG, ALT, CRS2 ;
+  - sur les panneaux audio : BARO ;
+  - sur les deux boîtiers de curseur du pupitre : FMS, RANGE, D→, MENU, FPL, PROC, CLR, ENT, radios NAV et COM. Le
+    sélecteur DISPLAY de chaque boîtier choisit l'écran commandé : PFD 1 ou MFD pour le pilote, MFD ou PFD 2 pour le
+    copilote.
+- **Clavier (MKP) :** lettres et chiffres pour saisir directement un identifiant (D→, plan de vol, pages WPT), sur
+  l'écran du dernier boîtier de curseur utilisé.
+- **Écran de secours :** au-dessus du FGP, avec attitude, vitesse, altitude avec son propre calage, cap et bille.
+  MENU épure l'affichage, BARO passe en STD, la molette règle le calage (appui : calage du PFD pilote).
+- **Pilote automatique :** celui de l'avion (boucles JSBSim), commandé par le FGP. Boutons FD, VS, VNAV, FLC, NAV,
+  HDG, APPR, 1/2 BANK, ALT, YD, CPL, AP et YD/AP DISC ; molettes SPEED et de tangage.
+  - **CPL :** couple le pilote automatique au PFD pilote ou copilote. Le mode NAV suit la source CDI de ce PFD : GPS
+    (plan de vol actif du G1000), NAV1 ou NAV2.
+  - **VNAV :** tient une pente vers la prochaine contrainte d'altitude de la route active, en VS avec capture ALTS.
+  - **ALT :** l'altitude choisie à la molette ALT est capturée depuis VS, FLC ou PIT (ALTS armé).
+  - **Autres commandes :** le bouton GO AROUND de la manette de puissance gauche passe le directeur de vol à 7° à
+    cabrer, ailes à plat ; les volants portent le trim électrique, la déconnexion AP / YD et l'alternat.
+- **Réversion d'écran :** un écran mis sur OFF s'éteint, et le PFD du même côté passe sur l'écran central. L'inhibition
+  TOUCH / CURSOR désactive les touches tactiles ou le boîtier de curseur d'un écran.
+- **Nuit :** inscriptions rétroéclairées (rhéostat PANEL LIGHTS et MASTER PANEL LIGHTS du plafonnier), écrans
+  auto-éclairés (rhéostats des écrans) et projecteurs d'ambiance (PANEL / PEDESTAL / OVERHEAD FLOOD).
+- **Disjoncteurs :** environ 90, sur les parois gauche et droite. Chacun coupe réellement son circuit : radios et
+  écrans, éclairages, démarrage, pompes, trims, volets, train, chauffages, conditionnement, etc.
+
+### Le G1000
 
 - `Nasal/fg1000-kingair.nas` charge le FG1000 après l'initialisation du FDM, avec un *Engine Indication System*
   bimoteur turbopropulseur (`Nasal/fg1000-kingair-eis.nas`, cadre `Models/Instruments/FG1000/EIS-KingAir.svg`,
@@ -66,50 +105,91 @@ Moteurs, systèmes et pilote automatique sont communs aux trois variantes ; le l
   pression et température d'huile en échelles horizontales à deux index L/R avec valeurs numériques, carburant
   par côté et total, tension / courant / charge des générateurs. Plages de couleur = marquages des instruments
   du 350 (couple 100 %, ITT 400-820 °C, hélice 1 450-1 700 tr/min, N1 62-104 %, huile 60/90-135 psi et
-  0-99/110 °C, carburant 0-265 lb interdit au décollage).
-- PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà), repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de
-  vitesse marquée comme l'anémomètre du 350 (arc blanc large 81-96 / étroit 96-158 kt, repère volets APP 202 kt,
-  trait rouge Vmca 94, trait bleu Vyse 125, bande rayée au-delà de Vmo).
+  0-99/110 °C, carburant 0-265 lb interdit au décollage). La touche ENGINE du MFD choisit le bas du bandeau :
+  ENGINE (ce résumé), SYSTEM (électrique, prélèvement d'air, dégivrage, pressurisation) ou FUEL (chaque réservoir,
+  débits, autonomie, distance franchissable, consommé, intercommunication).
+- PFD pilote et copilote (écrans FG1000 n° 1 et 3, mêmes réglages) : Vmo 263 kt (fond de l'anémomètre rouge au-delà),
+  repères Vr 110, Vx 125, Vy 140, plané 135 kt ; bande de vitesse marquée comme l'anémomètre du 350 (arc blanc
+  large 81-96 / étroit 96-158 kt, repère volets APP 202 kt, trait rouge Vmca 94, trait bleu Vyse 125, bande rayée
+  au-delà de Vmo).
 - PFD : fenêtre CAS (à droite de l'altimètre) alimentée par `Nasal/annunciators.nas` : alarmes en rouge, cautions
   en jaune, avis en blanc ; les nouvelles alarmes clignotent en vidéo inverse jusqu'à l'appui sur MASTER WARNING /
   MASTER CAUTION.
-- Heure : l'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h, comme les horloges analogiques du tableau
-  de bord (heure UTC du simulateur).
-- Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`) ;
-  les écrans s'éteignent avec l'avionique. Rétroéclairage des touches des cadres réglé par le rhéostat
-  *Instruments* (menu *King Air 350 › Lights*).
-- Cap : les boutons HDG des deux PFD, celui du panneau FGC et le dialogue du pilote automatique règlent le même
-  index de cap (le dernier tourné l'emporte).
+- Heure : l'encadré horaire des PFD affiche l'heure UTC (Z) sur 24 h (heure UTC du simulateur).
+- Cap : le cap affiché vient de l'AHRS du cockpit. Il est asservi au compas, ou devient un directionnel libre avec
+  DG FREE, recalé par SLEW.
+- Alimentation : sorties `fg1000-pfd`, `fg1000-mfd` et `fg1000-pfd2` du bus avionique (`Nasal/electrical.nas`), avec
+  leurs disjoncteurs ; les écrans s'éteignent avec l'avionique.
 - Fenêtres détachables : menu *King Air 350 › G1000: PFD pop-up window* / *MFD pop-up window* / *copilot PFD
-  pop-up window* ; commandes clavier du
-  FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le dialogue *Help › Aircraft keys*).
+  pop-up window* ; commandes clavier du FG1000 via `fg1000-multikey.xml` (touche `:` puis séquence, voir le
+  dialogue *Help › Aircraft keys*).
 - Carte hors ligne : menu *King Air 350 › G1000: map tiles (offline map)* (`Nasal/fg1000-maptiles.nas`). On y choisit
   la source des tuiles du fond de carte (TOPO du MFD, encart carte du PFD) :
   - **OpenStreetMap** (par défaut) : téléchargement par Internet, cache dans `$FG_HOME/cache/maps/osm-cache` ;
-  - **Local server** : un serveur de tuiles XYZ, par exemple `http://localhost:8090/{z}/{x}/{y}.png` (`{tms_y}` pour
-    une numérotation TMS). Les tuiles reçues sont mises en cache dans `$FG_HOME/cache/maps/tiles-<serveur>` et restent
-    disponibles serveur arrêté. Un simple dossier de tuiles peut être servi avec
-    `python -m http.server 8090 --directory D:\Tiles` ;
-  - **Local folder** : un dossier de tuiles `zoom/x/y.png`, lu directement sans téléchargement. FlightGear n'autorise
+  - **Local server** : un serveur de tuiles, par exemple `http://localhost:8090/{z}/{x}/{y}.png` ou
+    `http://hôte/tile/{z}/{y}/{x}`. Les marqueurs peuvent être dans n'importe quel ordre et l'URL n'a pas besoin
+    d'extension :
+    - `{z}` `{x}` `{y}` (alias WMTS `{TileMatrix}` `{TileCol}` `{TileRow}`), `{-y}` ou `{tms_y}` pour une
+      numérotation TMS, `{s}` pour un sous-domaine `a` / `b` / `c`, `{q}` ou `{quadkey}` pour une numérotation Bing ;
+    - `{bbox}` pour un serveur WMS : emprise de la tuile en EPSG:3857, par exemple
+      `http://localhost/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=ortho&SRS=EPSG:3857&BBOX={bbox}&WIDTH=256&HEIGHT=256&FORMAT=image/jpeg`.
+
+    FlightGear choisit le décodeur d'image d'après l'extension du fichier en cache : le format réel des tuiles (PNG
+    ou JPEG) est donc lu dans une tuile de test (*Test*, *Apply* et au démarrage), pas déduit de l'URL. Les tuiles
+    WebP ne sont pas lisibles par FlightGear. FlightGear n'utilise pas le proxy de Windows : sur un réseau où le
+    navigateur passe par un proxy, ajouter `--proxy=hôte:port` dans les options du lanceur (sinon le message d'état
+    indique « server name not found »). Les tuiles reçues sont mises en cache dans
+    `$FG_HOME/cache/maps/tiles-<serveur>-<somme de contrôle>` et restent disponibles serveur arrêté. Un simple dossier
+    de tuiles peut être servi avec `python -m http.server 8090 --directory D:\Tiles` ;
+  - **Local folder** : un dossier de tuiles `zoom/x/y.png` ou `.jpg`, lu directement sans téléchargement. FlightGear n'autorise
     la lecture que sous FG_HOME, FG_ROOT et les dossiers d'avions et de scènerie. Un dossier situé ailleurs est
     refusé (FlightGear 2024.1 plante sur une lecture interdite) ; il faut alors le servir en *Local server*.
 
+  Un serveur peut être enregistré sous un nom (*Name*, puis *Save* : URL et zoom maximal) ; la liste *Saved
+  servers* permet ensuite d'en changer en un clic, et *Delete* retire le serveur choisi.
+  Les champs de saisie ne prennent pas Ctrl+V : le bouton *Paste* à côté colle le contenu du presse-papiers.
   Le bouton *Test* vérifie la source à la position de l'avion. *Max zoom* indique le niveau de zoom le plus fin que
   possède la source : au-delà, les tuiles sont agrandies. Les réglages sont conservés d'une session à l'autre.
-- Les écrans sont posés en applique 3,7 cm devant le tableau de bord ; pour un montage affleurant, voir
-  `Docs/G1000-Blender.md` (gabarits de découpe `Docs/G1000-cutters.obj/.ac`, plan `Docs/G1000-panel-layout.png`).
-  Les propriétés `sim/model/g1000/pfd|mfd|pfd2/dx-m|dy-m|dz-m` permettent de recaler les écrans en vol.
-- Pilote automatique : celui de l'avion (boucles JSBSim), commandé au choix par le panneau FGC ou par les touches
-  des écrans GDU. Les touches AP, FD, HDG, NAV, APR, BC, ALT, VS, FLC et NOSE UP / DN sont reprises ; VNV n'est
-  pas disponible.
-  - **Source de guidage :** la touche CDI du PFD pilote la choisit. En GPS, le mode NAV suit le plan de vol actif
-    du G1000 (NAV1 asservi au GPS) ; en NAV1 ou NAV2, il suit le VOR ou le LOC.
-  - **ALT SEL :** l'altitude choisie au bouton ALT du PFD est capturée depuis VS, FLC ou PIT (ALTS armé). Tourner
-    ALT SEL en ALT ne change pas l'altitude tenue.
-  - **Affichage :** les modes (GPS/VOR/LOC/HDG/ROL, ALT/VS/FLC/PIT/GS, ALTS, référence) et le directeur de vol
-    s'affichent en haut du PFD.
-- Limites : pas de mode réversion (EIS sur le PFD). VNV et approches GPS avec guidage vertical non simulés. Si le dossier FG1000 est absent, la variante
-  démarre avec les instruments d'origine et affiche un message.
+- Limites :
+  - Les pages et symboles sont ceux du G1000, pas ceux du Pro Line Fusion ; l'écran large garde donc des bandes
+    noires de chaque côté de l'image 4:3.
+  - Le VNAV est simplifié ; les approches GPS avec guidage vertical ne sont pas simulées.
+  - Si le dossier FG1000 est absent, les écrans restent noirs et un message s'affiche ; le reste du cockpit
+    fonctionne.
+
+## Livrées
+
+Menu *King Air 350 › Select livery* (ou `--prop:/sim/model/livery/file=ALSR` au lancement, nom du fichier sans `.xml`). Toutes les livrées
+s'appliquent aux trois variantes ; le choix est conservé d'une session à l'autre.
+
+**Armée de l'Air – ALSR Vador 1030 F-RACH** (`Models/Liveries/ALSR.xml`, texture 4096 × 4096). Livrée de l'ALSR
+n° 1030 de l'escadron électronique aéroporté 1/54 « Dunkerque », reproduite d'après des photographies de l'avion :
+
+- blanc intégral, inscriptions basse visibilité gris clair en caractères DIN : **F-RACH** sur le fuselage arrière
+  (les deux côtés, dans ses repères d'angle noirs), sur l'extrados de l'aile droite et sous l'aile gauche (lisible
+  par-dessous, nez vers le haut), **ARMEE DE L'AIR** sous les hublots, numéro **1030** en haut de la dérive ;
+- cocardes à liseré jaune sur le cône arrière (les deux côtés), sur l'extrados de l'aile gauche et, en
+  symétrie, sous l'aile droite ;
+- bande rouge d'hélice avec **HELICE** et **DANGER** fléchés sur le nez, marquages de la porte (poignée, flèche
+  rouge), « DEACTIVATED EMERGENCY EXIT » sur l'issue de secours gauche, prise statique ;
+- premier hublot cabine gauche obturé, comme sur l'avion (objet `WindowPlugL1`, affiché seulement avec cette
+  livrée) ;
+- bords d'attaque en caoutchouc noir, légères salissures de ventre et traces d'échappement sur les nacelles.
+
+L'immatriculation fait partie de la texture : FlightGear n'a pas de fonction générique pour la changer en vol.
+
+**Relief de surface (toutes livrées)** : une *normal map* 4096 × 4096 (`Models/Effects/KingAir-350-normalmap.png`)
+ajoute les jointures de tôles, les lignes de rivets, les trappes de visite et les verrous de capots ; son canal
+alpha règle la brillance (caoutchouc et pneus mats, échappements satinés).
+
+**Faire une livrée** : les dessous des ailes et des ailerons ont maintenant leur propre place dans la texture
+(ils partageaient celle de l'extrados, un marquage d'aile apparaissait donc aussi, inversé, sous l'aile). Les
+livrées existantes ont été complétées en conséquence et s'affichent comme avant. Gabarit à jour :
+`PaintKit/UV-template-4096.png` (les anciens `KingAir.xcf` / `.svg` restent valables pour tout le reste ; recopier
+simplement l'aile sur les deux nouveaux emplacements, voir `Tools/livery/README.md`). Une texture en 2048 × 2048
+reste utilisable. Dans la texture, le flanc gauche du fuselage est dessiné en miroir et le flanc droit tourné de
+180° (dépliage d'origine du modèle) : les inscriptions y paraissent inversées dans le fichier mais se lisent à
+l'endroit sur l'avion.
 
 ## Ce qui a été refait
 
@@ -222,3 +302,4 @@ la traînée en configuration lisse a été réglée en priorité sur les vitess
 JSBSim ; `t_*.py` sont les scripts de validation (nécessitent `pip install jsbsim`) ; `t_level.py` calcule les tables
 de vol en palier du départ en vol et `swirl_ll.py` le moment de roulis dû à la rotation du souffle. Lancer depuis `Tools/`
 avec un dossier `aircraft/KingAir-350` + `engine/` recopié comme dans les scripts, ou adapter les chemins.
+`Tools/livery/` régénère la livrée ALSR et la normal map (voir son `README.md`).

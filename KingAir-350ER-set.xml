@@ -17,9 +17,11 @@
       family as the 350, validated at 16500 lb: 2400 fpm initial climb, 303 KTAS max cruise, 3900 ft take-off
       distance over 50 ft. PT6A-60A engines with beta/reverse, feathering, autofeather, rudder boost,
       yaw damper, aux-to-main fuel transfer, crossfeed and a 3-axis autopilot driven from the cockpit panel.
+      Rebuilt in 2026 from the FGMEMBERS King Air 350: working electrical, fuel, ice protection and
+      pressurization systems, annunciator panel, checklists, ALSR Vador livery.
     </long-description>
-    <author>3D: SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky - FDM/systems rebuild 2026</author>
-    <aircraft-version>2.4.2</aircraft-version>
+    <author>Original 3D model and cockpit (2015-2017, FGMEMBERS USA Tour): SM, D-ECHO, Lesbof, Bomber, it0uchpods, GabrielYV, IAHM-COL, JWocky. 2026 rebuild: Itaalh - flight model, engines and propellers, systems (electrical, fuel, ice protection, pressurization, annunciators), autopilot, checklists, liveries</author>
+    <aircraft-version>2.8.1</aircraft-version>
     <variant-of>KingAir-350</variant-of>
     <status>beta</status>
     <minimum-fg-version>2020.3</minimum-fg-version>
@@ -45,7 +47,7 @@
     <aero>Aero/KingAir-350ER</aero>
 
     <startup>
-      <splash-texture>Aircraft/KingAir-350/splashScreen/KingAir-350-splash1.png</splash-texture>
+      <splash-texture>Aircraft/KingAir-350/splashScreen/KingAir-350-splash.jpg</splash-texture>
     </startup>
 
     <model>

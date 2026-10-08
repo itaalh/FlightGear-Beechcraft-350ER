@@ -17,6 +17,131 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), num
   intérieur / extérieur remis dans le bon sens ; son d'arrêt avec une hauteur normale ; toussotements de moteur
   à pistons supprimés ; boucle intérieure `eng_run_int_1340.wav` recoupée sans clic.
 
+## [2.8.1] — 2026-10-08
+
+### Corrigé
+- **Écran de chargement : crédit de la photo** (« Photo: Armée de l'Air et de l'Espace »), en bas à droite ; aussi
+  dans le README.
+
+## [2.8.0] — 2026-10-08
+
+### Ajouté
+- **G1000 : cartes à la souris** (cockpit Pro Line Fusion), sur la carte du MFD et l'encart carte du PFD :
+  - molette : échelle (molette vers le haut : zoom avant) ;
+  - clic sur l'orientation en haut à droite : NORTH UP / HDG UP. Le cap en haut est réellement affiché (la carte
+    du FG1000 de FGData n'en changeait que le libellé) ;
+  - cliquer-glisser : déplacement de la carte, qui garde ensuite son décalage par rapport à l'avion. Une case
+    RECENTER apparaît alors sous l'orientation ; un clic dessus (ou un double clic sur la carte) recentre la carte
+    sur l'avion. Le symbole de l'avion reste à sa position géographique (la carte du FG1000 de FGData le dessinait
+    toujours au centre : ses options de couche n'étaient pas transmises).
+  - Sans effet quand le tactile de l'écran est désactivé (TOUCH / CURSOR).
+- **Nouvel écran de chargement** (16:9) : le King Air 350 F-RACH de l'ALSR Vador au décollage.
+  Il cite les auteurs du modèle d'origine (2015-2017, FGMEMBERS) et la refonte de 2026 ; même mise à jour des
+  crédits (*author*) et des descriptions des trois variantes, affichés par FlightGear au chargement.
+
+## [2.7.0] — 2026-10-08
+
+### Ajouté
+- **Serveurs de tuiles enregistrés sous un nom** : champ *Name* et bouton *Save* (URL et zoom maximal), liste
+  *Saved servers* pour passer d'un serveur à l'autre (le choix s'applique aussitôt), bouton *Delete*. La liste est
+  conservée d'une session à l'autre.
+- **Boutons *Paste*** à côté des champs URL et dossier : les champs de saisie des dialogues FlightGear ne prennent
+  pas Ctrl+V (un espace est inséré à la place) ; le bouton colle la première ligne du presse-papiers.
+- **Messages d'erreur réseau explicites** : nom de serveur introuvable, proxy nécessaire (option `--proxy`),
+  serveur injoignable, certificat HTTPS refusé ; une URL refusée est affichée dans le message.
+- **Nouveaux marqueurs d'URL** pour le serveur de tuiles : `{s}` (sous-domaine a / b / c), `{q}` / `{quadkey}`
+  (numérotation Bing), `{bbox}` (emprise EPSG:3857, pour interroger directement un serveur WMS) et les noms WMTS
+  `{TileMatrix}` `{TileCol}` `{TileRow}`.
+
+### Corrigé
+- **G1000 : carte hors ligne, serveurs dont l'URL ne finit pas par `.png` / `.jpg`.** Le format des tuiles était
+  déduit du texte de l'URL : les tuiles JPEG d'un serveur sans extension (ArcGIS `…/tile/{z}/{y}/{x}`, MapProxy,
+  QGIS Server, WMS…) étaient mises en cache en `.png` et restaient blanches. Le format réel (PNG ou JPEG) est
+  maintenant lu dans une tuile de test (*Test*, *Apply* et au démarrage), et le message d'état signale une réponse
+  qui n'est pas une image (page d'erreur, exception WMS, tuiles WebP). Le cache d'un serveur change de dossier
+  (`tiles-<serveur>-<somme de contrôle>`) : il se remplit à nouveau une fois.
+- **Dossier de tuiles en `.jpg`** : l'extension des tuiles d'un dossier simple est lue dans le dossier (`.png`
+  auparavant imposé).
+
+## [2.6.0] — 2026-10-02
+
+### Ajouté
+- **G1000 : touche ENGINE du MFD.** Elle ouvre le sous-menu ENGINE / SYSTEM / FUEL (touche active en surbrillance) ;
+  les jauges moteur restent en haut du bandeau EIS, le bas du bandeau change :
+  - **ENGINE :** le résumé habituel (carburant par côté, électrique, pressurisation) ;
+  - **SYSTEM :** tension DC, courant et charge batterie, charge des générateurs G / D (OFF en jaune), tension AC de
+    l'onduleur, prélèvement d'air, séparateurs inertiels, chauffage pare-brise, boudins de dégivrage, dégivrage
+    hélices, altitude, variation et différentiel cabine, altitude cabine sélectionnée ;
+  - **FUEL :** carburant de chaque réservoir (principal, auxiliaire), par côté et total, débit par moteur et total,
+    autonomie, distance franchissable à la vitesse sol actuelle, carburant consommé, intercommunication.
+- **Cockpit Pro Line Fusion : radios tactiles sur les PFD.** Sur les cadres NAV et COM en haut des deux PFD : clic sur
+  une fréquence d'attente pour choisir la radio, molette dessus pour la régler (MHz ; Maj : kHz), clic sur la flèche
+  ou la fréquence active pour les permuter. Les boîtiers du pupitre, au niveau du siège, ne sont plus indispensables.
+
+### Corrigé
+- **G1000 : la touche ENGINE du MFD ne faisait rien** (sous-menu réduit à ENGINE / BACK depuis le remplacement de
+  l'EIS monomoteur de FGData).
+
+## [2.5.0] — 2026-10-02
+
+### Ajouté
+- **350ER G1000 : nouveau cockpit façon Collins Pro Line Fusion** (King Air 350ER / 360), refait d'après
+  photographies. Il remplace, pour cette variante seulement, tout le cockpit classique, hors plancher et palonniers :
+  - **Auvent et tableau :** auvent avec bosse de l'écran de secours, MASTER WARNING / MASTER CAUTION pilote et
+    copilote, poussoirs incendie (extincteurs, robinets coupe-feu), balises et TAWS, RADIO CALL.
+  - **Écrans :** trois écrans larges de 14 pouces qui affichent les pages du FG1000. Les touches programmables se
+    commandent en cliquant leur libellé en bas de l'écran, comme sur un écran tactile.
+  - **Pilote automatique (FGP) :** FD, VS, VNAV, FLC, NAV, HDG, APPR, 1/2 BANK, ALT, YD, CPL, AP, YD/AP DISC,
+    molettes CRS1 / SPEED / HDG / ALT / CRS2 et molette de tangage.
+  - **Écran de secours :** attitude, vitesse, altitude avec son propre calage, cap et bille.
+  - **Tableau et panneaux inférieurs :**
+    - panneaux audio pilote et copilote ;
+    - bandeau de commande des écrans (réversion, sources AHS / ADS, inhibition tactile / curseur, PROP SYNC,
+      DG FREE / SLEW, EMER FREQ, statique de secours) ;
+    - panneaux inférieurs : électricité, démarrage, antigivrage, éclairage, train, conditionnement d'air, jauges de
+      volets et de cabine ;
+    - volants avec trim électrique, déconnexion AP / YD et alternat.
+  - **Pupitre :** manettes de puissance (bêta / inverse, GO AROUND, silence de l'avertisseur de train), d'hélice et
+    de condition ; volets ; trims. Deux boîtiers de curseur et un clavier commandent le G1000 : molette FMS, portée,
+    D→, MENU, FPL, PROC, CLR, ENT, radios NAV / COM, saisie des identifiants au clavier. S'y ajoutent le contrôleur de
+    pressurisation, RUDDER BOOST, ELEV TRIM, les tests d'avertisseurs et l'enregistreur de conversations.
+  - **Plafonnier et parois :** rhéostats d'éclairage (inscriptions, écrans, projecteurs), essuie-glaces, signaux
+    cabine, instruments électriques et OAT ; panneau carburant (jauges MAIN / AUX / TEST, intercommunication, pompes
+    de secours, transfert) ; environ 90 disjoncteurs qui coupent réellement leur circuit ; compas de secours ;
+    sièges, dont l'accoudoir intérieur se relève d'un clic (relevé au démarrage, pour laisser voir le pupitre).
+  - **Nuit :** inscriptions rétroéclairées, écrans auto-éclairés et projecteurs d'ambiance.
+- **Nouvelles fonctions** (Nasal/fusion-cockpit.nas) : synchroniseur d'hélices, VNAV simplifié (vers la prochaine
+  contrainte d'altitude de la route), couplage du pilote automatique au PFD copilote (CPL), GO AROUND, avertisseur
+  de train, directionnel libre (DG FREE / SLEW), prise statique de secours, réversion d'écran, température cabine,
+  compteur d'heures, voyant RADIO CALL, pompes de secours carburant.
+- **Livrée Armée de l'Air – ALSR Vador 1030 F-RACH** (EEA 1/54 « Dunkerque »), texture 4096 × 4096 reproduite
+  d'après des photographies de l'avion : blanc intégral, inscriptions basse visibilité (F-RACH sur le fuselage, sur
+  l'aile droite et sous l'aile gauche, ARMEE DE L'AIR, 1030 sur la dérive), cocardes (cône arrière, extrados de
+  l'aile gauche et, en symétrie, intrados de l'aile droite), bande d'hélice HELICE / DANGER, marquages de porte et
+  d'issue de secours, premier hublot cabine gauche obturé comme sur l'avion (objet `WindowPlugL1`, visible avec
+  cette livrée seulement).
+- **Relief de surface pour toutes les livrées** : normal map (jointures de tôles, rivets, trappes de visite,
+  verrous de capots) et brillance par matériau.
+- `PaintKit/UV-template-4096.png` et `Tools/livery/` (générateur de la livrée et de la normal map).
+
+### Modifié
+- **Systèmes communs** (sans effet sur le 350 et le 350ER) : démarreur seul sans allumage, allumage automatique
+  commutable, test de mise en drapeau automatique et du régulateur de survitesse, pare-brise HI, air pneumatique
+  des clapets de prélèvement, disjoncteurs lus par l'électricité, l'antigivrage, la pressurisation et les
+  annonciateurs.
+- **Dessous des ailes et des ailerons** : coordonnées de texture propres (ils réutilisaient celles de l'extrados, un
+  marquage d'aile apparaissait donc aussi sous l'aile). Les livrées existantes et la lightmap ont été complétées
+  pour garder le même aspect.
+
+### Supprimé
+- Plaque `Models/G1000-panel.ac` et documentation de pose des boîtiers GDU (`Docs/G1000-*`), remplacées par le
+  cockpit Fusion.
+
+### Corrigé
+- Volets, bandes de volets, vérins de train et une grande partie du cône de nez avaient des coordonnées de texture
+  réduites à un point : ils s'affichaient noirs dès qu'une normal map était active. Chaque polygone a désormais une
+  surface de texture (sous le texel, sans changement de couleur).
+
 ## [2.4.2] — 2026-09-27
 
 ### Corrigé
@@ -196,7 +321,12 @@ Première publication de la version reconstruite.
 - Systèmes carburant, électrique, rudder boost, amortisseur de lacet, pilote automatique 3 axes dont les
   boucles tournent dans JSBSim, démarrage automatique, beta / inverse, autofeather.
 
-[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.2...engine-sound
+[Non publié]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.8.1...engine-sound
+[2.8.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.8.0...v2.8.1
+[2.8.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.7.0...v2.8.0
+[2.7.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.6.0...v2.7.0
+[2.6.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.5.0...v2.6.0
+[2.5.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.2...v2.5.0
 [2.4.2]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/itaalh/FlightGear-Beechcraft-350ER/compare/v2.3.0...v2.4.0

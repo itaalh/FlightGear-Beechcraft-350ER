@@ -6,6 +6,7 @@
       <livery>
         <name type="string">Ejercito de Colombia EJC-1126</name>
         <index type="int">3</index>
+        <window-plug-l1 type="bool">false</window-plug-l1>
         <bodyWork>
   	  <texture>Liveries/EJC.png</texture>
         </bodyWork>

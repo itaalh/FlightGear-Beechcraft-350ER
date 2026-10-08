@@ -18,27 +18,77 @@
       <binding><command>dialog-apply</command></binding>
     </combo>
 
-    <text><row>1</row><col>0</col><halign>right</halign><label>Server URL:</label></text>
-    <input>
-      <row>1</row><col>1</col><pref-width>420</pref-width>
-      <property>/sim/model/g1000/map/url</property>
-    </input>
+    <!-- saved servers (name, URL, max zoom): choosing one switches the map to it -->
+    <text><row>1</row><col>0</col><halign>right</halign><label>Saved servers:</label></text>
+    <combo>
+      <row>1</row><col>1</col><halign>fill</halign>
+      <name>saved</name>
+      <editable>false</editable>
+      <property>/sim/model/g1000/map/selected</property>
+      <properties>/sim/gui/dialogs/g1000-maptiles/saved</properties>
+      <binding><command>dialog-apply</command><object-name>saved</object-name></binding>
+      <binding><command>nasal</command><script>fg1000map.select_server();</script></binding>
+      <binding><command>dialog-update</command></binding>
+    </combo>
+    <button>
+      <row>1</row><col>2</col>
+      <legend>Delete</legend>
+      <binding><command>nasal</command><script>fg1000map.delete_server();</script></binding>
+      <binding><command>dialog-update</command></binding>
+    </button>
 
-    <text><row>2</row><col>0</col><halign>right</halign><label>Tile folder:</label></text>
+    <text><row>2</row><col>0</col><halign>right</halign><label>Name:</label></text>
     <input>
       <row>2</row><col>1</col><pref-width>420</pref-width>
+      <property>/sim/model/g1000/map/name</property>
+    </input>
+    <button>
+      <row>2</row><col>2</col>
+      <legend>Save</legend>
+      <binding><command>dialog-apply</command></binding>
+      <binding><command>nasal</command><script>fg1000map.save_server();</script></binding>
+      <binding><command>dialog-update</command></binding>
+    </button>
+
+    <text><row>3</row><col>0</col><halign>right</halign><label>Server URL:</label></text>
+    <input>
+      <row>3</row><col>1</col><pref-width>420</pref-width>
+      <property>/sim/model/g1000/map/url</property>
+    </input>
+    <!-- the dialog input fields do not take Ctrl+V -->
+    <button>
+      <row>3</row><col>2</col>
+      <legend>Paste</legend>
+      <binding><command>dialog-apply</command></binding>
+      <binding><command>nasal</command><script>fg1000map.paste("url");</script></binding>
+      <binding><command>dialog-update</command></binding>
+    </button>
+
+    <text><row>4</row><col>0</col><halign>right</halign><label>Tile folder:</label></text>
+    <input>
+      <row>4</row><col>1</col><pref-width>420</pref-width>
       <property>/sim/model/g1000/map/folder</property>
     </input>
+    <button>
+      <row>4</row><col>2</col>
+      <legend>Paste</legend>
+      <binding><command>dialog-apply</command></binding>
+      <binding><command>nasal</command><script>fg1000map.paste("folder");</script></binding>
+      <binding><command>dialog-update</command></binding>
+    </button>
 
-    <text><row>3</row><col>0</col><halign>right</halign><label>Max zoom:</label></text>
+    <text><row>5</row><col>0</col><halign>right</halign><label>Max zoom:</label></text>
     <input>
-      <row>3</row><col>1</col><halign>left</halign><pref-width>50</pref-width>
+      <row>5</row><col>1</col><halign>left</halign><pref-width>50</pref-width>
       <property>/sim/model/g1000/map/max-zoom</property>
     </input>
   </group>
 
-  <text><halign>left</halign><label>Server URL: XYZ tiles, e.g. http://localhost:8090/{z}/{x}/{y}.png ({tms_y} for TMS numbering).</label></text>
-  <text><halign>left</halign><label>Tile folder: a folder laid out as zoom/x/y.png (e.g. D:/Tiles), read directly without any download.</label></text>
+  <text><halign>left</halign><label>Saved servers: Save stores the URL and max zoom under the name; choosing a saved server uses it at once.</label></text>
+  <text><halign>left</halign><label>Server URL: e.g. http://localhost:8090/{z}/{x}/{y}.png or http://host/tile/{z}/{y}/{x} (any order, extension optional).</label></text>
+  <text><halign>left</halign><label>  {-y}: TMS numbering, {s}: subdomain a/b/c, {q}: quadkey, {bbox}: WMS bounds in EPSG:3857 (BBOX={bbox}&amp;WIDTH=256&amp;HEIGHT=256).</label></text>
+  <text><halign>left</halign><label>  PNG or JPEG tiles: the format is read by Test / Apply, not from the URL.</label></text>
+  <text><halign>left</halign><label>Tile folder: a folder laid out as zoom/x/y.png or .jpg (e.g. D:/Tiles), read directly without any download.</label></text>
   <text><halign>left</halign><label>Max zoom: highest zoom level the source has; beyond it the tiles are enlarged.</label></text>
 
   <hrule/>

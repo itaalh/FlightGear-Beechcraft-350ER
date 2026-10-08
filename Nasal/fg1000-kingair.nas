@@ -158,10 +158,14 @@ var init_autopilot = func {
     cdi_recipient.Receive = func(notification) {
         if (notification.NotificationType == notifications.PFDEventNotification.DefaultType
             and notification.Event_Id == notifications.PFDEventNotification.FMSData
-            and notification.Device_Id == 1
+            and (notification.Device_Id == 1 or notification.Device_Id == 3)
             and typeof(notification.EventParameter) == "hash"
-            and contains(notification.EventParameter, "AutopilotNAVSource"))
-            FCS.set_nav_source(notification.EventParameter["AutopilotNAVSource"]);
+            and contains(notification.EventParameter, "AutopilotNAVSource")) {
+            var src = notification.EventParameter["AutopilotNAVSource"];
+            # Pro Line Fusion cockpit: the CPL key couples the autopilot to the pilot (1) or copilot (3) PFD
+            if (fusion_cockpit()) fusion.set_cdi_source(notification.Device_Id, src);
+            elsif (notification.Device_Id == 1) FCS.set_nav_source(src);
+        }
         return emesary.Transmitter.ReceiptStatus_NotProcessed;     # also seen by the GFC700Interface
     };
     emesary.GlobalTransmitter.Register(cdi_recipient);
@@ -193,11 +197,18 @@ var init = func {
     fg1000system = fg1000.FG1000.getOrCreateInstance(fg1000.KingAirEIS,
                                                      aircraft_dir ~ "/Models/Instruments/FG1000/EIS-KingAir.svg");
     set_vspeeds(fg1000system.getConfigStore());
+    fg1000touch.patch();                     # maps: heading up and pan (Nasal/fg1000-maptouch.nas)
     fg1000system.addPFD(1);
     fg1000system.addMFD(2);
     fg1000system.addPFD(3);
-    foreach (var i; [1, 2, 3])
-        fg1000system.display(i);
+    fg1000touch.init(fg1000system);          # mouse on the maps
+    if (fusion_cockpit()) {
+        # Pro Line Fusion cockpit: the screens of Models/Fusion/fusion-cockpit.ac, with display reversion
+        init_fusion_screens();
+    } else {
+        foreach (var i; [1, 2, 3])
+            fg1000system.display(i);
+    }
 
     foreach (var i; PFDS) {
         var pfd = fg1000system.getDisplay(i);
@@ -225,6 +236,37 @@ var init = func {
 
     init_autopilot();
     print("KingAir-350ER G1000: FG1000 pilot PFD, MFD and copilot PFD initialised");
+};
+
+# ---------------------------------------------------------------------------
+# Pro Line Fusion cockpit (Models/Fusion/fusion-cockpit.xml): the three FG1000 displays are drawn on the screens
+# Fusion.Screen1..3. DISPLAY REVERSION: a display switched OFF goes dark; the pilot (or copilot) PFD is then shown
+# on the MFD screen, as the Fusion composite reversion.
+# ---------------------------------------------------------------------------
+var fusion_cockpit = func { getprop("/sim/model/fusion/cockpit") or 0; };
+var placements = {};
+
+var place = func(screen, index) {
+    if (placements[screen] != nil) { placements[screen].remove(); placements[screen] = nil; }
+    if (index == nil) return;
+    # capture-events: the mouse on the screen reaches the canvas (maps: Nasal/fg1000-maptouch.nas)
+    placements[screen] = fg1000system.getDisplay(index).getCanvas().addPlacement(
+        {"node": "Fusion.Screen" ~ screen, "capture-events": 1});
+};
+
+var update_reversion = func {
+    var off1 = getprop("/controls/fusion/reversion-pfd1") or 0;
+    var off2 = getprop("/controls/fusion/reversion-mfd") or 0;
+    var off3 = getprop("/controls/fusion/reversion-pfd2") or 0;
+    place(1, off1 ? nil : 1);
+    place(3, off3 ? nil : 3);
+    place(2, off2 ? nil : (off1 ? 1 : (off3 ? 3 : 2)));
+};
+
+var init_fusion_screens = func {
+    update_reversion();
+    foreach (var p; ["reversion-pfd1", "reversion-mfd", "reversion-pfd2"])
+        setlistener("/controls/fusion/" ~ p, update_reversion, 0, 0);
 };
 
 # pop-up windows (menu)

@@ -55,11 +55,12 @@ var ALERTS = [
     { text: "CABIN DIFF HI",  level: WARNING, lamp: "warning/cbn-diff",
       cond: func { (getprop("systems/pressurization/diff-psi") or 0) > 6.9
                    or getprop("controls/pressurization/diff-warn-test") } },
-    # boost pressure below ~10 psi: the engine-driven pump only delivers above ~12 % N1 (no standby pump model)
+    # boost pressure below ~10 psi: the engine-driven pump only delivers above ~12 % N1, unless the standby pump
+    # runs (Pro Line Fusion cockpit fuel panel: controls/fuel/stby-pump[i]); FUEL PRESS WARN breaker
     { text: "L FUEL PRES LO", level: WARNING, lamp: "warning/L-fuel-psi",
-      cond: func { eng(0, "n1") < 12 } },
+      cond: func { eng(0, "n1") < 12 and !getprop("controls/fuel/stby-pump[0]") and !getprop("controls/fusion/cb/fuel-press-warn") } },
     { text: "R FUEL PRES LO", level: WARNING, lamp: "warning/R-fuel-psi",
-      cond: func { eng(1, "n1") < 12 } },
+      cond: func { eng(1, "n1") < 12 and !getprop("controls/fuel/stby-pump[1]") and !getprop("controls/fusion/cb/fuel-press-warn") } },
     { text: "L OIL PRES LO",  level: WARNING, lamp: "warning/L-oil-psi",
       cond: func { eng(0, "oil-pressure-ind-psi") < 60 } },
     { text: "R OIL PRES LO",  level: WARNING, lamp: "warning/R-oil-psi",

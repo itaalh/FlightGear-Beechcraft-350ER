@@ -68,11 +68,41 @@ var KingAirEISPublisher =
       CabinAlt : getprop("/systems/pressurization/cabin-altitude-ft") or 0,
       CabinRate : getprop("/systems/pressurization/cabin-rate-fpm") or 0,
       DiffPsi : getprop("/systems/pressurization/diff-psi") or 0,
+      # SYSTEM and FUEL pages of the EIS (ENGINE softkey)
+      BattAmps : getprop("/systems/electrical/ammeter") or 0,
+      BattCharge : getprop("/systems/electrical/battery-charge") or 0,
+      AcVolts : getprop("/systems/electrical/AC") or 0,
+      BleedAir : [getprop("/systems/pressurization/bleed-air[0]") or 0, getprop("/systems/pressurization/bleed-air[1]") or 0],
+      IceVanes : [getprop("/systems/anti-ice/engine[0]/vane-pos-norm") or 0,
+                  getprop("/systems/anti-ice/engine[1]/vane-pos-norm") or 0],
+      WshldHeat : [getprop("/systems/anti-ice/window-heat[0]") or 0, getprop("/systems/anti-ice/window-heat[1]") or 0],
+      WingBoots : getprop("/systems/anti-ice/wing-boots") or 0,
+      TailBoots : getprop("/systems/anti-ice/tail-boots") or 0,
+      CabinSel : getprop("/controls/pressurization/cabin-alt-ft") or 0,
+      TankLbs : [me._tankLbs(0), me._tankLbs(1), me._tankLbs(2), me._tankLbs(3)],
+      Crossfeed : getprop("/controls/fuel/crossfeed") or 0,
+      GroundSpeed : getprop("/velocities/groundspeed-kt") or 0,
     };
     var notification = notifications.PFDEventNotification.new(
       "MFD", 1, notifications.PFDEventNotification.EngineData,
       { Id: "KingAirEngineData", Value: data } );
     me._transmitter.NotifyAll(notification);
+  },
+};
+
+# ---------------------------------------------------------------------------
+# Air data publisher: the generic one, with the heading of the simulated AHRS of the Pro Line Fusion cockpit
+# (slaved or DG FREE, Nasal/fusion-cockpit.nas) when that cockpit is loaded.
+# ---------------------------------------------------------------------------
+var KingAirADCPublisher = {
+  new : func() {
+    var obj = GenericADCPublisher.new();
+    if (getprop("/sim/model/fusion/cockpit")) {
+      forindex (var i; obj._propmaps)
+        if (obj._propmaps[i].getName() == "ADCHeadingMagneticDeg")
+          obj._propmaps[i] = PropMap.new("ADCHeadingMagneticDeg", "/instrumentation/fusion/ahrs-heading-deg", 1);
+    }
+    return obj;
   },
 };
 
@@ -87,7 +117,7 @@ var KingAirInterfaceController = {
     "GenericNavComUpdater",
     "GenericFMSPublisher",
     "GenericFMSUpdater",
-    "GenericADCPublisher",
+    "KingAirADCPublisher",
     "GFC700Publisher",
     "GFC700Interface",
     "GMA1347Interface",
