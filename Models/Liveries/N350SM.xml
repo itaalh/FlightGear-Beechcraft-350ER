@@ -7,6 +7,7 @@
         <name type="string">Rise Airlines N350SM</name>
         <index type="int">5</index>
         <window-plug-l1 type="bool">false</window-plug-l1>
+        <alsr-pod type="bool">false</alsr-pod>
         <bodyWork>
   	  <texture>Liveries/N350SM.png</texture>
         </bodyWork>
