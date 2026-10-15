@@ -45,3 +45,6 @@ Le gris des inscriptions a été mesuré à environ 73 % de la luminance du blan
   côté (texture 2048) ; affiché si la livrée met `sim/model/livery/window-plug-l1` à `true`.
 - `fix_degenerate_uv.py` : donne une surface de texture minuscule (0,6 texel) aux polygones dont les UV étaient
   réduites à un point ou à une ligne, sinon OpenGL ne peut pas calculer les tangentes de la normal map.
+- `fix_nose_belly_uv.py` : recale les UV de la bande de ventre du fuselage à côté des trappes de train avant (côté
+  gauche) sur le dépliage des trappes, avec lesquelles elle partage ses texels : la bande d'hélice y était décalée
+  de 7,5 cm. Les deux objets ayant maintenant le même dépliage, le peintre produit un résultat juste pour les deux.

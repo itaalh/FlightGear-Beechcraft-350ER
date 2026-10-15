@@ -87,7 +87,6 @@ License: GPL2. See ./COPYING
 		<object-name>NoseCone</object-name>
 		<object-name>NoseConeStrips</object-name>
 		<object-name>NoseVents</object-name>
-		<object-name>PropCone</object-name>
 		<object-name>PropConeLeft</object-name>
 		<object-name>PropConeRight</object-name>
 		<object-name>PropConeDisks</object-name>
@@ -117,6 +116,10 @@ License: GPL2. See ./COPYING
 		<object-name>Wings</object-name>
 		<object-name>WngCowl</object-name>
 		<object-name>WindowPlugL1</object-name>
+		<object-name>AlsrPod</object-name>
+		<object-name>AlsrSensorCover</object-name>
+		<object-name>DeltaFins</object-name>
+		<object-name>EngineInlets</object-name>
 	</effect>
 
 	<effect>
@@ -291,7 +294,6 @@ License: GPL2. See ./COPYING
 		<object-name>NoseCone</object-name>
 		<object-name>NoseConeStrips</object-name>
 		<object-name>NoseVents</object-name>
-		<object-name>PropCone</object-name>
 		<object-name>PropConeLeft</object-name>
 		<object-name>PropConeRight</object-name>
 		<object-name>PropConeDisks</object-name>
@@ -321,6 +323,10 @@ License: GPL2. See ./COPYING
 		<object-name>Wings</object-name>
 		<object-name>WngCowl</object-name>
 		<object-name>WindowPlugL1</object-name>
+		<object-name>AlsrPod</object-name>
+		<object-name>AlsrSensorCover</object-name>
+		<object-name>DeltaFins</object-name>
+		<object-name>EngineInlets</object-name>
 	</animation>
 
 	<animation>
@@ -338,6 +344,19 @@ License: GPL2. See ./COPYING
 		<object-name>WindowPlugL1</object-name>
 		<condition>
 			<property>sim/model/livery/window-plug-l1</property>
+		</condition>
+	</animation>
+
+	<!-- Ventral pod of the ALSR "Vador": canoe fairing with the retractable EO/IR turret at its stern (camera
+	     retracted, AlsrSensorCover is the flush disc that closes it). Built by Tools/pod/alsr_pod.py, which also builds
+	     DeltaFins, the two ventral fins of the 350 under the tail cone (shown with every livery). Shown only
+	     by liveries that set sim/model/livery/alsr-pod to true (Liveries/ALSR.xml); the other liveries set it to false. -->
+	<animation>
+		<type>select</type>
+		<object-name>AlsrPod</object-name>
+		<object-name>AlsrSensorCover</object-name>
+		<condition>
+			<property>sim/model/livery/alsr-pod</property>
 		</condition>
 	</animation>
   

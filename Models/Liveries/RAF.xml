@@ -7,6 +7,7 @@
         <name type="string">Royal AirForce G-RAFP</name>
         <index type="int">2</index>
         <window-plug-l1 type="bool">false</window-plug-l1>
+        <alsr-pod type="bool">false</alsr-pod>
         <bodyWork>
   	  <texture>Liveries/RAF.png</texture>
         </bodyWork>

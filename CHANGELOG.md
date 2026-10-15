@@ -3,6 +3,47 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- **Nacelle ventrale de l'ALSR Vador** sur le modèle 3D, affichée avec la livrée ALSR (propriété de livrée
+  `sim/model/livery/alsr-pod`, `false` dans les autres livrées) : carénage « canoë » de 5,0 m × 0,8 m à fond plat
+  sous le fuselage, du logement du train avant jusque derrière le bord de fuite : partie avant plate et mince
+  (0,14 m), rampe douce arrondie vers le corps profond (0,56 m) sous la cabine, puis extrémité arrière effilée qui
+  loge la boule optronique rétractable, caméra rentrée (disque gris affleurant). Objets `AlsrPod` et `AlsrSensorCover`
+  de `Models/KingAir.ac`, texturés sur le blanc du bas de fuselage de la texture (aucune retouche de livrée).
+  Construction paramétrique dans Blender par `Tools/pod/alsr_pod.py`, insertion par `Tools/pod/splice_ac.py`.
+- **Dérives ventrales du 350** : les deux dérives « delta » longues et basses sous le cône arrière, absentes du
+  modèle 3D d'origine (objet `DeltaFins`, toutes livrées), construites par le même script.
+- **Entrées d'air et échappements des PT6A-60A refaits** d'après les photos et le plan trois vues (toutes livrées) :
+  sous le cône, le cadre ouvert du modèle d'origine (on voyait l'intérieur de la nacelle) est remplacé par un menton
+  lisse qui porte, en avant comme un museau, une entrée d'air en ovale aplati de 0,34 × 0,10 m à lèvre métallique
+  (objets `FrontCowls` modifié et `EngineInlets`), deux ouïes sous chaque capot ;
+  échappements courts en coude à hauteur de l'axe du cône, qui sortent du flanc juste derrière l'anneau avant vers
+  l'extérieur et un peu vers le haut, sortie tournée vers l'arrière à 0,23 m du capot, section ronde de 14 cm
+  évasée à 18 cm
+  (objet `Exhaust` remplacé ; la douille des anciens échappements est retirée de `FrontEngineCowls` et le trou
+  rebouché dans le capot ; l'objet parasite `PropCone`, un disque caché sous l'ancien échappement droit, est
+  supprimé).
+- **Bandes noires de bord d'attaque refaites sur toute l'envergure** (objet `DeicebootsWings`) : du fuselage à la
+  nacelle et de la nacelle au saumon. L'ancienne bande n'avait rien entre la nacelle et |y| 3,97 m, deux petits
+  tronçons blancs (livrée ALSR) entre fuselage et nacelle, et un morceau qui pendait sous l'aile près de la nacelle.
+  Construction par `Tools/nacelle/nacelle_details.py` (Blender).
+
+### Corrigé
+- **Cônes d'hélice refermés** : le cône d'origine avait trois ouvertures de pales pour une hélice à quatre pales
+  (une seule pale passait dans une ouverture). Les deux cônes sont refaits fermés, centrés sur l'axe de rotation,
+  avec la texture de métal poli d'une zone sans ouverture peinte (objets `PropConeLeft` et `PropConeRight`).
+- **Bord d'attaque de l'aile intérieure** : entre le fuselage et les nacelles, l'aile n'avait pas de faces de nez
+  (bord d'attaque ouvert, qui paraissait reculé de 11 cm avec une marche près de la nacelle) ; les faces manquantes
+  sont recréées, le bord d'attaque est droit comme sur le plan trois vues (objet `Wings`).
+- **Moteur droit** : les nouveaux éléments des nacelles sont centrés sur les axes d'hélice de `Models/KingAir.xml`
+  (y −2,749 et +2,796), le moteur droit étant 4,7 cm plus à l'extérieur que le gauche dans le modèle.
+- **Bande d'hélice décalée** de 7,5 cm sur le bas du flanc gauche, à côté des trappes de train avant : ces
+  polygones du fuselage partageaient leurs texels avec les trappes mais avec un dépliage UV décalé, et la livrée
+  est peinte pour les trappes. Leurs UV sont recalées sur celles des trappes (`Tools/livery/fix_nose_belly_uv.py`),
+  sans régénérer les livrées.
+
 ## [2.8.1] — 2026-10-08
 
 ### Corrigé

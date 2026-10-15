@@ -52,7 +52,9 @@ GEAR = ['AxleshaftsFront', 'AxleshaftsLeft', 'AxleshaftsRight', 'TorqueLinksFron
         'TorqueLinkBoltsLeft', 'TorqueLinkBoltsRight', 'TrunnionFront', 'TrunnionLeft', 'TrunnionRight',
         'LGPistonFront', 'LGPistonLeft', 'LGPistonRight']
 BOOTS = ['DeicebootsWings', 'DeicebootsHorizStab']
-EXHAUST = ['Exhaust']
+# the Exhaust object (rebuilt by Tools/nacelle/nacelle_details.py) no longer uses the exhaust area of the texture:
+# its stacks are mapped on a grey texel of the spinner (KEEP) and its cut-outs on the boot strip, nothing to paint
+EXHAUST = []
 NACELLE = ['FrontCowls', 'FrontEngineCowls', 'MidEngineCowls', 'LowerEngCowls', 'TopEngineCowl', 'WngCowl', 'EngCowlStrips']
 
 # ------------------------------------------------------------------ base

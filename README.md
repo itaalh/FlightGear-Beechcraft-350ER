@@ -47,8 +47,8 @@ Masses : 15 000 lb décollage/atterrissage, 12 500 lb ZFW, 3 611 lb (539 gal) de
 Même cellule, même aile et mêmes PT6A-60A, mais : MTOW 16 500 lb, MLW 15 675 lb, MZFW 13 000 lb, masse à vide
 ≈ 10 150 lb, 775 gal (5 192 lb) de carburant grâce aux réservoirs de nacelles allongées (les *main* passent à
 308,5 gal chacun), train renforcé, légère traînée supplémentaire des nacelles. C'est la cellule de l'ALSR
-« Vador » de l'Armée de l'air et de l'Espace (le modèle 3D reste celui du 350, sans boule optronique ; la
-livrée de l'ALSR n° 1030 F-RACH est fournie, voir *Livrées* plus bas).
+« Vador » de l'Armée de l'air et de l'Espace (la livrée de l'ALSR n° 1030 F-RACH est fournie, avec la nacelle
+ventrale de l'avion, voir *Livrées* plus bas).
 Validation à 16 500 lb : décrochage 100 / 94 / 89 KCAS, montée initiale 2 430 ft/min (livre 2 400),
 croisière max 305 KTAS FL240 (livre 303), décollage 3 910 ft sur 50 ft (BFL livre 5 105 ft), monomoteur
 725 ft/min (livre 337, même optimisme que le 350). Les deux versions apparaissent séparément dans le lanceur
@@ -174,7 +174,15 @@ n° 1030 de l'escadron électronique aéroporté 1/54 « Dunkerque », reproduit
   rouge), « DEACTIVATED EMERGENCY EXIT » sur l'issue de secours gauche, prise statique ;
 - premier hublot cabine gauche obturé, comme sur l'avion (objet `WindowPlugL1`, affiché seulement avec cette
   livrée) ;
+- nacelle ventrale de l'ALSR (objets `AlsrPod` et `AlsrSensorCover`, affichés seulement avec cette livrée) :
+  carénage « canoë » à fond plat sous le fuselage, du logement du train avant jusque derrière le bord de fuite :
+  partie avant plate et mince, rampe douce arrondie vers le corps profond sous la cabine, puis extrémité
+  arrière effilée qui loge la boule optronique rétractable, caméra rentrée (disque gris affleurant) ;
+  Construite d'après les photos du prototype F-WTAO et du F-RACH par `Tools/pod/alsr_pod.py` (Blender) ;
 - bords d'attaque en caoutchouc noir, légères salissures de ventre et traces d'échappement sur les nacelles.
+
+Les deux dérives ventrales « delta » du 350 sous le cône arrière (objet `DeltaFins`, construit par le même script)
+sont affichées avec toutes les livrées.
 
 L'immatriculation fait partie de la texture : FlightGear n'a pas de fonction générique pour la changer en vol.
 
@@ -299,3 +307,8 @@ JSBSim ; `t_*.py` sont les scripts de validation (nécessitent `pip install jsbs
 de vol en palier du départ en vol et `swirl_ll.py` le moment de roulis dû à la rotation du souffle. Lancer depuis `Tools/`
 avec un dossier `aircraft/KingAir-350` + `engine/` recopié comme dans les scripts, ou adapter les chemins.
 `Tools/livery/` régénère la livrée ALSR et la normal map (voir son `README.md`).
+
+`Tools/pod/` construit la nacelle ventrale de l'ALSR dans Blender (`alsr_pod.py`) et l'insère dans `Models/KingAir.ac`
+(`splice_ac.py`), voir son `README.md`. `Tools/nacelle/` reconstruit de la même façon les entrées d'air, les
+échappements et les ouïes des nacelles moteur, referme le bord d'attaque de l'aile intérieure et refait les bandes
+de bord d'attaque sur toute l'envergure.

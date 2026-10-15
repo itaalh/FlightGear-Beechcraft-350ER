@@ -7,6 +7,7 @@
         <name type="string">Beechcraft Prototype</name>
         <index type="int">0</index>
         <window-plug-l1 type="bool">false</window-plug-l1>
+        <alsr-pod type="bool">false</alsr-pod>
         <bodyWork>
   	  <texture>prototype.png</texture>
         </bodyWork>

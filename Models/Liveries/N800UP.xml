@@ -7,6 +7,7 @@
         <name type="string">Wheels UP N800UP</name>
         <index type="int">5</index>
         <window-plug-l1 type="bool">false</window-plug-l1>
+        <alsr-pod type="bool">false</alsr-pod>
         <bodyWork>
   	  <texture>Liveries/N800UP.png</texture>
         </bodyWork>

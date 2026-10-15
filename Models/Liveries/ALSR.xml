@@ -5,6 +5,7 @@
   (EEA 01.054 "Dunkerque"). Painted from photographs of the aircraft (J.-L. Brunet / armée de l'Air et de l'Espace).
   The registration is part of the texture (FlightGear has no generic in-sim registration feature).
   window-plug-l1: the first cabin window on the left side is plugged on this aircraft (Models/KingAir.xml).
+  alsr-pod: shows the ventral pod (canoe fairing and retracted EO/IR turret housing, Models/KingAir.xml).
 -->
 
 <PropertyList>
@@ -14,6 +15,7 @@
         <name type="string">Armée de l'Air - ALSR Vador 1030 F-RACH</name>
         <index type="int">6</index>
         <window-plug-l1 type="bool">true</window-plug-l1>
+        <alsr-pod type="bool">true</alsr-pod>
         <bodyWork>
           <texture>Liveries/ALSR.png</texture>
         </bodyWork>
