@@ -3,6 +3,21 @@
 Toutes les évolutions notables du King Air 350 pour FlightGear.
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/), numérotation [SemVer](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Corrigé
+- **Cockpit Pro Line Fusion : alternat et sélecteur XMT.** L'alternat de FlightGear (barre d'espace, bouton de
+  manette : `controls.ptt(1)`) émettait toujours sur COM 1, quelle que soit la position du sélecteur XMT du panneau
+  audio. Il passe désormais par le volant pilote et émet sur la radio du sélecteur XMT pilote (EMER : COM 1 ;
+  PA / HF : pas d'émission radio), y compris quand on tourne le sélecteur pendant l'émission. Le relâchement
+  coupe toujours l'émission : avec XMT sur PA ou HF, l'émission COM pouvait rester bloquée.
+- **Sélecteur XMT relié à `/controls/radios/comm-radio-selected`** (1 = COM 1, 2 = COM 2) dans les deux sens : un
+  poste radio extérieur (SRS_RADIO) suit le passage COM 1 / COM 2 du cockpit et peut tourner le sélecteur.
+- **Volumes des récepteurs.** Les panneaux audio réécrivaient `/instrumentation/comm[n]/volume` (et NAV, DME, ADF,
+  MKR) toutes les 0,5 s : un volume réglé de l'extérieur était écrasé aussitôt. Ils ne l'écrivent plus que quand
+  leur propre réglage change. Le FG1000 renvoyait aussi toutes les 5 s son volume COM 1 / NAV 1 (`volume-selected`,
+  0,5 par défaut) dans `comm/volume` et `nav/volume` : ces valeurs suivent désormais le volume du récepteur.
+
 ## [2.9.0] — 2026-10-15
 
 ### Ajouté
