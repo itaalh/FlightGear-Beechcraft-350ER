@@ -49,7 +49,11 @@ pilote, inhibitions TOUCH / CURSOR de chaque écran, source statique de secours 
 
 **Panneaux audio (pilote et copilote).** Sélecteur d'émission (XMT), volume général, récepteurs COMM, NAV, DME,
 ADF, MKR, PA (clic : tiré / enfoncé, molette : volume), micro, sensibilité des balises, filtre NAV, mode EMER, et
-molette BARO du PFD du même côté (appui : STD).
+molette BARO du PFD du même côté (appui : STD). L'alternat de FlightGear (barre d'espace, bouton de manette :
+`controls.ptt`) est celui du volant pilote : il émet sur la radio du sélecteur XMT pilote, et non plus toujours sur
+COM 1. Ce sélecteur est relié à `/controls/radios/comm-radio-selected` (1 = COM 1, 2 = COM 2) dans les deux sens,
+pour un poste radio extérieur comme SRS_RADIO. Un volume de récepteur réglé de l'extérieur
+(`/instrumentation/comm[n]/volume`) reste en place jusqu'au prochain réglage sur les panneaux audio.
 
 **Sous-panneau pilote.** Coupure générale (gardée), batterie, générateurs, avionique, écran de secours, essai du
 délestage (BUS SENSE), couplage des générateurs, antigivrage des entrées d'air moteur et leurs actionneurs,

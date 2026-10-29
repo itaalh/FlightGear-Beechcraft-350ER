@@ -10,8 +10,8 @@
 # - functions of the Pro Line Fusion panel: flight guidance panel knobs (SPEED, HDG), autopilot coupling
 #   (CPL), simplified VNAV (vertical path to the next altitude constraint of the route), YD/AP DISC,
 #   propeller synchrophaser, AHRS DG FREE / SLEW, alternate static source, EMER FREQ, RADIO CALL,
-#   audio panels (receivers and volumes), cabin temperature (environmental panel), flight hour meter,
-#   oxygen pressure, landing gear handle lock on the ground.
+#   audio panels (receivers and volumes, XMT selector and push to talk), cabin temperature (environmental panel),
+#   flight hour meter, oxygen pressure, landing gear handle lock on the ground.
 #
 # License: GPL v2 or later
 #############################################################################
@@ -323,12 +323,15 @@ var update_static = func {
 };
 
 # ---------------------------------------------------------------------------
-# audio panels: receivers pulled on with their volume, the louder of the two panels wins
+# audio panels: receivers pulled on with their volume, the louder of the two panels wins. A receiver volume is only
+# written when the panels change it: a volume set from outside (external radio panel such as SRS_RADIO, radio
+# dialog) stays until the next change on the panels
 # ---------------------------------------------------------------------------
 var RX = {"comm1": ["instrumentation/comm[0]/volume"], "comm2": ["instrumentation/comm[1]/volume"],
           "nav1": ["instrumentation/nav[0]/volume"], "nav2": ["instrumentation/nav[1]/volume"],
           "dme1": ["instrumentation/dme/volume"], "dme2": [],
           "adf": ["instrumentation/adf/volume-norm"], "mkr": ["instrumentation/marker-beacon/volume"], "pa": []};
+var rx_last = {};
 var update_audio = func {
     foreach (var r; keys(RX)) {
         var v = 0;
@@ -337,6 +340,8 @@ var update_audio = func {
             var a = "controls/fusion/audio[" ~ k ~ "]/";
             if (getprop(a ~ r)) v = math.max(v, (getprop(a ~ r ~ "-vol") or 0) * (getprop(a ~ "master-vol") or 0));
         }
+        if (rx_last[r] == v) continue;
+        rx_last[r] = v;
         foreach (var p; RX[r]) setprop(p, v);
     }
     # NAV / DME / ADF identification audio: IDENT or BOTH on the pilot panel filter
@@ -349,11 +354,31 @@ var update_audio = func {
 
 # push to talk (control wheel trigger): transmits on the radio of that side's XMT selector (1, 2; PA and HF have no
 # FlightGear radio), lights the T annunciator of the audio panel
+var xmit = func(side) {
+    if (getprop("controls/fusion/audio[" ~ side ~ "]/emer")) return 0;     # EMER: COM 1 direct
+    return getprop("controls/fusion/audio[" ~ side ~ "]/xmit") or 0;
+};
+if (!contains(controls, "fusion_fg_ptt")) controls.fusion_fg_ptt = controls.ptt;   # kept across a module reload
+var fg_ptt = controls.fusion_fg_ptt;
 var ptt = func(side, on) {
     setprop(FC ~ "ptt[" ~ side ~ "]", on);
-    var x = getprop("controls/fusion/audio[" ~ side ~ "]/xmit") or 0;
-    if (getprop("controls/fusion/audio[" ~ side ~ "]/emer")) x = 0;      # EMER: COM 1 direct
-    if (x <= 1) controls.ptt(on ? x + 1 : 0);
+    var x = xmit(side);
+    fg_ptt((on and x <= 1) ? x + 1 : 0);
+};
+# the FlightGear push to talk (space bar, joystick button: controls.ptt(n)) is the pilot's trigger: the XMT selector
+# chooses the radio, as in the aircraft
+controls.ptt = func(b) { ptt(0, b > 0); };
+
+# pilot XMT selector = FlightGear transmitting radio (controls/radios/comm-radio-selected, 1 or 2), both ways: an
+# external radio panel (SRS_RADIO) follows the selector and can turn it
+var xmit_changed = func {
+    var x = xmit(0);
+    if (x <= 1 and getprop("controls/radios/comm-radio-selected") != x + 1) setprop("controls/radios/comm-radio-selected", x + 1);
+    if (getprop(FC ~ "ptt[0]")) ptt(0, 1);                                  # selector turned while transmitting
+};
+var radio_selected = func(n) {
+    var v = n.getValue() or 0;
+    if ((v == 1 or v == 2) and xmit(0) != v - 1 and !getprop(FC ~ "audio[0]/emer")) setprop(FC ~ "audio[0]/xmit", v - 1);
 };
 
 var emer_freq = func {
@@ -783,6 +808,16 @@ var init = func {
     setlistener(FC ~ "cabin-signs", cabin_signs, 0, 0);
     setlistener(FC ~ "ahs-source", func(n) { gui.popupTip("Pilot PFD attitude / heading: AHRS " ~ (n.getValue() ? "1" : "2")); }, 0, 0);
     setlistener(FC ~ "ads-source", func(n) { gui.popupTip("Pilot PFD air data: ADC " ~ (n.getValue() ? "1" : "2")); }, 0, 0);
+    rx_last = {};
+    # the FG1000 interface writes its COM1 / NAV1 volumes (volume-selected) back into comm/volume and nav/volume every
+    # 5 s: they follow the receiver volume, whoever sets it
+    foreach (var r; ["comm", "nav"])
+        setlistener("instrumentation/" ~ r ~ "[0]/volume", func(n) {
+            n.getParent().getNode("volume-selected", 1).setDoubleValue(n.getValue() or 0);
+        }, 1, 0);
+    setlistener(FC ~ "audio[0]/xmit", xmit_changed, 1, 0);
+    setlistener(FC ~ "audio[0]/emer", xmit_changed, 0, 0);
+    setlistener("controls/radios/comm-radio-selected", radio_selected, 0, 0);
 
     fast_timer.start();
     slow_timer.start();
